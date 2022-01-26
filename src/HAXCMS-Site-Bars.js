@@ -1,12 +1,15 @@
 // dependencies / things imported
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
+import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class RenameMe extends LitElement {
+export class HAXCMSSiteBars extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'rename-me';
+    return 'haxcms-site-bar';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -18,7 +21,10 @@ export class RenameMe extends LitElement {
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      need: { type: String, reflect: true },
+      label: { type: String, reflect: true },
+      course_title: { type: String },
+      icon: { type: String },
+      show_details: { type: String },
     };
   }
 
@@ -56,11 +62,15 @@ export class RenameMe extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: blue;
       }
-      :host([need='joy']) {
-        color: yellow;
-        background-color: black;
+      #plus {
+        width: 50 vw;
+        height: 50 vh;
       }
     `;
   }
@@ -68,9 +78,12 @@ export class RenameMe extends LitElement {
   // HTML - specific to Lit
   render() {
     return html`
-      <h1>Make me awesome</h1>
-      <p>Build the future we ${this.need}.</p>
-      <slot></slot>
+      <simple-icon-lite icon="add" id="plus"></simple-icon-lite>
+      <div id="labels">
+        <p>Who the man</p>
+        <p>I'm the man</p>
+      </div>
+      <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
     `;
   }
 

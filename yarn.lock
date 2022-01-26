@@ -1145,6 +1145,13 @@
     "@lrnwebcomponents/simple-tooltip" "^4.0.1"
     "lit" "2.0.0"
 
+"@lrnwebcomponents/a11y-utils@^4.0.5":
+  "integrity" "sha512-0yo4nNXNollHqpOLIIC5i0Q0LF+o4FOM7UVt469AltPjryM6rbK8qOfFS5bmMYq/SgKLmvcagCqUHvAXXEeyGg=="
+  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/a11y-utils/-/a11y-utils-4.0.5.tgz"
+  "version" "4.0.5"
+  dependencies:
+    "lit" "^2.0.2"
+
 "@lrnwebcomponents/absolute-position-behavior@^4.0.4":
   "integrity" "sha512-O60z6mUiZvn1kV14DLvUDaw42fZTsDVFknKCr9V8ePt1piDnpT1BralKeN6KgEKNxhRS2c6gx91sXUQ7eyfuLA=="
   "resolved" "https://registry.npmjs.org/@lrnwebcomponents/absolute-position-behavior/-/absolute-position-behavior-4.0.4.tgz"
@@ -1465,12 +1472,12 @@
   dependencies:
     "lit-element" "2.4.0"
 
-"@lrnwebcomponents/simple-colors-shared-styles@^4.0.1":
-  "integrity" "sha512-hRWPVBC6blTQeGdpLeZOPJls7SwIFxbEcehRZynOhAYG2ufmlrlPxJlj58yY1FxV79vA4upjxWuRLSz4zoTcKw=="
-  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-colors-shared-styles/-/simple-colors-shared-styles-4.0.1.tgz"
-  "version" "4.0.1"
+"@lrnwebcomponents/simple-colors-shared-styles@^4.0.5":
+  "integrity" "sha512-a1BTL4JC6i2+RSSZIg0haK//K41ML+O9neOQ6xNhVJ6bHyQ9Zf254kfyLvq0Ws88zspzTZvCvXeB+CYEvNhsYA=="
+  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-colors-shared-styles/-/simple-colors-shared-styles-4.0.5.tgz"
+  "version" "4.0.5"
   dependencies:
-    "lit" "2.0.0"
+    "lit" "^2.0.2"
 
 "@lrnwebcomponents/simple-colors@^2.8.0":
   "integrity" "sha512-BNfXQE7HgyNHbdt/w+hIhNO+j4/IH2eywpCkJZfW38j0OK1Mi+/q9EGxpRy4KiptC6EXw2+O/6Uryq9O3egf9g=="
@@ -1482,14 +1489,15 @@
     "@polymer/polymer" "^3.3.1"
     "lit-element" "2.4.0"
 
-"@lrnwebcomponents/simple-colors@^4.0.4":
-  "integrity" "sha512-eUGSn3YChaODbNMgDikXCPHXvoYxP1fNu12Ea22kO0AdMQ6cNTrbiqBLuvkIOBcIaIjAbJZL6iUXfIUwnWrNPQ=="
-  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-colors/-/simple-colors-4.0.4.tgz"
-  "version" "4.0.4"
+"@lrnwebcomponents/simple-colors@^4.0.4", "@lrnwebcomponents/simple-colors@^4.0.6":
+  "integrity" "sha512-OXtBV6PR30oIUJ5jxhI0j+1Bt4GN7qSPkCgI+V1ImWOUDIGNi9+TvBhdWzrNQySZ89sQ9WWnjKxF3sBsBid+2g=="
+  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-colors/-/simple-colors-4.0.6.tgz"
+  "version" "4.0.6"
   dependencies:
-    "@lrnwebcomponents/simple-colors-shared-styles" "^4.0.1"
-    "@lrnwebcomponents/simple-picker" "^4.0.4"
-    "lit" "2.0.0"
+    "@lrnwebcomponents/a11y-utils" "^4.0.5"
+    "@lrnwebcomponents/simple-colors-shared-styles" "^4.0.5"
+    "@lrnwebcomponents/simple-picker" "^4.0.6"
+    "lit" "^2.0.2"
 
 "@lrnwebcomponents/simple-fields@^4.0.4":
   "integrity" "sha512-YdD/HjFOb8p/C+hoGBJ4sqK9kE8gOEm1F+T3mMp+cr2Z7XIkjGO9rSWAFAjMcGEQHZsSsS5r+DGKAWuVotWozg=="
@@ -1535,13 +1543,14 @@
     "@lrnwebcomponents/simple-colors" "^2.8.0"
     "lit-element" "2.4.0"
 
-"@lrnwebcomponents/simple-icon@^4.0.4":
-  "integrity" "sha512-u0RpezEZHNkAHZwne++Cf5kZs0k/q0BFuSyGLpbzs98qRfZn281L5MlKoQfgqE8Or5ynfylQIMtqekX1v3sd3Q=="
-  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-icon/-/simple-icon-4.0.4.tgz"
-  "version" "4.0.4"
+"@lrnwebcomponents/simple-icon@^4.0.4", "@lrnwebcomponents/simple-icon@^4.0.6":
+  "integrity" "sha512-1poT8+H0g8UyKZUs1Xs8QaiGR++dJ63AvRJZdFxjffK7RMf5G2xbsjkZtdfu6NvB5MvGyHcs/SV1TejrGjQ2Ng=="
+  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-icon/-/simple-icon-4.0.6.tgz"
+  "version" "4.0.6"
   dependencies:
-    "@lrnwebcomponents/simple-colors" "^4.0.4"
-    "lit" "2.0.0"
+    "@lrnwebcomponents/simple-colors" "^4.0.6"
+    "flag-icon-css" "4.1.6"
+    "lit" "^2.0.2"
 
 "@lrnwebcomponents/simple-login@^4.0.4":
   "integrity" "sha512-xMHrBXSYof1PkBFp/4R9u/3lP/WGzFKpJLOOF+N4vU4Gc9i4tnOrSGb6y9RPlp/QQZO0mruPIotk0x9h3Blw6w=="
@@ -1574,13 +1583,13 @@
     "@lrnwebcomponents/simple-icon" "^2.8.0"
     "lit-element" "2.4.0"
 
-"@lrnwebcomponents/simple-picker@^4.0.4":
-  "integrity" "sha512-4dYvssF6m2jhDelQvP4kI14wQL+7zRZdoMgnkJBjw5YwTJC71ejKzEHu0T8iQNfypG8gYajo6lB56gDdLeyoeg=="
-  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-picker/-/simple-picker-4.0.4.tgz"
-  "version" "4.0.4"
+"@lrnwebcomponents/simple-picker@^4.0.4", "@lrnwebcomponents/simple-picker@^4.0.6":
+  "integrity" "sha512-FKrhIDixLCwCUxncQBrd3JRUvPxR0LlFNNmGx/SnLHM/N98jItvGCnHaFb6/NuHPq4m/QRN9GAfAMu6UGJHVyA=="
+  "resolved" "https://registry.npmjs.org/@lrnwebcomponents/simple-picker/-/simple-picker-4.0.6.tgz"
+  "version" "4.0.6"
   dependencies:
-    "@lrnwebcomponents/simple-icon" "^4.0.4"
-    "lit" "2.0.0"
+    "@lrnwebcomponents/simple-icon" "^4.0.6"
+    "lit" "^2.0.2"
 
 "@lrnwebcomponents/simple-popover@^4.0.4":
   "integrity" "sha512-4EVdAUlCytqjFMbh9cEC2vh/W1h7xTtLe0RVildoh7k0haPtyqdXro1W5LK4f0urbn1nOprKY/sxVmSF1+iIdg=="
@@ -4260,6 +4269,11 @@
   dependencies:
     "semver-regex" "^3.1.2"
 
+"flag-icon-css@4.1.6":
+  "integrity" "sha512-3VJPAZJg9x3/Av1Gv6T+hznRcag+mlIThp7Ku1oI2F8yxAGfLwuTI5VMEdw5m2M8mbFMZO2F66Cix5bQ8m2Xag=="
+  "resolved" "https://registry.npmjs.org/flag-icon-css/-/flag-icon-css-4.1.6.tgz"
+  "version" "4.1.6"
+
 "flat-cache@^3.0.4":
   "integrity" "sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg=="
   "resolved" "https://registry.npmjs.org/flat-cache/-/flat-cache-3.0.4.tgz"
@@ -6858,6 +6872,16 @@
   "integrity" "sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ=="
   "resolved" "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.5.tgz"
   "version" "3.0.5"
+
+"simple-colors@^0.1.0":
+  "integrity" "sha1-6puAa2ELqvyj0ucsS0K8nCmEJbA="
+  "resolved" "https://registry.npmjs.org/simple-colors/-/simple-colors-0.1.0.tgz"
+  "version" "0.1.0"
+
+"simple-icons@^6.7.0":
+  "integrity" "sha512-bEqOxIkVGTX/Dlq84bXM3ohzRkwE/kpUloSTNvKb7QDTR35ufxMthK3u6kZy2SbmbhFKSpM3Jc8tgAzgfzwV5w=="
+  "resolved" "https://registry.npmjs.org/simple-icons/-/simple-icons-6.7.0.tgz"
+  "version" "6.7.0"
 
 "slash@^3.0.0":
   "integrity" "sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q=="
