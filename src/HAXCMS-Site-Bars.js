@@ -69,8 +69,12 @@ export class HAXCMSSiteBars extends SimpleColors {
         background-color: blue;
       }
       #plus {
-        width: 50 vw;
-        height: 50 vh;
+        --simple-icon-width: 49px;
+        --simple-icon-height: 49px;
+      }
+      #dots {
+        --simple-icon-width: 49px;
+        --simple-icon-height: 49px;
       }
     `;
   }
