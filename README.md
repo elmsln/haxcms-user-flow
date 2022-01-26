@@ -7,6 +7,20 @@ See https://github.com/elmsln/edtechjoker/blob/master/fall-21/projects/p3-haxthe
 
 [![Built with open-wc recommendations](https://img.shields.io/badge/built%20with-open--wc-blue.svg)](https://github.com/open-wc)
 
+# HAXCMS-Site-Bar
+Properties
+- Label (String)
+- Course-Title (String)
+- Icon - String
+- Show-Details (boolean)
+
+# HAXCMS-Site-Details
+Properties
+- About (Array)
+- Actions (Array)
+- Visible (boolean)
+
+
 ## Quickstart
 
 To get started:
