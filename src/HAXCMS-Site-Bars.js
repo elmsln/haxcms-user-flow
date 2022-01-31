@@ -76,7 +76,16 @@ export class HAXCMSSiteBars extends SimpleColors {
         --simple-icon-width: 49px;
         --simple-icon-height: 49px;
       }
+      #labels {
+        color: whitesmoke;
+        font-size: 24pt;
+      }
     `;
+  }
+
+  _toggleDetails(e){
+    console.log(this);
+    console.log("clicked");
   }
 
   // HTML - specific to Lit
@@ -85,9 +94,9 @@ export class HAXCMSSiteBars extends SimpleColors {
       <simple-icon-lite icon="add" id="plus"></simple-icon-lite>
       <div id="labels">
         <p>Who the man</p>
-        <p>I'm the man</p>
+        <p>idk</p>
       </div>
-      <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
+      <simple-icon-lite icon="more-vert" id="dots" @click=${this._toggleDetails}></simple-icon-lite>
     `;
   }
 
