@@ -16,6 +16,7 @@ export class HAXCMSSiteBars extends SimpleColors {
   constructor() {
     super();
     this.need = 'all need to succeed';
+    this.icon = 'add';
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
@@ -66,11 +67,11 @@ export class HAXCMSSiteBars extends SimpleColors {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        background-color: blue;
+        background-color: var(--main-banner-color, blue);
       }
       #hidden {
         visibility: hidden;
-        background-color: green;
+        background-color: var(--hidden-banner-color, green);
         display: flex;
         flex-direction: column;
         padding-left: 10px;
@@ -114,11 +115,11 @@ export class HAXCMSSiteBars extends SimpleColors {
     return html`
       <div id="mainCard">
         <a href="https://www.psu.edu"
-          ><simple-icon-lite icon="add" id="plus"></simple-icon-lite
+          ><simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite
         ></a>
         <div id="labels">
-          <p>Who the man</p>
-          <p>I'm the man</p>
+          <p>${this.label}</p>
+          <p>${this.course_title}</p>
         </div>
         <button @click=${this.__clickButton}>
           <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
