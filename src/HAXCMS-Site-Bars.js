@@ -69,8 +69,11 @@ export class HAXCMSSiteBars extends SimpleColors {
         background-color: blue;
       }
       #hidden {
+        visibility: hidden;
+        background-color: green;
         display: flex;
         flex-direction: column;
+        padding-left: 10px;
       }
       simple-icon-lite {
         color: black;
@@ -92,6 +95,16 @@ export class HAXCMSSiteBars extends SimpleColors {
     `;
   }
 
+  __clickButton() {
+    const element = this.renderRoot.querySelector('#hidden');
+    if (element.style.visibility === 'hidden') {
+      console.log('I was clicked');
+      element.style.visibility = 'visible';
+    } else {
+      element.style.visibility = 'hidden';
+    }
+  }
+
   // HTML - specific to Lit
   render() {
     return html`
@@ -103,8 +116,7 @@ export class HAXCMSSiteBars extends SimpleColors {
           <p>Who the man</p>
           <p>I'm the man</p>
         </div>
-        <a href="https://www.psu.edu"
-          ><simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite
+        <button @click=${this.__clickButton}><simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite
         ></a>
       </div>
       <div id="hidden">
