@@ -1,3 +1,3 @@
-import { RenameMe } from './src/RenameMe.js';
+import { HAXCMSSiteBars } from './src/HAXCMS-Site-Bars.js';
 
-customElements.define(RenameMe.tag, RenameMe);
+customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);

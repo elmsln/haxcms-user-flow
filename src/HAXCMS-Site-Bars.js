@@ -1,12 +1,15 @@
 // dependencies / things imported
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
+import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class RenameMe extends LitElement {
+export class HAXCMSSiteBars extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'rename-me';
+    return 'haxcms-site-bar';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -18,7 +21,10 @@ export class RenameMe extends LitElement {
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      need: { type: String, reflect: true },
+      label: { type: String, reflect: true },
+      course_title: { type: String },
+      icon: { type: String },
+      show_details: { type: String },
     };
   }
 
@@ -55,22 +61,73 @@ export class RenameMe extends LitElement {
   // CSS - specific to Lit
   static get styles() {
     return css`
-      :host {
-        display: block;
+      #mainCard {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: blue;
       }
-      :host([need='joy']) {
-        color: yellow;
-        background-color: black;
+      #hidden {
+        visibility: hidden;
+        background-color: green;
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+      }
+      button {
+        background-color: transparent;
+        border: none;
+      }
+      simple-icon-lite {
+        color: black;
+        pointer-events: none;
+      }
+      a {
+        flex: 1;
+      }
+      #labels {
+        flex: 6;
+      }
+      #plus {
+        --simple-icon-width: 49px;
+        --simple-icon-height: 49px;
+      }
+      #dots {
+        --simple-icon-width: 49px;
+        --simple-icon-height: 49px;
       }
     `;
+  }
+
+  __clickButton() {
+    const element = this.renderRoot.querySelector('#hidden');
+    if (element.style.visibility === 'visible') {
+      element.style.visibility = 'hidden';
+    } else {
+      element.style.visibility = 'visible';
+    }
   }
 
   // HTML - specific to Lit
   render() {
     return html`
-      <h1>Make me awesome</h1>
-      <p>Build the future we ${this.need}.</p>
-      <slot></slot>
+      <div id="mainCard">
+        <a href="https://www.psu.edu"
+          ><simple-icon-lite icon="add" id="plus"></simple-icon-lite
+        ></a>
+        <div id="labels">
+          <p>Who the man</p>
+          <p>I'm the man</p>
+        </div>
+        <button @click=${this.__clickButton}>
+          <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
+        </button>
+      </div>
+      <div id="hidden">
+        <span>adfkdlhs</span>
+        <span>fdsgsdgfsg</span>
+      </div>
     `;
   }
 
