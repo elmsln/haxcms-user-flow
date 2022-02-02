@@ -77,6 +77,7 @@ export class HAXCMSSiteBars extends SimpleColors {
       }
       simple-icon-lite {
         color: black;
+        pointer-events: none;
       }
       a {
         flex: 1;
@@ -97,11 +98,10 @@ export class HAXCMSSiteBars extends SimpleColors {
 
   __clickButton() {
     const element = this.renderRoot.querySelector('#hidden');
-    if (element.style.visibility === 'hidden') {
-      console.log('I was clicked');
-      element.style.visibility = 'visible';
-    } else {
+    if (element.style.visibility === 'visible') {
       element.style.visibility = 'hidden';
+    } else {
+      element.style.visibility = 'visible';
     }
   }
 
@@ -116,8 +116,9 @@ export class HAXCMSSiteBars extends SimpleColors {
           <p>Who the man</p>
           <p>I'm the man</p>
         </div>
-        <button @click=${this.__clickButton}><simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite
-        ></a>
+        <button @click=${this.__clickButton}>
+          <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
+        </button>
       </div>
       <div id="hidden">
         <span>adfkdlhs</span>
