@@ -75,6 +75,10 @@ export class HAXCMSSiteBars extends SimpleColors {
         flex-direction: column;
         padding-left: 10px;
       }
+      button {
+        background-color: transparent;
+        border: none;
+      }
       simple-icon-lite {
         color: black;
         pointer-events: none;
