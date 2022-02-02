@@ -61,12 +61,25 @@ export class HAXCMSSiteBars extends SimpleColors {
   // CSS - specific to Lit
   static get styles() {
     return css`
-      :host {
+      #mainCard {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         background-color: blue;
+      }
+      #hidden {
+        display: flex;
+        flex-direction: column;
+      }
+      simple-icon-lite {
+        color: black;
+      }
+      a {
+        flex: 1;
+      }
+      #labels {
+        flex: 6;
       }
       #plus {
         --simple-icon-width: 49px;
@@ -82,12 +95,22 @@ export class HAXCMSSiteBars extends SimpleColors {
   // HTML - specific to Lit
   render() {
     return html`
-      <simple-icon-lite icon="add" id="plus"></simple-icon-lite>
-      <div id="labels">
-        <p>Who the man</p>
-        <p>I'm the man</p>
+      <div id="mainCard">
+        <a href="https://www.psu.edu"
+          ><simple-icon-lite icon="add" id="plus"></simple-icon-lite
+        ></a>
+        <div id="labels">
+          <p>Who the man</p>
+          <p>I'm the man</p>
+        </div>
+        <a href="https://www.psu.edu"
+          ><simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite
+        ></a>
       </div>
-      <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
+      <div id="hidden">
+        <span>adfkdlhs</span>
+        <span>fdsgsdgfsg</span>
+      </div>
     `;
   }
 
