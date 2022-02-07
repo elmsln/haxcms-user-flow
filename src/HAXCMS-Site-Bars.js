@@ -78,7 +78,6 @@ export class HAXCMSSiteBars extends SimpleColors {
         background-color: var(--hidden-band-color, green);
         display: flex;
         flex-direction: column;
-        padding-left: 10px;
         transition: height 3s;
         height: 0px;
         width: var(--main--banner--width);
