@@ -146,7 +146,7 @@ export class HAXCMSSiteBars extends SimpleColors {
         </button>
       </div>
       <div id="band">
-        <p>hellow</p>
+        <slot name="band"></slot>
       </div>
     `;
   }
