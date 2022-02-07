@@ -15,17 +15,13 @@ export class HAXCMSSiteBars extends SimpleColors {
   // HTMLElement life-cycle, built in; use this for setting defaults
   constructor() {
     super();
-    this.need = 'all need to succeed';
     this.icon = 'add';
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      label: { type: String, reflect: true },
-      course_title: { type: String },
-      icon: { type: String },
-      show_details: { type: String },
+      icon: { type: String, reflect: true },
     };
   }
 
@@ -62,19 +58,30 @@ export class HAXCMSSiteBars extends SimpleColors {
   // CSS - specific to Lit
   static get styles() {
     return css`
+      :host {
+        --main--banner--width: 500px;
+        --main--banner--height: 90px;
+      }
+
       #mainCard {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         background-color: var(--main-banner-color, blue);
+        width: var(--main--banner--width);
+        height: var(--main--banner--height);
       }
-      #hidden {
-        visibility: hidden;
-        background-color: var(--hidden-banner-color, green);
+
+      #band {
+        background-color: var(--hidden-band-color, green);
         display: flex;
         flex-direction: column;
         padding-left: 10px;
+        transition: height 3s;
+        height: 0px;
+        width: var(--main--banner--width);
+        overflow: hidden;
       }
       button {
         background-color: transparent;
@@ -102,12 +109,24 @@ export class HAXCMSSiteBars extends SimpleColors {
   }
 
   __clickButton() {
-    const element = this.renderRoot.querySelector('#hidden');
-    if (element.style.visibility === 'visible') {
-      element.style.visibility = 'hidden';
+    const element = this.renderRoot.querySelector('#band');
+    if (element.style.height === '180px') {
+      element.style.height = '0px';
     } else {
-      element.style.visibility = 'visible';
+      const height = getComputedStyle(element).getPropertyValue(
+        '--main--banner--height'
+      );
+      console.log(height);
+      const newHeight = this.__cssPropToNumber(height);
+      element.style.height = newHeight;
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  __cssPropToNumber(property) {
+    let newProperty = property.slice(0, -2);
+    newProperty *= 2;
+    return `${newProperty}px`;
   }
 
   // HTML - specific to Lit
@@ -118,16 +137,15 @@ export class HAXCMSSiteBars extends SimpleColors {
           ><simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite
         ></a>
         <div id="labels">
-          <p>${this.label}</p>
-          <p>${this.course_title}</p>
+          <p><slot name="heading"></slot></p>
+          <p><slot name="subHeading"></slot></p>
         </div>
         <button @click=${this.__clickButton}>
           <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
         </button>
       </div>
-      <div id="hidden">
-        <span>adfkdlhs</span>
-        <span>fdsgsdgfsg</span>
+      <div id="band">
+        <p>hellow</p>
       </div>
     `;
   }

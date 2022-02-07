@@ -44,10 +44,13 @@
     <li><a href="/hax.html">HAX, card demo</a></li>
   </ul>
   <div class="wrapper">
-    <haxcms-site-bar need="joy" label="ART 101" course_title="Intro to Web Design"></haxcms-site-bar>
+    <haxcms-site-bar>
+      <p slot="heading">Art 101</p>
+      <p slot="subHeading">Intro to Web Dev</p>
+    </haxcms-site-bar>
   </div>
   <script type="module">
-    import "./rename-me.js";
+    import "./src/App.js";
   </script>
 </body>
 
