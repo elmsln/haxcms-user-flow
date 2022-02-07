@@ -43,18 +43,6 @@ export class HAXCMSSiteBars extends SimpleColors {
     }
   }
 
-  // HTMLElement life-cycle, element has been connected to the page / added or moved
-  // this fires EVERY time the element is moved
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  // HTMLElement life-cycle, element has been removed from the page OR moved
-  // this fires every time the element moves
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-
   // CSS - specific to Lit
   static get styles() {
     return css`
@@ -116,7 +104,6 @@ export class HAXCMSSiteBars extends SimpleColors {
       const height = getComputedStyle(element).getPropertyValue(
         '--main--banner--height'
       );
-      console.log(height);
       const newHeight = this.__cssPropToNumber(height);
       element.style.height = newHeight;
     }
