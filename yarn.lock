@@ -4851,7 +4851,7 @@
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-"lit@^2.0.0", "lit@^2.0.2", "lit@2.0.2":
+"lit@^2.0.0", "lit@^2.0.0-rc.1", "lit@^2.0.2", "lit@2.0.2":
   "integrity" "sha512-hKA/1YaSB+P+DvKWuR2q1Xzy/iayhNrJ3aveD0OQ9CKn6wUjsdnF/7LavDOJsKP/K5jzW/kXsuduPgRvTFrFJw=="
   "resolved" "https://registry.npmjs.org/lit/-/lit-2.0.2.tgz"
   "version" "2.0.2"
@@ -5359,6 +5359,11 @@
     "no-case" "^3.0.4"
     "tslib" "^2.0.3"
 
+"path-data-parser@^0.1.0", "path-data-parser@0.1.0":
+  "integrity" "sha512-NOnmBpt5Y2RWbuv0LMzsayp3lVylAHLPUTut412ZA3l+C4uw4ZVkQbjShYCQ8TCpUMdPapr4YjUqLYD6v68j+w=="
+  "resolved" "https://registry.npmjs.org/path-data-parser/-/path-data-parser-0.1.0.tgz"
+  "version" "0.1.0"
+
 "path-exists@^3.0.0":
   "integrity" "sha1-zg6+ql94yxiSXqfYENe1mwEP1RU="
   "resolved" "https://registry.npmjs.org/path-exists/-/path-exists-3.0.0.tgz"
@@ -5436,6 +5441,19 @@
   "version" "3.2.0"
   dependencies:
     "semver-compare" "^1.0.0"
+
+"points-on-curve@^0.2.0", "points-on-curve@0.2.0":
+  "integrity" "sha512-0mYKnYYe9ZcqMCWhUjItv/oHjvgEsfKvnUTg8sAtnHr3GVy7rGkXCb6d5cSyqrWqL4k81b9CPg3urd+T7aop3A=="
+  "resolved" "https://registry.npmjs.org/points-on-curve/-/points-on-curve-0.2.0.tgz"
+  "version" "0.2.0"
+
+"points-on-path@^0.2.1":
+  "integrity" "sha512-25ClnWWuw7JbWZcgqY/gJ4FQWadKxGWk+3kR/7kD0tCaDtPPMj7oHu2ToLaVhfpnHrZzYby2w6tUA0eOIuUg8g=="
+  "resolved" "https://registry.npmjs.org/points-on-path/-/points-on-path-0.2.1.tgz"
+  "version" "0.2.1"
+  dependencies:
+    "path-data-parser" "0.1.0"
+    "points-on-curve" "0.2.0"
 
 "polyfills-loader@^1.7.5":
   "integrity" "sha512-AiLIgmGFmzcvsqewyKsqWb7H8CnWNTSQBoM0u+Mauzmp0DsjObXmnZdeqvTn0HNwc1wYHHTOta82WjSjG341eQ=="
@@ -5783,6 +5801,15 @@
     "@types/estree" "*"
     "@types/node" "*"
     "acorn" "^7.1.0"
+
+"roughjs@^4.3.1":
+  "integrity" "sha512-2xSlLDKdsWyFxrveYWk9YQ/Y9UfK38EAMRNkYkMqYBJvPX8abCa9PN0x3w02H8Oa6/0bcZICJU+U95VumPqseg=="
+  "resolved" "https://registry.npmjs.org/roughjs/-/roughjs-4.5.2.tgz"
+  "version" "4.5.2"
+  dependencies:
+    "path-data-parser" "^0.1.0"
+    "points-on-curve" "^0.2.0"
+    "points-on-path" "^0.2.1"
 
 "run-parallel@^1.1.9":
   "integrity" "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="
@@ -6548,6 +6575,14 @@
   "version" "2.0.2"
   dependencies:
     "isexe" "^2.0.0"
+
+"wired-elements@^3.0.0-rc.6":
+  "integrity" "sha512-EXEOj3okM38tM6uS6I9rXUg545dLxhAmSoqgH8FTnqjXcH6fvNNbT8tyw5c3D5AY1qoVN7vk8S1n0Ulnly9iQw=="
+  "resolved" "https://registry.npmjs.org/wired-elements/-/wired-elements-3.0.0-rc.6.tgz"
+  "version" "3.0.0-rc.6"
+  dependencies:
+    "lit" "^2.0.0-rc.1"
+    "roughjs" "^4.3.1"
 
 "word-wrap@^1.2.3":
   "integrity" "sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ=="
