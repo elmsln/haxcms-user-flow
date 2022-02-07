@@ -16,78 +16,102 @@ export class HAXCMSSiteBars extends SimpleColors {
   constructor() {
     super();
     this.icon = 'add';
+    this.opened = false;
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
+      ...super.properties,
+      opened: { type: Boolean, reflect: true },
       icon: { type: String, reflect: true },
     };
   }
 
+  // updated fires every time a property defined above changes
+  // this allows you to react to variables changing and use javascript to perform logic
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'opened' && this[propName] === true) {
+        this.style.backgroundimage =
+          'linear-gradient(var(--simple-colors-default-theme-accent-10), var(--simple-colors-default-theme-accent-6))';
+      }
+    });
+  }
+
   // CSS - specific to Lit
   static get styles() {
-    return css`
-      :host {
-        --main--banner--width: 500px;
-        --main--banner--height: 90px;
-        display: inline-block;
-      }
+    return [
+      ...super.styles,
+      css`
+        :host {
+          --main-banner-width: 500px;
+          --main-banner-height: 90px;
+          --main-banner-color: #132279;
+          --band-banner-color: #2746f8;
+          display: inline-block;
+          background-image: linear-gradient(
+            var(--simple-colors-default-theme-accent-10) 90%,
+            var(--simple-colors-default-theme-accent-6) 10%
+          );
+        }
 
-      #mainCard {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--main-banner-color, blue);
-        width: var(--main--banner--width);
-        height: var(--main--banner--height);
-      }
+        #mainCard {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: var(--main-banner-width);
+          height: var(--main-banner-height);
+        }
 
-      #band {
-        background-color: var(--hidden-band-color, green);
-        display: flex;
-        flex-direction: column;
-        transition: height 3s;
-        height: 0px;
-        width: var(--main--banner--width);
-        overflow: hidden;
-      }
-      button {
-        background-color: transparent;
-        border: none;
-      }
-      simple-icon-lite {
-        color: black;
-        pointer-events: none;
-      }
-      a {
-        flex: 1;
-      }
-      #labels {
-        flex: 6;
-      }
-      #plus {
-        --simple-icon-width: 49px;
-        --simple-icon-height: 49px;
-      }
-      #dots {
-        --simple-icon-width: 49px;
-        --simple-icon-height: 49px;
-      }
-    `;
+        #band {
+          display: flex;
+          flex-direction: column;
+          transition: height 3s;
+          height: 0px;
+          width: var(--main-banner-width);
+          overflow: hidden;
+        }
+        button {
+          background-color: transparent;
+          border: none;
+        }
+        simple-icon-lite {
+          color: black;
+          pointer-events: none;
+        }
+        a {
+          flex: 1;
+        }
+        #labels {
+          flex: 6;
+        }
+        #plus {
+          --simple-icon-width: 49px;
+          --simple-icon-height: 49px;
+        }
+        #dots {
+          --simple-icon-width: 49px;
+          --simple-icon-height: 49px;
+        }
+      `,
+    ];
   }
 
   __clickButton() {
     const element = this.renderRoot.querySelector('#band');
     if (element.style.height === '180px') {
       element.style.height = '0px';
+      this.opened = false;
     } else {
       const height = getComputedStyle(element).getPropertyValue(
-        '--main--banner--height'
+        '--main-banner-height'
       );
+
       const newHeight = this.__cssPropToNumber(height);
       element.style.height = newHeight;
+      this.opened = true;
     }
   }
 
