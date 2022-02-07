@@ -61,6 +61,7 @@ export class HAXCMSSiteBars extends SimpleColors {
       :host {
         --main--banner--width: 500px;
         --main--banner--height: 90px;
+        display: inline-block;
       }
 
       #mainCard {
@@ -137,8 +138,8 @@ export class HAXCMSSiteBars extends SimpleColors {
           ><simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite
         ></a>
         <div id="labels">
-          <p><slot name="heading"></slot></p>
-          <p><slot name="subHeading"></slot></p>
+          <slot name="heading"></slot>
+          <slot name="subHeading"></slot>
         </div>
         <button @click=${this.__clickButton}>
           <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
