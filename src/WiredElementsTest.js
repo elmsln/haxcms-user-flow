@@ -28,16 +28,6 @@ export class WiredElementsTest extends SimpleColors {
     };
   }
 
-  // updated fires every time a property defined above changes
-  // this allows you to react to variables changing and use javascript to perform logic
-  //   updated(changedProperties) {
-  //     changedProperties.forEach((oldValue, propName) => {
-  //       if (propName === 'need' && this[propName] === 'a win') {
-  //         this.classList.add('joyful');
-  //       }
-  //     });
-  //   }
-
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
   firstUpdated(changedProperties) {
@@ -50,12 +40,6 @@ export class WiredElementsTest extends SimpleColors {
   // this fires EVERY time the element is moved
   connectedCallback() {
     super.connectedCallback();
-    // document.getElementById('openDialog').addEventListener('click', () => {
-    //     document.querySelector('wired-dialog').open = true;
-    // });
-    // document.getElementById('closeDialog').addEventListener('click', () => {
-    //     document.querySelector('wired-dialog').open = false;
-    // });
   }
 
   // HTMLElement life-cycle, element has been removed from the page OR moved
@@ -74,10 +58,11 @@ export class WiredElementsTest extends SimpleColors {
         align-items: center;
         font-family: 'Press Start 2P', cursive;
       }
-      .styled {
-        background-color: paleturquoise;
-        color: maroon;
-        font-size: 48px;
+      .haxButton {
+        background-color: white;
+        color: black;
+        font-size: 36px;
+        border: 10px;
       }
       .dialogBox {
         color: #0f460f;
@@ -95,15 +80,29 @@ export class WiredElementsTest extends SimpleColors {
   }
 
   buttonAlert() {
-    alert('hey', this);
+    alert('hey');
+    this.shadowRoot.querySelector('.haxButton').blur();
   }
 
   // HTML - specific to Lit
   render() {
     return html`
       <p>
-        <wired-button elevation="4" @click="${this.buttonAlert}" class="styled"
+        <wired-button
+          elevation="3"
+          @click="${this.buttonAlert}"
+          class="haxButton"
           >${this.label}</wired-button
+        >
+      </p>
+      <br />
+      <p>
+        <wired-button
+          elevation="3"
+          @click="${this.buttonAlert}"
+          class="haxButton"
+        >
+          > Courses</wired-button
         >
       </p>
       <p>
@@ -121,7 +120,6 @@ export class WiredElementsTest extends SimpleColors {
       </wired-dialog>
     `;
   }
-  // press start 2p
 
   // HAX specific callback
   // This teaches HAX how to edit and work with your web component
