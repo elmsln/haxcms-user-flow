@@ -17,6 +17,7 @@ export class HAXCMSSiteBars extends SimpleColors {
     super();
     this.icon = 'add';
     this.opened = false;
+    this.inprogress = false;
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
@@ -25,6 +26,7 @@ export class HAXCMSSiteBars extends SimpleColors {
       ...super.properties,
       opened: { type: Boolean, reflect: true },
       icon: { type: String, reflect: true },
+      inprogress: { type: Boolean, reflect: true },
     };
   }
 
@@ -32,9 +34,15 @@ export class HAXCMSSiteBars extends SimpleColors {
   // this allows you to react to variables changing and use javascript to perform logic
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
+      if (
+        propName === 'opened' &&
+        this[propName] === false &&
+        oldValue !== undefined
+      ) {
+        this.style.animationName = `fadegradientaway`;
+      }
       if (propName === 'opened' && this[propName] === true) {
-        this.style.backgroundimage =
-          'linear-gradient(var(--simple-colors-default-theme-accent-10), var(--simple-colors-default-theme-accent-6))';
+        this.style.animationName = undefined;
       }
     });
   }
@@ -51,9 +59,37 @@ export class HAXCMSSiteBars extends SimpleColors {
           --band-banner-color: #2746f8;
           display: inline-block;
           background-image: linear-gradient(
-            var(--simple-colors-default-theme-accent-10) 90%,
-            var(--simple-colors-default-theme-accent-6) 10%
+            var(--simple-colors-default-theme-accent-10) 80%,
+            var(--simple-colors-default-theme-accent-6)
           );
+          animation-duration: 3s;
+        }
+
+        :host([opened]) {
+          transition: 3s;
+          background-image: linear-gradient(
+            var(--simple-colors-default-theme-accent-10),
+            var(--simple-colors-default-theme-accent-9),
+            var(--simple-colors-default-theme-accent-8),
+            var(--simple-colors-default-theme-accent-7),
+            var(--simple-colors-default-theme-accent-6)
+          );
+        }
+
+        @keyframes fadegradientaway {
+          0% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10) 50%,
+              var(--simple-colors-default-theme-accent-6)
+            );
+          }
+
+          100% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10) 90%,
+              var(--simple-colors-default-theme-accent-6)
+            );
+          }
         }
 
         #mainCard {
@@ -104,14 +140,16 @@ export class HAXCMSSiteBars extends SimpleColors {
     if (element.style.height === '180px') {
       element.style.height = '0px';
       this.opened = false;
+      this.inprogress = true;
     } else {
+      this.opened = true;
+      this.inprogress = true;
       const height = getComputedStyle(element).getPropertyValue(
         '--main-banner-height'
       );
 
       const newHeight = this.__cssPropToNumber(height);
       element.style.height = newHeight;
-      this.opened = true;
     }
   }
 
