@@ -83,9 +83,9 @@ export class HAXCMSSiteBars extends SimpleColors {
     `;
   }
 
-  _toggleDetails(e){
-    console.log(this);
-    console.log("clicked");
+  _toggleDetails(e) {
+    console.log(`${this} , ${e}`);
+    console.log('clicked');
   }
 
   // HTML - specific to Lit
@@ -96,7 +96,11 @@ export class HAXCMSSiteBars extends SimpleColors {
         <p>Who the man</p>
         <p>idk</p>
       </div>
-      <simple-icon-lite icon="more-vert" id="dots" @click=${this._toggleDetails}></simple-icon-lite>
+      <simple-icon-lite
+        icon="more-vert"
+        id="dots"
+        @click=${this._toggleDetails}
+      ></simple-icon-lite>
     `;
   }
 
@@ -106,6 +110,6 @@ export class HAXCMSSiteBars extends SimpleColors {
    * haxProperties integration via file reference
    */
   static get haxProperties() {
-    return new URL(`../lib/rename-me.haxProperties.json`, import.meta.url).href;
+    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }

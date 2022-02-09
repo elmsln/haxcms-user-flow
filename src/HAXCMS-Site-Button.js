@@ -1,35 +1,31 @@
 // dependencies / things imported
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
+import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import 'wired-elements/lib/wired-button.js';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class RenameMe extends LitElement {
+export class HAXCMSSiteButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'rename-me';
+    return 'hax-cms-site-button';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
   constructor() {
     super();
-    this.need = 'all need to succeed';
+    this.label = null;
+    this.disabled = false;
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      need: { type: String, reflect: true },
+      label: { type: String },
+      disabled: { type: Boolean, reflect: true },
     };
-  }
-
-  // updated fires every time a property defined above changes
-  // this allows you to react to variables changing and use javascript to perform logic
-  updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === 'need' && this[propName] === 'joy') {
-        this.classList.add('joyful');
-      }
-    });
   }
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
@@ -56,21 +52,44 @@ export class RenameMe extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Press Start 2P', cursive;
       }
-      :host([need='joy']) {
-        color: yellow;
-        background-color: black;
+      .haxButton {
+        background-color: white;
+        color: black;
+        font-size: 36px;
+        border: 10px;
+      }
+      .dialogBox {
+        color: #0f460f;
       }
     `;
+  }
+
+  buttonAlert() {
+    console.log(`button PRESS + ${this.disabled}`);
+    if (!this.disabled) {
+      alert('hey');
+      this.shadowRoot.querySelector('.haxButton').blur();
+    }
   }
 
   // HTML - specific to Lit
   render() {
     return html`
-      <h1>Make me awesome</h1>
-      <p>Build the future we ${this.need}.</p>
-      <slot></slot>
+      <div>
+        <wired-button
+          elevation="3"
+          ?disabled=${this.disabled}
+          class="haxButton"
+          @click="${this.buttonAlert}"
+          >${this.label}</wired-button
+        >
+      </div>
     `;
   }
 
