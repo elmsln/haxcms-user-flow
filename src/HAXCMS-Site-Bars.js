@@ -39,10 +39,10 @@ export class HAXCMSSiteBars extends SimpleColors {
         this[propName] === false &&
         oldValue !== undefined
       ) {
-        this.style.animationName = `fadegradient`;
+        this.style.animationName = `fadegradientclosed`;
       }
       if (propName === 'opened' && this[propName] === true) {
-        this.style.animationName = undefined;
+        this.style.animationName = `fadegradientopen`;
       }
     });
   }
@@ -63,21 +63,55 @@ export class HAXCMSSiteBars extends SimpleColors {
             var(--simple-colors-default-theme-accent-6)
           );
           animation-duration: 3.5s;
-          animation
         }
 
         :host([opened]) {
-          transition: 3s;
+          animation-name: fadegradientopen;
+          animation-duration: 3.5s;
           background-image: linear-gradient(
             var(--simple-colors-default-theme-accent-10),
-            var(--simple-colors-default-theme-accent-9),
-            var(--simple-colors-default-theme-accent-8),
-            var(--simple-colors-default-theme-accent-7),
             var(--simple-colors-default-theme-accent-6)
           );
         }
 
-        @keyframes fadegradient {
+        @keyframes fadegradientopen {
+          0% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10),
+              var(--simple-colors-default-theme-accent-6) 5%
+            );
+          }
+
+          25% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10),
+              var(--simple-colors-default-theme-accent-6) 4%
+            );
+          }
+
+          50% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10),
+              var(--simple-colors-default-theme-accent-6) 2%
+            );
+          }
+
+          75% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10),
+              var(--simple-colors-default-theme-accent-6) 1%
+            );
+          }
+
+          100% {
+            background-image: linear-gradient(
+              var(--simple-colors-default-theme-accent-10),
+              var(--simple-colors-default-theme-accent-6)
+            );
+          }
+        }
+
+        @keyframes fadegradientclosed {
           0% {
             background-image: linear-gradient(
               var(--simple-colors-default-theme-accent-10),
@@ -87,141 +121,139 @@ export class HAXCMSSiteBars extends SimpleColors {
 
           6% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 5% ,
+              var(--simple-colors-default-theme-accent-10) 5%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           12% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 10% ,
+              var(--simple-colors-default-theme-accent-10) 10%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           18% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 15% ,
+              var(--simple-colors-default-theme-accent-10) 15%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           25% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 20% ,
+              var(--simple-colors-default-theme-accent-10) 20%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           31% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 25% ,
+              var(--simple-colors-default-theme-accent-10) 25%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           37% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 30% ,
+              var(--simple-colors-default-theme-accent-10) 30%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           42% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 35% ,
+              var(--simple-colors-default-theme-accent-10) 35%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           50% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 40% ,
+              var(--simple-colors-default-theme-accent-10) 40%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           56% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 45% ,
+              var(--simple-colors-default-theme-accent-10) 45%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           62% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 50% ,
+              var(--simple-colors-default-theme-accent-10) 50%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           68% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 55% ,
+              var(--simple-colors-default-theme-accent-10) 55%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           71% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 58% ,
+              var(--simple-colors-default-theme-accent-10) 58%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           75% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 60% ,
+              var(--simple-colors-default-theme-accent-10) 60%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           78% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 62% ,
+              var(--simple-colors-default-theme-accent-10) 62%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
           81% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 65% ,
+              var(--simple-colors-default-theme-accent-10) 65%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           85% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 67% ,
+              var(--simple-colors-default-theme-accent-10) 67%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           89% {
-  
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 70% ,
+              var(--simple-colors-default-theme-accent-10) 70%,
               var(--simple-colors-default-theme-accent-6)
             );
-          
           }
 
           91% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 73% ,
+              var(--simple-colors-default-theme-accent-10) 73%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           94% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 75% ,
+              var(--simple-colors-default-theme-accent-10) 75%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
 
           97% {
             background-image: linear-gradient(
-              var(--simple-colors-default-theme-accent-10) 77% ,
+              var(--simple-colors-default-theme-accent-10) 77%,
               var(--simple-colors-default-theme-accent-6)
             );
           }
@@ -233,7 +265,6 @@ export class HAXCMSSiteBars extends SimpleColors {
             );
           }
         }
-
         #mainCard {
           display: flex;
           flex-direction: row;
