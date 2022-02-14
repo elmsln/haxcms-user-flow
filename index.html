@@ -16,6 +16,7 @@
     }
     .wrapper {
       margin: 100px;
+
     }
     .menu {
       display: flex;
@@ -29,6 +30,7 @@
     .joyful {
       font-size: 2em;
     }
+
   </style>
   <title>Project 3: HAXTheWeb</title>
 </head>
@@ -44,7 +46,12 @@
   </script>
   <haxcms-app></haxcms-app>
   <div class="wrapper">
-    <haxcms-site-bar need="joy"></haxcms-site-bar>
+
+    <haxcms-site-bar accent-color="blue">
+      <p slot="heading">Art 101</p>
+      <p slot="subHeading">Intro to Web Dev</p>
+      <p slot="band">I'm empty, yeet!</p>
+    </haxcms-site-bar>
 
   </div>
   <script type="module">
