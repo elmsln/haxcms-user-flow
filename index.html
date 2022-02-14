@@ -36,20 +36,30 @@
 </head>
 
 <body>
-  <ul class="menu">
-    <li><a href="#">Rename demo</a></li>
-    <li><a href="/hax.html">HAX, card demo</a></li>
-  </ul>
+  <script>
+    // local development and mobx
+    window.process = window.process || {
+      env: {
+        NODE_ENV: "development"
+      }
+    };
+  </script>
+  <haxcms-app></haxcms-app>
   <div class="wrapper">
+
     <haxcms-site-bar accent-color="blue">
       <p slot="heading">Art 101</p>
       <p slot="subHeading">Intro to Web Dev</p>
       <p slot="band">I'm empty, yeet!</p>
     </haxcms-site-bar>
+
   </div>
   <script type="module">
-    import "./src/App.js";
+    import "./rename-me.js";
+    import "./src/test.js";
+    import "./src/HAXCMSApp.js";
   </script>
+  <my-element></my-element>
 </body>
 
 </html>
