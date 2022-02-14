@@ -3,10 +3,10 @@ import { LitElement, html, css } from 'lit';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class RenameMe extends LitElement {
+export class HAXCMSSiteDetails extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'rename-me';
+    return 'haxcms-site-details';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -62,15 +62,60 @@ export class RenameMe extends LitElement {
         color: yellow;
         background-color: black;
       }
+
+      .btn-group button {
+        background-color: #3c7ff7;
+        border: 1px solid #3c7ff7;
+        color: white;
+        padding: 15px 30px;
+        cursor: pointer;
+        float: left;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-group:after {
+        content: '';
+        clear: both;
+        display: table;
+      }
+
+      .btn-group button:not(:last-child) {
+        border-right: none;
+      }
+
+      .btn-group button:hover {
+        background-color: #02286d;
+      }
     `;
   }
 
   // HTML - specific to Lit
   render() {
     return html`
-      <h1>Make me awesome</h1>
-      <p>Build the future we ${this.need}.</p>
-      <slot></slot>
+      <div class="flex">
+        <div class="btn-group">
+          <button>created</button>
+          <button>updated</button>
+          <button>pages</button>
+          <button>URL</button>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <p></p>
+
+        <div class="flex">
+          <div class="btn-group">
+            <button>publish</button>
+            <button>copy</button>
+            <button>download</button>
+            <button>delete</button>
+          </div>
+        </div>
+      </div>
     `;
   }
 
