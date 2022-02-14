@@ -48,6 +48,9 @@ export class HAXCMSSiteButton extends SimpleColors {
     super.disconnectedCallback();
   }
 
+  // TODO: Use .js events to manage statefulness (hover, focus, click)
+  // Try making hover into elevation scales
+
   // CSS - specific to Lit
   static get styles() {
     return css`
