@@ -2,15 +2,16 @@
 
 /** Use Hot Module replacement by adding --hmr to the start command */
 const hmr = process.argv.includes('--hmr');
+const path = require('path');
 
-export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
+module.exports = {
   open: '/',
   watch: !hmr,
   /** Resolve bare module imports */
   nodeResolve: {
     exportConditions: ['browser', 'development'],
   },
-  
+
   /** Compile JS for older browsers. Requires @web/dev-server-esbuild plugin */
   // esbuildTarget: 'auto'
 
@@ -22,5 +23,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
     // hmr && hmrPlugin({ exclude: ['**/*/node_modules/**/*'], presets: [presets.litElement] }),
   ],
 
+  appIndex: path.join(process.cwd(), 'index.html'),
+
   // See documentation for all available options
-});
+};
