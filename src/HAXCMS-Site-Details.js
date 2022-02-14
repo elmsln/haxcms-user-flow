@@ -55,12 +55,95 @@ export class RenameMe extends LitElement {
   // CSS - specific to Lit
   static get styles() {
     return css`
-      :host {
-        display: block;
+    :host {
+      display: block;
+    }
+
+    #mainCard {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #66d9ff;
+    }
+
+    #hidden {
+      visibility: hidden;
+      background-color: #ccf2ff;
+      display: flex;
+      flex-direction: column;
+      padding-left: 10px;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+    }
+
+    simple-icon-lite {
+      color: black;
+      pointer-events: none;
+    }
+
+    a {
+      flex: 1;
+    }
+
+    #labels {
+      flex: 6;
+    }
+
+    #plus {
+      --simple-icon-width: 49px;
+      --simple-icon-height: 49px;
+    }
+    
+    #dots {
+      --simple-icon-width: 49px;
+      --simple-icon-height: 49px;
+    }
+
+    #hidden {
+      height: 84px;
+    }
+    
+    .table {
+      display: table;
+      margin: 0 auto;
+    }
+    
+    ul#horizontal-list {
+      min-width: 696px;
+      list-style: none;
+      padding-top: 20px;
       }
-      :host([need='joy']) {
-        color: yellow;
-        background-color: black;
+
+      ul#horizontal-list li {
+        display: inline;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333333;
+      }
+      
+      li {
+        float: middle;
+      }
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover {
+        background-color: #111111;
       }
     `;
   }

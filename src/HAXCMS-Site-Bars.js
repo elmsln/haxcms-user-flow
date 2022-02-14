@@ -61,41 +61,91 @@ export class HAXCMSSiteBars extends SimpleColors {
   // CSS - specific to Lit
   static get styles() {
     return css`
-      #mainCard {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        background-color: blue;
+    #mainCard {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #66d9ff;
+    }
+
+    #hidden {
+      visibility: hidden;
+      background-color: #ccf2ff;
+      display: flex;
+      flex-direction: column;
+      padding-left: 10px;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+    }
+
+    simple-icon-lite {
+      color: black;
+      pointer-events: none;
+    }
+
+    a {
+      flex: 1;
+    }
+
+    #labels {
+      flex: 6;
+    }
+
+    #plus {
+      --simple-icon-width: 49px;
+      --simple-icon-height: 49px;
+    }
+    
+    #dots {
+      --simple-icon-width: 49px;
+      --simple-icon-height: 49px;
+    }
+
+    #hidden {
+      height: 84px;
+    }
+    
+    .table {
+      display: table;
+      margin: 0 auto;
+    }
+    
+    ul#horizontal-list {
+      min-width: 696px;
+      list-style: none;
+      padding-top: 20px;
       }
-      #hidden {
-        visibility: hidden;
-        background-color: green;
-        display: flex;
-        flex-direction: column;
-        padding-left: 10px;
+
+      ul#horizontal-list li {
+        display: inline;
       }
-      button {
-        background-color: transparent;
-        border: none;
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333333;
       }
-      simple-icon-lite {
-        color: black;
-        pointer-events: none;
+      
+      li {
+        float: middle;
       }
-      a {
-        flex: 1;
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
       }
-      #labels {
-        flex: 6;
-      }
-      #plus {
-        --simple-icon-width: 49px;
-        --simple-icon-height: 49px;
-      }
-      #dots {
-        --simple-icon-width: 49px;
-        --simple-icon-height: 49px;
+      
+      li a:hover {
+        background-color: #111111;
       }
     `;
   }
@@ -117,17 +167,22 @@ export class HAXCMSSiteBars extends SimpleColors {
           ><simple-icon-lite icon="add" id="plus"></simple-icon-lite
         ></a>
         <div id="labels">
-          <p>Who the man</p>
-          <p>I'm the man</p>
+          <p>TECHNOLOGY</p>
+          <p>I am tech savy</p>
         </div>
         <button @click=${this.__clickButton}>
           <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
         </button>
       </div>
       <div id="hidden">
-        <span>adfkdlhs</span>
-        <span>fdsgsdgfsg</span>
+        <div class="table"
+          <ul>
+            <li>  <a href="#hi"> Hi  </a>  </li>
+            <li>  <a href="#hello"> Hello  </a>  </li>
+          </ul>
+          </div>
       </div>
+
     `;
   }
 
