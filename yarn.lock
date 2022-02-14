@@ -1112,6 +1112,13 @@
     "@open-wc/scoped-elements" "^2.0.0-next.3"
     "lit" "^2.0.0-rc.2"
 
+"@lit-labs/motion@^1.0.2":
+  "integrity" "sha512-Qv3VKJUllEkIVGFQMMbV68VJDECXutBL+NBM0ZQFFYqEmBFlZQcNxTVlC9dMhDdXeQaX5vfpNdJlP4xKM30ERQ=="
+  "resolved" "https://registry.npmjs.org/@lit-labs/motion/-/motion-1.0.2.tgz"
+  "version" "1.0.2"
+  dependencies:
+    "lit" "^2.0.0"
+
 "@lit/reactive-element@^1.0.0":
   "integrity" "sha512-nSD5AA2AZkKuXuvGs8IK7K5ZczLAogfDd26zT9l6S7WzvqALdVWcW5vMUiTnZyj5SPcNwNNANj0koeV1ieqTFQ=="
   "resolved" "https://registry.npmjs.org/@lit/reactive-element/-/reactive-element-1.0.1.tgz"
