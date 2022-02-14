@@ -13,6 +13,7 @@ export class HAXCMSApp extends LitElement {
   constructor() {
     super();
     this.step = 1;
+    this.courses = [];
     this.routes = [
       {
         path: 'step-1',
@@ -194,9 +195,12 @@ export class HAXCMSApp extends LitElement {
               accent-color="blue"
               iconLink="${course.link}"
               icon="${course.icon}"
+              style="--main-banner-width: 200px"
             >
               <p slot="heading">${course.title}</p>
-              <p slot="subHeading">${course.description}</p>
+              <p slot="subHeading" style="padding-bottom: 10px;">
+                ${course.description}
+              </p>
               <p slot="band">I'm empty, yeet!</p>
             </haxcms-site-bar>
           </li>`

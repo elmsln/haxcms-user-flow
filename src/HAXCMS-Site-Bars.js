@@ -65,9 +65,10 @@ export class HAXCMSSiteBars extends SimpleColors {
             var(--simple-colors-default-theme-accent-6)
           );
           color: var(--simple-colors-default-theme-accent-1);
+          overflow: hidden;
         }
 
-        :host([opened]) {
+        a:visited :host([opened]) {
           background-image: linear-gradient(
             var(--simple-colors-default-theme-accent-10),
             var(--simple-colors-default-theme-accent-6)
@@ -80,6 +81,8 @@ export class HAXCMSSiteBars extends SimpleColors {
           align-items: center;
           width: var(--main-banner-width);
           height: var(--main-banner-height);
+          text-decoration: none;
+          color: var(--simple-colors-default-theme-accent-1);
         }
 
         #band {
@@ -133,10 +136,8 @@ export class HAXCMSSiteBars extends SimpleColors {
   // HTML - specific to Lit
   render() {
     return html`
-      <div id="mainCard">
-        <a href="${this.iconLink}">
-          <simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite
-        ></a>
+      <a id="mainCard" href="${this.iconLink}">
+        <simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite>
         <div id="labels">
           <slot name="heading"></slot>
           <slot name="subHeading"></slot>
@@ -144,7 +145,7 @@ export class HAXCMSSiteBars extends SimpleColors {
         <button @click=${this.__clickButton}>
           <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
         </button>
-      </div>
+      </a>
       <div id="band" ${animate()}>
         <slot name="band"></slot>
       </div>
