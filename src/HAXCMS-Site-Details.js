@@ -56,7 +56,10 @@ export class HAXCMSSiteDetails extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
       }
       :host([need='joy']) {
         color: yellow;
@@ -89,13 +92,26 @@ export class HAXCMSSiteDetails extends LitElement {
       .btn-group button:hover {
         background-color: #02286d;
       }
+
+      .flex-container > div {
+        background-color: #f1f1f1;
+        width: 100px;
+        margin: 10px;
+        text-align: center;
+        font-size: 30px;
+        flex-direction: 'row';
+        justify-content: 'space-around';
+        align-items: 'center';
+        display: flex;
+        border-width: 4px solid red;
+      }
     `;
   }
 
   // HTML - specific to Lit
   render() {
     return html`
-      <div class="flex">
+      <div class="flex-container">
         <div class="btn-group">
           <button>created</button>
           <button>updated</button>
@@ -104,10 +120,7 @@ export class HAXCMSSiteDetails extends LitElement {
         </div>
       </div>
 
-      <div class="btn-group">
-        <p></p>
-
-        <div class="flex">
+        <div class="flex-container">
           <div class="btn-group">
             <button>publish</button>
             <button>copy</button>
