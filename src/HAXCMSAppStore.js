@@ -1,11 +1,7 @@
-import {
-    observable,
-    makeObservable,
-    computed,
-    configure,
-    autorun,
-  } from "mobx";
-configure({ enforceActions: false, useProxies: "ifavailable" }); // strict mode off
+/* eslint-disable max-classes-per-file */
+import { observable, makeObservable, computed, configure, autorun } from 'mobx';
+
+configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
 class Store {
   constructor() {
     this.location = null;
@@ -18,9 +14,10 @@ class Store {
       activeItem: computed, // active item is route
     });
   }
+
   get activeItem() {
     if (this.routes) {
-      return this.routes.find((item) => {
+      return this.routes.find(item => {
         if (item.step !== this.step) {
           return false;
         }
@@ -33,43 +30,42 @@ class Store {
 /**
  * Central store
  */
- export const store = new Store();
- // register globally so we can make sure there is only one
- window.HAXCMS = window.HAXCMS || {};
- // request if this exists. This helps invoke the element existing in the dom
- // as well as that there is only one of them. That way we can ensure everything
- // is rendered through the same modal
- window.HAXCMS.requestAvailability = () => {
-   if (!window.HAXCMS.instance) {
-     window.HAXCMS.instance = document.createElement("haxcms-app-store");
-     document.body.appendChild(window.HAXCMS.instance);
-   }
-   return window.HAXCMS.instance;
- };
- // weird, but self appending
- export const HAXcmsStore = window.HAXCMS.requestAvailability();
+export const store = new Store();
+// register globally so we can make sure there is only one
+window.HAXCMS = window.HAXCMS || {};
+// request if this exists. This helps invoke the element existing in the dom
+// as well as that there is only one of them. That way we can ensure everything
+// is rendered through the same modal
+window.HAXCMS.requestAvailability = () => {
+  if (!window.HAXCMS.instance) {
+    window.HAXCMS.instance = document.createElement('haxcms-app-store');
+    document.body.appendChild(window.HAXCMS.instance);
+  }
+  return window.HAXCMS.instance;
+};
 
- /**
+// weird, but self appending
+export const HAXcmsStore = window.HAXCMS.requestAvailability();
+
+/**
  * HTMLElement
  */
 export class HAXCMSAppStore extends HTMLElement {
   static get tag() {
-    return "haxcms-app-store";
+    return 'haxcms-app-store';
   }
+
   constructor() {
     super();
     // full on store that does the heavy lifting
     this.store = store;
     // source for reading in the store if different than default site.json
-    this.source = "";
+    this.source = '';
     /**
      * When location changes update activeItem
      */
     autorun(() => {
-      if (
-        store.location &&
-        store.location.route
-      ) {
+      if (store.location && store.location.route) {
         // get the id from the router
         this.store.step = store.location.route.step;
       }

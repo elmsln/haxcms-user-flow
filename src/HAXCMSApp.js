@@ -114,11 +114,9 @@ export class HAXCMSApp extends LitElement {
           display: block;
         }
         scrollable-component {
-          --scrollbar-width: 12px;
+          --scrollbar-width: 0px;
+          --scrollbar-height: 0px;
           --scrollbar-padding: 0;
-          --content-padding: 0 0 25px 0;
-          --content-row-height: 100%;
-          --viewport-scroll-snap-type: x mandatory;
           background: linear-gradient(to top, #f9f8f7 12px, transparent 12px);
           overflow: hidden;
         }
@@ -176,7 +174,7 @@ export class HAXCMSApp extends LitElement {
             </li>`
         )}
       </ul>
-      <scrollable-component>
+      <scrollable-component scrollbar-visibility="hidden">
         <div class="carousel-with-snapping-track">
           ${this.routes.map(
             item => html`
@@ -187,7 +185,8 @@ export class HAXCMSApp extends LitElement {
           )}
         </div>
       </scrollable-component>
-      <ul>
+    `;
+    /*
         ${this.courses.map(
           course => html`<li>
             <haxcms-site-bar
@@ -202,7 +201,7 @@ export class HAXCMSApp extends LitElement {
           </li>`
         )}
       </ul>
-    `;
+      */
   }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);
