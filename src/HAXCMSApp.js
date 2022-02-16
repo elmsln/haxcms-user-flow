@@ -174,7 +174,7 @@ export class HAXCMSApp extends LitElement {
             </li>`
         )}
       </ul>
-      <scrollable-component scrollbar-visibility="hidden">
+      <scrollable-component>
         <div class="carousel-with-snapping-track">
           ${this.routes.map(
             item => html`
