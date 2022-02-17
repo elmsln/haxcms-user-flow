@@ -100,7 +100,7 @@ export class HAXCMSApp extends LitElement {
             title: item.title,
             description: item.description,
             link: 'https://oer.hax.psu.edu'.concat(item.location),
-            icon: item.metadata.theme.variables.icon,
+            icon: item.metadata.theme.variables ? item.metadata.theme.variables.icon : '',
           };
           this.courses.push(courseInfo);
         });
