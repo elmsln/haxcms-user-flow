@@ -134,6 +134,11 @@ export class HAXCMSApp extends LitElement {
           background: linear-gradient(to top, #f9f8f7 12px, transparent 12px);
           overflow: hidden;
         }
+        #hide-my-butt {
+          visibility: hidden;
+          width: 0;
+          height: 0;
+        }
         .carousel-with-snapping-track {
           display: grid;
           grid-auto-flow: column;
@@ -174,7 +179,7 @@ export class HAXCMSApp extends LitElement {
   render() {
     return html`
       <haxcms-app-router></haxcms-app-router>
-      <ul>
+      <ul id="hide-my-butt">
         ${this.routes.map(
           item =>
             html`<li>
@@ -188,17 +193,19 @@ export class HAXCMSApp extends LitElement {
             </li>`
         )}
       </ul>
+      <button @click=${this.increaseStep}>Next Step</button>
+      <button @click=${this.decreaseStep}>Prev Step</button>
       <scrollable-component>
         <div class="carousel-with-snapping-track">
-          ${this.routes.map(
-            item => html`
-              <div class="carousel-with-snapping-item" id="${item.id}">
-                ${item.label}
-                <button @click=${this.increaseStep}>Next Step</button>
-                <button @click=${this.decreaseStep}>Prev Step</button>
-              </div>
-            `
-          )}
+          <div class="carousel-with-snapping-item" id="step-1">
+            <p>Welcome</p>
+          </div>
+          <div class="carousel-with-snapping-item" id="step-2">
+            <p>to</p>
+          </div>
+          <div class="carousel-with-snapping-item" id="step-3">
+            <p>HAX</p>
+          </div>
         </div>
       </scrollable-component>
     `;
