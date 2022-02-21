@@ -7,15 +7,16 @@ class Store {
     this.location = null;
     this.step = 1;
     this.routes = [];
+    this.site = { structure: null, type: null, theme: null };
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
       routes: observable, // routes that are valid
+      site: observable, // information about the site being created
       activeItem: computed, // active item is route
     });
   }
 
-  // step
   // site{ structure, type, theme } (course, portfolio, buz, colors)
   get activeItem() {
     if (this.routes) {
