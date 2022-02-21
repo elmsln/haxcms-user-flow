@@ -15,6 +15,8 @@ class Store {
     });
   }
 
+  // step
+  // site{ structure, type, theme } (course, portfolio, buz, colors)
   get activeItem() {
     if (this.routes) {
       return this.routes.find(item => {
