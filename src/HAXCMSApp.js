@@ -34,11 +34,7 @@ export class HAXCMSApp extends LitElement {
   }
 
   render() {
-    return html`
-      <haxcms-app-router></haxcms-app-router>
-
-      <haxcms-create-profile></haxcms-create-profile>
-    `;
+    return html` <haxcms-create-profile></haxcms-create-profile> `;
   }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);

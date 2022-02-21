@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import 'scrollable-component';
 import { autorun, toJS } from 'mobx';
+import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 
@@ -46,13 +47,12 @@ export class HAXCMSCreateProfile extends SimpleColors {
 
   static get properties() {
     return {
-      routes: { type: Array },
       step: { type: Number, reflect: true },
+      routes: { type: Array },
     };
   }
 
   increaseStep() {
-    console.log();
     if (this.step === this.routes.length) return;
     this.step += 1;
   }
@@ -66,13 +66,18 @@ export class HAXCMSCreateProfile extends SimpleColors {
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (['step', 'routes'].includes(propName)) {
+        console.log(`PropName ${propName}`);
+        console.log(`Store's Value: ${store[propName]}`);
+        console.log(`Prop's Value: ${this[propName]}`);
         store[propName] = this[propName];
+        console.log(`Store's Value After: ${store[propName]}`);
       }
     });
   }
 
   firstUpdated() {
     autorun(() => {
+      console.log('route changed autorun');
       if (store.location && store.location.route && store.location.route.id) {
         // use ID from location change to scroll into view
         this.shadowRoot
@@ -82,9 +87,11 @@ export class HAXCMSCreateProfile extends SimpleColors {
             inline: 'nearest',
             behavior: 'smooth',
           });
+        console.log('Clicked');
       }
     });
     autorun(() => {
+      console.log('route changed autorun');
       const activeItem = toJS(store.activeItem);
       if (activeItem && activeItem.id) {
         if (activeItem.step !== this.step) {
@@ -155,6 +162,7 @@ export class HAXCMSCreateProfile extends SimpleColors {
 
   render() {
     return html`
+      <haxcms-app-router></haxcms-app-router>
       <ul id="hide-my-butt">
         ${this.routes.map(
           item =>

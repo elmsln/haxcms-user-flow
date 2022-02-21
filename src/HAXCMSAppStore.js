@@ -2,12 +2,32 @@
 import { observable, makeObservable, computed, configure, autorun } from 'mobx';
 
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
+
+/*
+function localStorageSet(name, newItem) {
+  try {
+    return localStorage.setItem(name, JSON.stringify(newItem));
+  } catch (e) {
+    return false;
+  }
+}
+
+function localStorageGet(name){
+  try {
+    return JSON.parse(localStorage.getItem(name));
+  } catch (e) {
+    return false;
+  }
+}
+*/
+
 class Store {
   constructor() {
     this.location = null;
-    this.step = 1;
+    this.step = 1; // localStorageGet("step") === false ? 1: localStorageGet("step");
     this.routes = [];
-    this.site = { structure: null, type: null, theme: null };
+    this.site = []; // localStorageGet("site") === false ? { structure: null, type: null, theme: null }: localStorageGet("site");
+
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
@@ -70,7 +90,19 @@ export class HAXCMSAppStore extends HTMLElement {
     autorun(() => {
       if (store.location && store.location.route) {
         // get the id from the router
+        console.log('Store Auto Run ran');
         this.store.step = store.location.route.step;
+        console.log(this.store.step);
+      }
+
+      // When site(the object and NOT the attributes) & Step change write this to local storage
+      if (store.step) {
+        console.log('Store Step Changed');
+        // localStorageSet("step", store.step);
+      }
+
+      if (store.site) {
+        // localStorageSet("site", store.site);
       }
     });
   }
