@@ -5,9 +5,9 @@ import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 
-export class HAXCMSCreateProfile extends SimpleColors {
+export class HAXAppSteps extends SimpleColors {
   static get tag() {
-    return 'haxcms-create-profile';
+    return 'hax-app-steps';
   }
 
   constructor() {
@@ -43,6 +43,9 @@ export class HAXCMSCreateProfile extends SimpleColors {
         label: 'Get writing!',
       },
     ];
+    autorun(() => {
+      this.step = toJS(store.step);
+    });
   }
 
   static get properties() {
@@ -66,32 +69,32 @@ export class HAXCMSCreateProfile extends SimpleColors {
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (['step', 'routes'].includes(propName)) {
-        console.log(`PropName ${propName}`);
-        console.log(`Store's Value: ${store[propName]}`);
-        console.log(`Prop's Value: ${this[propName]}`);
         store[propName] = this[propName];
-        console.log(`Store's Value After: ${store[propName]}`);
       }
     });
   }
 
-  firstUpdated() {
+  firstUpdated(changedProperties) {
+    if (super.firstUpdated) {
+      super.firstUpdated(changedProperties);
+    }
     autorun(() => {
-      console.log('route changed autorun');
       if (store.location && store.location.route && store.location.route.id) {
         // use ID from location change to scroll into view
-        this.shadowRoot
-          .querySelector('#'.concat(toJS(store.location.route.id)))
-          .scrollIntoView({
-            block: 'start',
-            inline: 'nearest',
-            behavior: 'smooth',
-          });
-        console.log('Clicked');
+        setTimeout(() => {
+          this.shadowRoot
+            .querySelector('#'.concat(toJS(store.location.route.id)))
+            .scrollIntoView({
+              block: 'nearest',
+              inline: 'nearest',
+              behavior: 'smooth',
+            });
+        }, 300); // this delay helps w/ initial paint timing but also user perception
+        // there's a desire to have a delay especialy when tapping things of
+        // about 300ms
       }
     });
     autorun(() => {
-      console.log('route changed autorun');
       const activeItem = toJS(store.activeItem);
       if (activeItem && activeItem.id) {
         if (activeItem.step !== this.step) {
@@ -176,8 +179,8 @@ export class HAXCMSCreateProfile extends SimpleColors {
             </li>`
         )}
       </ul>
-      <button @click=${this.increaseStep}>Next Step</button>
       <button @click=${this.decreaseStep}>Prev Step</button>
+      <button @click=${this.increaseStep}>Next Step</button>
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
@@ -197,4 +200,4 @@ export class HAXCMSCreateProfile extends SimpleColors {
     `;
   }
 }
-customElements.define(HAXCMSCreateProfile.tag, HAXCMSCreateProfile);
+customElements.define(HAXAppSteps.tag, HAXAppSteps);

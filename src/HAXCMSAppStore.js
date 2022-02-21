@@ -1,9 +1,15 @@
 /* eslint-disable max-classes-per-file */
-import { observable, makeObservable, computed, configure, autorun } from 'mobx';
+import {
+  observable,
+  makeObservable,
+  computed,
+  configure,
+  autorun,
+  toJS,
+} from 'mobx';
 
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
 
-/*
 function localStorageSet(name, newItem) {
   try {
     return localStorage.setItem(name, JSON.stringify(newItem));
@@ -12,21 +18,23 @@ function localStorageSet(name, newItem) {
   }
 }
 
-function localStorageGet(name){
+function localStorageGet(name) {
   try {
     return JSON.parse(localStorage.getItem(name));
   } catch (e) {
     return false;
   }
 }
-*/
 
 class Store {
   constructor() {
     this.location = null;
-    this.step = 1; // localStorageGet("step") === false ? 1: localStorageGet("step");
+    this.step = localStorageGet('step') === false ? 1 : localStorageGet('step');
     this.routes = [];
-    this.site = []; // localStorageGet("site") === false ? { structure: null, type: null, theme: null }: localStorageGet("site");
+    this.site =
+      localStorageGet('site') === false
+        ? { structure: null, type: null, theme: null }
+        : localStorageGet('site');
 
     makeObservable(this, {
       location: observable.ref, // router location in url
@@ -90,20 +98,14 @@ export class HAXCMSAppStore extends HTMLElement {
     autorun(() => {
       if (store.location && store.location.route) {
         // get the id from the router
-        console.log('Store Auto Run ran');
         this.store.step = store.location.route.step;
-        console.log(this.store.step);
       }
-
-      // When site(the object and NOT the attributes) & Step change write this to local storage
-      if (store.step) {
-        console.log('Store Step Changed');
-        // localStorageSet("step", store.step);
-      }
-
-      if (store.site) {
-        // localStorageSet("site", store.site);
-      }
+    });
+    autorun(() => {
+      localStorageSet('step', toJS(store.step));
+    });
+    autorun(() => {
+      localStorageSet('site', toJS(store.site));
     });
   }
 }

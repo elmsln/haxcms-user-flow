@@ -1,17 +1,11 @@
 import { LitElement, css, html } from 'lit';
 import 'scrollable-component';
 import './HAXCMSAppRouter.js';
-import './HAXCMS-Create-Profolio.js';
+import './hax-app-steps.js';
 
 export class HAXCMSApp extends LitElement {
   static get tag() {
     return 'haxcms-app';
-  }
-
-  constructor() {
-    super();
-    this.step = 1; // This is for accessing only!
-    this.routes = []; // Set equal to HAXCMSCreateProfile.routes
   }
 
   static get properties() {
@@ -34,7 +28,7 @@ export class HAXCMSApp extends LitElement {
   }
 
   render() {
-    return html` <haxcms-create-profile></haxcms-create-profile> `;
+    return html`<hax-app-steps></hax-app-steps> `;
   }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);
