@@ -89,10 +89,12 @@ export class HAXCMSApp extends LitElement {
   }
 
   increaseStep() {
+    if (this.step === this.routes.length) return;
     this.step += 1;
   }
 
   decreaseStep() {
+    if (this.step === 1) return;
     this.step -= 1;
   }
 
@@ -206,56 +208,12 @@ export class HAXCMSApp extends LitElement {
           <div class="carousel-with-snapping-item" id="step-3">
             <p>HAX</p>
           </div>
+          <div class="carousel-with-snapping-item" id="step-4">
+            <p>CAMP</p>
+          </div>
         </div>
       </scrollable-component>
     `;
   }
-
-  // render() {
-  //   return html`
-  //     <haxcms-app-router></haxcms-app-router>
-  //     <ul>
-  //       ${this.routes.map(
-  //         item =>
-  //           html`<li>
-  //             <a
-  //               href="${item.path}"
-  //               id="link-${item.id}"
-  //               ${animate()}
-  //               class="${this.step === item.step ? 'active-step' : ''}"
-  //               >${item.label}</a
-  //             >
-  //           </li>`
-  //       )}
-  //     </ul>
-  //     <scrollable-component>
-  //      <div class="carousel-with-snapping-track">
-  //         ${this.routes.map(
-  //           item => html`
-  //             <div class="carousel-with-snapping-item" id="${item.id}">
-  //               ${item.label}
-  //             </div>
-  //           `
-  //         )}
-  //       </div>
-  //     </scrollable-component>
-  //   `;
-  //   /*
-  //       ${this.courses.map(
-  //         course => html`<li>
-  //           <haxcms-site-bar
-  //             accent-color="blue"
-  //             iconLink="${course.link}"
-  //             icon="${course.icon}"
-  //           >
-  //             <p slot="heading">${course.title}</p>
-  //             <p slot="subHeading">${course.description}</p>
-  //             <p slot="band">I'm empty, yeet!</p>
-  //           </haxcms-site-bar>
-  //         </li>`
-  //       )}
-  //     </ul>
-  //     */
-  // }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);
