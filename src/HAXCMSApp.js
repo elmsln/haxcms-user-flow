@@ -88,6 +88,14 @@ export class HAXCMSApp extends LitElement {
     };
   }
 
+  increaseStep() {
+    this.step += 1;
+  }
+
+  decreaseStep() {
+    this.step -= 1;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   getData() {
     const file = new URL('../assets/site.json', import.meta.url).href;
@@ -112,11 +120,17 @@ export class HAXCMSApp extends LitElement {
       css`
         :host {
           display: block;
+          height: 100vh;
+          width: 100vh;
+          border: 1px red solid;
         }
         scrollable-component {
           --scrollbar-width: 0px;
           --scrollbar-height: 0px;
           --scrollbar-padding: 0;
+          --viewport-overflow-x: hidden;
+          border: 1px yellow solid;
+
           background: linear-gradient(to top, #f9f8f7 12px, transparent 12px);
           overflow: hidden;
         }
@@ -132,7 +146,7 @@ export class HAXCMSApp extends LitElement {
           height: 250px;
           background-color: #f9f8f7;
           font-size: 1.5rem;
-          line-height: 250px;
+          line-height: 10vh;
           text-align: center;
         }
         li {
@@ -180,28 +194,61 @@ export class HAXCMSApp extends LitElement {
             item => html`
               <div class="carousel-with-snapping-item" id="${item.id}">
                 ${item.label}
+                <button @click=${this.increaseStep}>Next Step</button>
+                <button @click=${this.decreaseStep}>Prev Step</button>
               </div>
             `
           )}
         </div>
       </scrollable-component>
     `;
-    /*
-        ${this.courses.map(
-          course => html`<li>
-            <haxcms-site-bar
-              accent-color="blue"
-              iconLink="${course.link}"
-              icon="${course.icon}"
-            >
-              <p slot="heading">${course.title}</p>
-              <p slot="subHeading">${course.description}</p>
-              <p slot="band">I'm empty, yeet!</p>
-            </haxcms-site-bar>
-          </li>`
-        )}
-      </ul>
-      */
   }
+
+  // render() {
+  //   return html`
+  //     <haxcms-app-router></haxcms-app-router>
+  //     <ul>
+  //       ${this.routes.map(
+  //         item =>
+  //           html`<li>
+  //             <a
+  //               href="${item.path}"
+  //               id="link-${item.id}"
+  //               ${animate()}
+  //               class="${this.step === item.step ? 'active-step' : ''}"
+  //               >${item.label}</a
+  //             >
+  //           </li>`
+  //       )}
+  //     </ul>
+  //     <scrollable-component>
+  //      <div class="carousel-with-snapping-track">
+  //         ${this.routes.map(
+  //           item => html`
+  //             <div class="carousel-with-snapping-item" id="${item.id}">
+  //               ${item.label}
+  //             </div>
+  //           `
+  //         )}
+  //       </div>
+  //     </scrollable-component>
+  //   `;
+  //   /*
+  //       ${this.courses.map(
+  //         course => html`<li>
+  //           <haxcms-site-bar
+  //             accent-color="blue"
+  //             iconLink="${course.link}"
+  //             icon="${course.icon}"
+  //           >
+  //             <p slot="heading">${course.title}</p>
+  //             <p slot="subHeading">${course.description}</p>
+  //             <p slot="band">I'm empty, yeet!</p>
+  //           </haxcms-site-bar>
+  //         </li>`
+  //       )}
+  //     </ul>
+  //     */
+  // }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);

@@ -14,6 +14,10 @@
       padding: 50px;
       font-family: sans-serif;
     }
+
+    body {
+      border: 1px green solid;
+    }
     .wrapper {
       margin: 100px;
 
@@ -30,7 +34,11 @@
     .joyful {
       font-size: 2em;
     }
-
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
   <title>Project 3: HAXTheWeb</title>
 </head>
@@ -45,15 +53,6 @@
     };
   </script>
   <haxcms-app></haxcms-app>
-  <div class="wrapper">
-
-    <haxcms-site-bar accent-color="blue">
-      <p slot="heading">Art 101</p>
-      <p slot="subHeading">Intro to Web Dev</p>
-      <haxcms-site-details slot="band"></haxcms-site-details>
-    </haxcms-site-bar>
-
-    <div id="testing"></div>
 
   </div>
   <script type="module">
@@ -61,7 +60,6 @@
     import "./src/test.js";
     import "./src/HAXCMSApp.js";
   </script>
-  <my-element></my-element>
 </body>
 
 </html>
