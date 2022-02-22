@@ -96,6 +96,7 @@ export class HAXAppSteps extends SimpleColors {
     });
     autorun(() => {
       const activeItem = toJS(store.activeItem);
+      console.log(activeItem);
       if (activeItem && activeItem.id) {
         if (activeItem.step !== this.step) {
           this.step = activeItem.step;
@@ -103,6 +104,8 @@ export class HAXAppSteps extends SimpleColors {
         this.shadowRoot
           .querySelector('#link-'.concat(toJS(activeItem.id)))
           .click();
+      } else {
+        this.shadowRoot.querySelector('#link-step-1').click();
       }
     });
   }

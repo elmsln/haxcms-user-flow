@@ -29,12 +29,11 @@ function localStorageGet(name) {
 class Store {
   constructor() {
     this.location = null;
-    this.step = localStorageGet('step') === false ? 1 : localStorageGet('step');
+    this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
     this.routes = [];
-    this.site =
-      localStorageGet('site') === false
-        ? { structure: null, type: null, theme: null }
-        : localStorageGet('site');
+    this.site = !localStorageGet('site')
+      ? { structure: null, type: null, theme: null }
+      : localStorageGet('site');
 
     makeObservable(this, {
       location: observable.ref, // router location in url
@@ -99,6 +98,14 @@ export class HAXCMSAppStore extends HTMLElement {
       if (store.location && store.location.route) {
         // get the id from the router
         this.store.step = store.location.route.step;
+      }
+    });
+
+    // AutoRun block to detect to detect if site.structure is null but step == 3, set step to 2.
+
+    autorun(() => {
+      if (store.routes.length > 0 && store.location == null) {
+        store.location = toJS(store.routes[0]);
       }
     });
     autorun(() => {
