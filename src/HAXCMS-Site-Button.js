@@ -18,6 +18,13 @@ export class HAXCMSSiteButton extends SimpleColors {
     super();
     this.label = null;
     this.disabled = false;
+    this.elevation = '3';
+    this.addEventListener('keydown', this._handleKeydown);
+    this.addEventListener('click', this._handleClick);
+    this.addEventListener('focus', this._handleFocus);
+    this.addEventListener('blur', this._handleBlur);
+    this.addEventListener('mouseover', this._handleMouseover);
+    this.addEventListener('mouseout', this._handleMouseout);
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
@@ -25,6 +32,7 @@ export class HAXCMSSiteButton extends SimpleColors {
     return {
       label: { type: String },
       disabled: { type: Boolean, reflect: true },
+      elevation: { type: Number },
     };
   }
 
@@ -48,18 +56,17 @@ export class HAXCMSSiteButton extends SimpleColors {
     super.disconnectedCallback();
   }
 
-  // TODO: Use .js events to manage statefulness (hover, focus, click)
-  // Try making hover into elevation scales
-
   // CSS - specific to Lit
   static get styles() {
     return css`
       :host {
+        --hax-accent-color: '#42596b';
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         font-family: 'Press Start 2P', cursive;
+        width: fit-content;
       }
       .haxButton {
         background-color: white;
@@ -73,10 +80,46 @@ export class HAXCMSSiteButton extends SimpleColors {
     `;
   }
 
+  // TODO: Use .js events to manage statefulness (hover, focus, click)
+  // Try making hover into elevation scales
+
+  // EVENT HANDLING
+  _handleKeydown(e) {
+    if (e.key === 'Escape') {
+      console.log('escape');
+      this.blur();
+    }
+
+    if (e.key === 'Spacebar') {
+      console.log('space');
+    }
+  }
+
+  _handleFocus() {
+    console.log('focus');
+    this.shadowRoot.querySelector('.haxButton').style.color = '#42596b';
+  }
+
+  _handleBlur() {
+    console.log('blur');
+    // this.shadowRoot.querySelector('.haxButton').blur();
+    this.shadowRoot.querySelector('.haxButton').style.color = 'black';
+  }
+
+  _handleMouseover() {
+    console.log('mouseover');
+    this.elevation = '5';
+  }
+
+  _handleMouseout() {
+    console.log('mouseout');
+    this.elevation = '3';
+  }
+
   buttonAlert() {
     console.log(`button PRESS + ${this.disabled}`);
     if (!this.disabled) {
-      alert('hey');
+      // alert('hey');
       this.shadowRoot.querySelector('.haxButton').blur();
     }
   }
@@ -86,7 +129,7 @@ export class HAXCMSSiteButton extends SimpleColors {
     return html`
       <div>
         <wired-button
-          elevation="3"
+          elevation=${this.elevation}
           ?disabled=${this.disabled}
           class="haxButton"
           @click="${this.buttonAlert}"
