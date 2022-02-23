@@ -43,7 +43,6 @@ export class HAXAppSteps extends SimpleColors {
         label: 'Get writing!',
       },
     ];
-    this.site = toJS(store.site);
     autorun(() => {
       this.step = toJS(store.step);
     });
@@ -58,14 +57,21 @@ export class HAXAppSteps extends SimpleColors {
 
   chooseStructure(e) {
     const { value } = e.target;
+    console.log(value);
+    console.log('Before structure changed');
     store.site.structure = value;
+    console.log('After structure changed');
     this.increaseStep();
+    console.log('increased step');
   }
 
   chooseType(e) {
     const { value } = e.target;
+    console.log('Before type changed');
     store.site.type = value;
+    console.log('After type changed');
     this.increaseStep();
+    console.log('increased step again');
   }
 
   chooseTheme(e) {
@@ -76,7 +82,11 @@ export class HAXAppSteps extends SimpleColors {
 
   increaseStep() {
     if (this.step === this.routes.length) return;
-    this.step += 1;
+
+    setTimeout(() => {
+      this.step += 1;
+      console.log(this.step);
+    }, 10);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -259,7 +269,7 @@ export class HAXAppSteps extends SimpleColors {
             <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
-            <p>CAMP</p>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Let's Go</a>
           </div>
         </div>
       </scrollable-component>

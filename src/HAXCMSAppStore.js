@@ -20,8 +20,10 @@ function localStorageSet(name, newItem) {
 
 function localStorageGet(name) {
   try {
+    console.log(JSON.parse(localStorage.getItem(name)));
     return JSON.parse(localStorage.getItem(name));
   } catch (e) {
+    console.log(`Failed to get ${name}`);
     return false;
   }
 }
@@ -35,6 +37,7 @@ class Store {
       ? { structure: null, type: null, theme: null }
       : localStorageGet('site');
 
+    console.log(this.site);
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
@@ -98,6 +101,28 @@ export class HAXCMSAppStore extends HTMLElement {
       if (store.location && store.location.route) {
         // get the id from the router
         this.store.step = store.location.route.step;
+        if (store.site.structure === null && store.step !== 1) {
+          store.step = 1;
+        } else if (
+          store.site.structure !== null &&
+          store.site.type === null &&
+          store.step !== 2
+        ) {
+          store.step = 2;
+        } else if (
+          store.site.structure !== null &&
+          store.site.type !== null &&
+          store.site.theme === null &&
+          store.step !== 3
+        ) {
+          store.step = 3;
+        } else if (
+          store.site.structure !== null &&
+          store.site.type !== null &&
+          store.site.theme !== null
+        ) {
+          store.step = 4;
+        }
       }
     });
 
