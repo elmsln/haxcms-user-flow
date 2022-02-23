@@ -20,6 +20,7 @@
     }
     .wrapper {
       margin: 100px;
+
     }
     .menu {
       display: flex;
@@ -33,27 +34,44 @@
     .joyful {
       font-size: 2em;
     }
+
   </style>
   <title>Project 3: HAXTheWeb</title>
 </head>
 
 <body>
-  <ul class="menu">
-    <li><a href="#">Rename demo</a></li>
-    <li><a href="/hax.html">HAX, card demo</a></li>
-  </ul>
+  <script>
+    // local development and mobx
+    window.process = window.process || {
+      env: {
+        NODE_ENV: "development"
+      }
+    };
+  </script>
+  <haxcms-app></haxcms-app>
   <div class="wrapper">
-    <haxcms-site-bar need="joy">hello</haxcms-site-bar>
   </div>
 
   <div>
-    <wired-elements-test label="> PORTFOLIO"></wired-elements-test>
-    <hax-cms-site-button label="cheese"></hax-cms-site-button>
+    <haxcms-site-bar accent-color="blue">
+      <p slot="heading">Art 101</p>
+      <p slot="subHeading">Intro to Web Dev</p>
+      <haxcms-site-details slot="band"></haxcms-site-details>
+    </haxcms-site-bar>
+
+    <div id="testing">
+      <wired-elements-test label="> PORTFOLIO"></wired-elements-test>
+      <hax-cms-site-button label="cheese"></hax-cms-site-button>
+    </div>
+
   </div>
 
   <script type="module">
     import "./src/App.js";
+    import "./src/test.js";
+    import "./src/HAXCMSApp.js";
   </script>
+  <my-element></my-element>
 </body>
 
 </html>

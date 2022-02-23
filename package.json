@@ -21,10 +21,15 @@
     "start": "web-dev-server"
   },
   "dependencies": {
+    "@lit-labs/motion": "^1.0.2",
     "@lrnwebcomponents/simple-colors": "^4.0.4",
     "@lrnwebcomponents/simple-icon": "^4.0.6",
+    "@vaadin/router": "^1.7.4",
     "lit": "^2.0.2",
-    "wired-elements": "^3.0.0-rc.6"
+    "mobx": "^6.3.13",
+    "scrollable-component": "^1.2.0",
+    "simple-colors": "^0.1.0",
+    "simple-icons": "^6.7.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",
