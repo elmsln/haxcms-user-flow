@@ -43,6 +43,7 @@ export class HAXAppSteps extends SimpleColors {
         label: 'Get writing!',
       },
     ];
+    this.site = toJS(store.site);
     autorun(() => {
       this.step = toJS(store.step);
     });
@@ -53,6 +54,24 @@ export class HAXAppSteps extends SimpleColors {
       step: { type: Number, reflect: true },
       routes: { type: Array },
     };
+  }
+
+  chooseStructure(e) {
+    const { value } = e.target;
+    store.site.structure = value;
+    this.increaseStep();
+  }
+
+  chooseType(e) {
+    const { value } = e.target;
+    store.site.type = value;
+    this.increaseStep();
+  }
+
+  chooseTheme(e) {
+    const { value } = e.target;
+    store.site.theme = value;
+    this.increaseStep();
   }
 
   increaseStep() {
@@ -96,7 +115,6 @@ export class HAXAppSteps extends SimpleColors {
     });
     autorun(() => {
       const activeItem = toJS(store.activeItem);
-      console.log(activeItem);
       if (activeItem && activeItem.id) {
         if (activeItem.step !== this.step) {
           this.step = activeItem.step;
@@ -187,13 +205,58 @@ export class HAXAppSteps extends SimpleColors {
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
-            <p>Welcome</p>
+            <input
+              type="radio"
+              id="course_radio"
+              name="site_structure"
+              value="course"
+              @click=${this.chooseStructure}
+            />
+            <label for="course">Course</label><br />
+            <input
+              type="radio"
+              id="portfolio_radio"
+              name="site_structure"
+              value="portfolio"
+              @click=${this.chooseStructure}
+            />
+            <label for="portfolio">Portfolio</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
-            <p>To</p>
+            <input
+              type="radio"
+              id="business_radio"
+              name="site_type"
+              value="business"
+              @click=${this.chooseType}
+            />
+            <label for="business">business</label><br />
+            <input
+              type="radio"
+              id="technology_radio"
+              name="site_type"
+              value="technology"
+              @click=${this.chooseType}
+            />
+            <label for="technology">tech</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-3">
-            <p>HAX</p>
+            <input
+              type="radio"
+              id="theme1_radio"
+              name="site_style"
+              value="theme1"
+              @click=${this.chooseTheme}
+            />
+            <label for="theme1">Theme1</label><br />
+            <input
+              type="radio"
+              id="theme2_radio"
+              name="site_style"
+              value="theme2"
+              @click=${this.chooseTheme}
+            />
+            <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
             <p>CAMP</p>
