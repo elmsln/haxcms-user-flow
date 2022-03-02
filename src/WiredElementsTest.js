@@ -6,6 +6,28 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 // import { WiredButton, WiredDialog } from 'wired-elements';
 import 'wired-elements/lib/wired-button.js';
 import 'wired-elements/lib/wired-dialog.js';
+import { rectangle, hachureEllipseFill, ellipse, svgNode } from 'wired-elements/lib/wired-lib.js';
+import {WiredToggle} from 'wired-elements/lib/wired-toggle.js';
+
+export class WiredToggleTwo extends WiredToggle {
+  canvasSize() {
+    return [50, 60];
+  }
+
+  draw(svg, size) {
+    const rect = rectangle(svg, 16, 8, size[0], 40, this.seed);
+    rect.classList.add('toggle-bar');
+    this.knob = svgNode('g');
+    this.knob.classList.add('knob');
+    svg.appendChild(this.knob);
+    const knobFill = hachureEllipseFill(16, 16, 40, 40, this.seed);
+    knobFill.classList.add('knobfill');
+    this.knob.appendChild(knobFill);
+    ellipse(this.knob, 16, 16, 40, 40, this.seed);
+  }
+}
+
+customElements.define("wired-toggle-two", WiredToggleTwo);
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
@@ -87,6 +109,12 @@ export class WiredElementsTest extends SimpleColors {
   // HTML - specific to Lit
   render() {
     return html`
+    <wired-toggle-two checked>Things</wired-toggle-two>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
       <p>
         <wired-button
           elevation="3"

@@ -30,7 +30,11 @@
     "scrollable-component": "^1.2.0",
     "simple-colors": "^0.1.0",
     "simple-icons": "^6.7.0",
-    "wired-elements": "^3.0.0-rc.6"
+    "wired-elements": "3.0.0-rc.6",
+    "roughjs": "4.4"
+  },
+  "resolutions": {
+    "roughjs": "4.4"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",
