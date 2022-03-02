@@ -93,6 +93,11 @@ export class HAXAppSteps extends SimpleColors {
 
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
+      if (this.step !== 1 && oldValue === undefined && propName === 'step') {
+        setTimeout(() => {
+          this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
+        }, 0);
+      }
       if (['step', 'routes'].includes(propName)) {
         store[propName] = this[propName];
       }
