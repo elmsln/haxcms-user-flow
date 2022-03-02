@@ -1,9 +1,14 @@
+/* eslint-disable lit/binding-positions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable class-methods-use-this */
 import { html, css } from 'lit';
 import 'scrollable-component';
 import { autorun, toJS } from 'mobx';
 import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
+import '@lrnwebcomponents/promise-progress';
 
 export class HAXAppSteps extends SimpleColors {
   static get tag() {
@@ -55,6 +60,21 @@ export class HAXAppSteps extends SimpleColors {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  // eslint-disable-next-line import/no-extraneous-dependencies
+  progressBarCheck() {
+    console.log('progressBarCheck ran');
+    this.shadowRoot.querySelector('#testProg').process();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  clickButton() {
+    const audio = new Audio(
+      new URL(`../assets/Hork.mp3`, import.meta.url).href
+    );
+    audio.play();
+  }
+
   chooseStructure(e) {
     const { value } = e.target;
     // Do a type of and check that this is a string"
@@ -82,7 +102,12 @@ export class HAXAppSteps extends SimpleColors {
   }
 
   increaseStep() {
-    if (this.step === this.routes.length) return;
+    this.clickButton();
+    if (this.step === this.routes.length) {
+      console.log(this.step);
+      this.progressBarCheck();
+      return;
+    }
 
     setTimeout(() => {
       this.step += 1;
@@ -137,6 +162,37 @@ export class HAXAppSteps extends SimpleColors {
         this.shadowRoot.querySelector('#link-step-1').click();
       }
     });
+
+    const ary = [
+      () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
+      () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
+      () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
+      () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
+      () => import('@lrnwebcomponents/utils/utils.js'),
+      () => import('mobx/dist/mobx.esm.js'),
+      () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
+      () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
+      () => fetch('../../haxcms-elements/lib/base.css'), // base.css via the injected preload statement
+      () => fetch('../../haxcms-elements/demo/buid.js'), // build.js via the injected preload Promise concept
+      () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
+    ];
+
+    this.shadowRoot.querySelector('#testProg').list = ary;
+    this.shadowRoot
+      .querySelector('#testProg')
+      .addEventListener('promise-progress-finished', e => {
+        if (e.detail.value) {
+          const text = document.createElement('button');
+          text.textContent = "Let's go!";
+          text.classList.add('game');
+          text.addEventListener('click', () => {
+            alert('go to something');
+          });
+          this.shadowRoot
+            .querySelector('#testProg')
+            .parentNode.appendChild(text);
+        }
+      });
   }
 
   static get styles() {
@@ -270,7 +326,12 @@ export class HAXAppSteps extends SimpleColors {
             <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Let's Go</a>
+            <!-- <img src="${new URL('../assets/HatBlank.svg', import.meta.url)
+              .href}" alt=""/> -->
+            <promise-progress
+              id="testProg"
+              accent-color="red"
+            ></promise-progress>
           </div>
         </div>
       </scrollable-component>
