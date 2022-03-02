@@ -57,6 +57,7 @@ export class HAXAppSteps extends SimpleColors {
 
   chooseStructure(e) {
     const { value } = e.target;
+    // Do a type of and check that this is a string"
     console.log(value);
     console.log('Before structure changed');
     store.site.structure = value;

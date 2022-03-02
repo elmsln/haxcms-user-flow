@@ -100,26 +100,27 @@ export class HAXCMSAppStore extends HTMLElement {
     autorun(() => {
       if (store.location && store.location.route) {
         // get the id from the router
-        this.store.step = store.location.route.step;
-        if (store.site.structure === null && store.step !== 1) {
+        const siteCopy = toJS(store.site);
+        siteCopy.step = toJS(store.location.route.step);
+        if (siteCopy.structure === null && siteCopy.step !== 1) {
           store.step = 1;
         } else if (
-          store.site.structure !== null &&
-          store.site.type === null &&
-          store.step !== 2
+          siteCopy.structure !== null &&
+          siteCopy.type === null &&
+          siteCopy.step !== 2
         ) {
           store.step = 2;
         } else if (
-          store.site.structure !== null &&
-          store.site.type !== null &&
-          store.site.theme === null &&
-          store.step !== 3
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme === null &&
+          siteCopy.step !== 3
         ) {
           store.step = 3;
         } else if (
-          store.site.structure !== null &&
-          store.site.type !== null &&
-          store.site.theme !== null
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme !== null
         ) {
           store.step = 4;
         }
