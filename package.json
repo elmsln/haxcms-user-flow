@@ -29,7 +29,8 @@
     "mobx": "^6.3.13",
     "scrollable-component": "^1.2.0",
     "simple-colors": "^0.1.0",
-    "simple-icons": "^6.7.0"
+    "simple-icons": "^6.7.0",
+    "wired-elements": "^3.0.0-rc.6"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",

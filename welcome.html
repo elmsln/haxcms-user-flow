@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="Description" content="Put your description here." />
+    <base href="/" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        height: 100vh;
+        width: auto;
+        margin: 0;
+        padding: 0;
+        font-family: 'Press Start 2P', sans-serif;
+        overflow: hidden;
+      }
+
+      :root {
+        background-image: url('lib/LMGridBox.svg'), url('lib/Design Light Mode.svg');
+        background-repeat: repeat, no-repeat;
+        background-position: 50% 50%;
+        background-size: auto, cover;
+        --accent-color: black;
+      }
+      
+      :root([dark]) {
+        background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode.svg');
+        background-repeat: repeat, no-repeat;
+        background-position: 50% 50%;
+        background-size: auto, cover;
+        --accent-color: white;
+      }
+      .menu {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      .menu li {
+        display: inline-flex;
+        font-weight: bold;
+        padding: 40px;
+      }
+      .welcomeBox {
+        text-align: center;
+        margin: 15vh auto;
+        font-size: 60px;
+        
+      }
+
+      .welcome {
+        -webkit-text-stroke: 1px var(--accent-color);
+	      -webkit-text-fill-color: white;
+      }
+
+      .bracket {
+        font-size: 100px;
+        vertical-align: middle;
+        -webkit-text-stroke: 0px;
+        -webkit-text-fill-color: black;
+      }
+    </style>
+    <title>Welcome to the fucking show</title>
+  </head>
+
+  <body>
+    <!-- <script>
+    // local development and mobx
+    window.process = window.process || {
+      env: {
+        NODE_ENV: "development"
+      }
+    };
+  </script> -->
+
+    <!-- <img src="lib/LMGrid.svg"> -->
+    
+      <div class="welcomeBox">
+        <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
+      </div>
+    
+
+    <script type="module">
+      import './src/App.js';
+      import './src/test.js';
+      import './src/HAXCMSApp.js';
+    </script>
+  </body>
+</html>
