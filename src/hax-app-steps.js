@@ -155,24 +155,7 @@ export class HAXAppSteps extends SimpleColors {
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
 
-    this.shadowRoot.querySelector('#testProg').list = ary;
-    this.shadowRoot
-      .querySelector('#testProg')
-      .addEventListener('promise-progress-finished', e => {
-        if (e.detail.value) {
-          const text = document.createElement('button');
-          text.textContent = "Let's go!";
-          text.classList.add('game');
-          text.addEventListener('click', () => {
-            // reset
-            store.resetApp();
-            window.location.reload();
-          });
-          this.shadowRoot
-            .querySelector('#testProg')
-            .parentNode.appendChild(text);
-        }
-      });
+    
   }
 
   static get styles() {
@@ -227,6 +210,8 @@ export class HAXAppSteps extends SimpleColors {
           color: white;
           border: 1px solid black;
         }
+
+      
       `,
     ];
   }
@@ -304,14 +289,7 @@ export class HAXAppSteps extends SimpleColors {
             <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
-            <img
-              src="${new URL('../assets/HatBlank.svg', import.meta.url).href}"
-              alt=""
-            />
-            <promise-progress
-              id="testProg"
-              accent-color="red"
-            ></promise-progress>
+ <p>Hi</p>
           </div>
         </div>
       </scrollable-component>
