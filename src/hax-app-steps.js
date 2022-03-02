@@ -9,6 +9,7 @@ import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 import '@lrnwebcomponents/promise-progress';
+import './random-word.js';
 
 export class HAXAppSteps extends SimpleColors {
   static get tag() {
@@ -18,6 +19,7 @@ export class HAXAppSteps extends SimpleColors {
   constructor() {
     super();
     this.step = 1;
+
     this.routes = [
       {
         path: 'step-1',
@@ -48,6 +50,10 @@ export class HAXAppSteps extends SimpleColors {
         label: 'Get writing!',
       },
     ];
+    this.phrases = {
+      new: ["What's ya name?", 'Dogecoin to the moon', 'Welcome to the Jungle'],
+      return: ['Welcome back, take 2?', "That wasn't very long", 'Sup man'],
+    };
     autorun(() => {
       this.step = toJS(store.step);
     });
@@ -57,6 +63,7 @@ export class HAXAppSteps extends SimpleColors {
     return {
       step: { type: Number, reflect: true },
       routes: { type: Array },
+      phrases: { type: Object },
     };
   }
 
@@ -168,7 +175,6 @@ export class HAXAppSteps extends SimpleColors {
           --scrollbar-padding: 0;
           --viewport-overflow-x: hidden;
           border: 1px yellow solid;
-
           background: linear-gradient(to top, #f9f8f7 12px, transparent 12px);
           overflow: hidden;
         }
@@ -216,9 +222,18 @@ export class HAXAppSteps extends SimpleColors {
     ];
   }
 
+  getNewWord() {
+    this.shadowRoot.querySelector('random-word').getNewWord();
+  }
+
   render() {
     return html`
       <haxcms-app-router></haxcms-app-router>
+      <random-word
+        key="new"
+        .phrases="${this.phrases}"
+        @click="${this.getNewWord}"
+      ></random-word>
       <ul id="hide-my-butt">
         ${this.routes.map(
           item =>
