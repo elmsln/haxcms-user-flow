@@ -61,14 +61,7 @@ export class HAXAppSteps extends SimpleColors {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  // eslint-disable-next-line import/no-extraneous-dependencies
-  progressBarCheck() {
-    console.log('progressBarCheck ran');
-    this.shadowRoot.querySelector('#testProg').process();
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  clickButton() {
+  playSound() {
     const audio = new Audio(
       new URL(`../assets/Hork.mp3`, import.meta.url).href
     );
@@ -78,53 +71,35 @@ export class HAXAppSteps extends SimpleColors {
   chooseStructure(e) {
     const { value } = e.target;
     // Do a type of and check that this is a string"
-    console.log(value);
     console.log('Before structure changed');
     store.site.structure = value;
-    console.log('After structure changed');
-    this.increaseStep();
     console.log('increased step');
+    this.playSound();
   }
 
   chooseType(e) {
     const { value } = e.target;
-    console.log('Before type changed');
     store.site.type = value;
-    console.log('After type changed');
-    this.increaseStep();
-    console.log('increased step again');
+    this.step = 2;
+    this.playSound();
   }
 
   chooseTheme(e) {
     const { value } = e.target;
     store.site.theme = value;
-    this.increaseStep();
-  }
-
-  increaseStep() {
-    this.clickButton();
-    if (this.step === this.routes.length) {
-      console.log(this.step);
-      this.progressBarCheck();
-      return;
-    }
-
-    setTimeout(() => {
-      this.step += 1;
-      console.log(this.step);
-    }, 10);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  decreaseStep() {
-    if (this.step === 1) return;
-    this.step -= 1;
+    this.step = 3;
+    this.playSound();
   }
 
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (['step', 'routes'].includes(propName)) {
         store[propName] = this[propName];
+      }
+      if (this.step === 4 && propName === 'step') {
+        setTimeout(() => {
+          this.shadowRoot.querySelector('#testProg').process();
+        }, 0);
       }
     });
   }
@@ -172,8 +147,6 @@ export class HAXAppSteps extends SimpleColors {
       () => import('mobx/dist/mobx.esm.js'),
       () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
       () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
-      () => fetch('../../haxcms-elements/lib/base.css'), // base.css via the injected preload statement
-      () => fetch('../../haxcms-elements/demo/buid.js'), // build.js via the injected preload Promise concept
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
 
@@ -186,7 +159,9 @@ export class HAXAppSteps extends SimpleColors {
           text.textContent = "Let's go!";
           text.classList.add('game');
           text.addEventListener('click', () => {
-            alert('go to something');
+            // reset
+            store.resetApp();
+            window.location.reload();
           });
           this.shadowRoot
             .querySelector('#testProg')
@@ -223,7 +198,7 @@ export class HAXAppSteps extends SimpleColors {
           scroll-snap-align: center;
           scroll-snap-stop: always;
           width: var(--viewport-width);
-          height: 250px;
+          height: 500px;
           background-color: #f9f8f7;
           font-size: 1.5rem;
           line-height: 10vh;
@@ -267,8 +242,6 @@ export class HAXAppSteps extends SimpleColors {
             </li>`
         )}
       </ul>
-      <button @click=${this.decreaseStep}>Prev Step</button>
-      <button @click=${this.increaseStep}>Next Step</button>
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
@@ -326,8 +299,10 @@ export class HAXAppSteps extends SimpleColors {
             <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
-            <!-- <img src="${new URL('../assets/HatBlank.svg', import.meta.url)
-              .href}" alt=""/> -->
+            <img
+              src="${new URL('../assets/HatBlank.svg', import.meta.url).href}"
+              alt=""
+            />
             <promise-progress
               id="testProg"
               accent-color="red"

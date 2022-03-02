@@ -59,6 +59,11 @@ class Store {
     }
     return null;
   }
+
+  resetApp() {
+    this.step = 1;
+    this.site = { structure: null, type: null, theme: null };
+  }
 }
 /**
  * Central store
