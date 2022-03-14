@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@lit-labs/motion": "^1.0.2",
+    "@lrnwebcomponents/promise-progress": "^4.0.12",
     "@lrnwebcomponents/simple-colors": "^4.0.4",
     "@lrnwebcomponents/simple-icon": "^4.0.6",
     "@vaadin/router": "^1.7.4",
