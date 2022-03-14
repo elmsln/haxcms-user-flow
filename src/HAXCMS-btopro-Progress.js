@@ -97,10 +97,10 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0;
           z-index: 1;
-          display: block;
-          margin-top: -85px;
-          margin-left: 39px;
+          position: absolute;
           height: 70px;
+          left: 680px;
+          bottom: 40px;
         }
         .game:focus,
         .game:hover {

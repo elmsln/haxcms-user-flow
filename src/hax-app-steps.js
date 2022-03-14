@@ -111,7 +111,7 @@ export class HAXAppSteps extends SimpleColors {
       if (this.step === 4 && propName === 'step') {
         setTimeout(() => {
           this.shadowRoot.querySelector('#testProg').process();
-        }, 0);
+        }, 100);
       }
     });
   }
@@ -162,7 +162,7 @@ export class HAXAppSteps extends SimpleColors {
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
 
-    
+    this.shadowRoot.querySelector('#testProg').promises = ary;
   }
 
   static get styles() {
@@ -216,8 +216,6 @@ export class HAXAppSteps extends SimpleColors {
           color: white;
           border: 1px solid black;
         }
-
-      
       `,
     ];
   }
@@ -304,7 +302,7 @@ export class HAXAppSteps extends SimpleColors {
             <label for="theme2">Theme2</label><br />
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
- <p>Hi</p>
+            <haxcms-btopro-progress id="testProg"></haxcms-btopro-progress>
           </div>
         </div>
       </scrollable-component>

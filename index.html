@@ -46,8 +46,8 @@
 
 <body>
   
- <haxcms-btopro-progress id="bar"></haxcms-btopro-progress>
- <!-- <haxcms-app></haxcms-app> -->
+<haxcms-btopro-progress id="bar"></haxcms-btopro-progress> 
+    <!--  <haxcms-app></haxcms-app> -->
 
   </div>
   <script type="module">
@@ -78,7 +78,7 @@
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
       document.querySelector("#bar").promises = ary;
-      setTimeout(() => {document.querySelector("#bar").process();}, 100)
+      setTimeout(() => {document.querySelector("#bar").process();}, 600)
     }, 400
 
     );
