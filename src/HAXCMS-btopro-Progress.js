@@ -17,27 +17,29 @@ export class HAXCMSbtoproProgress extends SimpleColors {
     };
   }
 
-  process(){
-      console.log("Start Process");
-        this.shadowRoot.querySelector("#progress2").process();
+  process() {
+    console.log('Start Process');
+    this.shadowRoot.querySelector('#progress2').process();
+    console.log('Done');
   }
 
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+
     setTimeout(() => {
       this.shadowRoot
         .querySelector('#progress2')
         .addEventListener('value-changed', e => {
           this.shadowRoot.querySelector('#value').textContent = e.detail.value;
         });
-        this.shadowRoot
+      this.shadowRoot
         .querySelector('#progress2')
         .addEventListener('max-changed', e => {
           this.shadowRoot.querySelector('#max').textContent = e.detail.value;
         });
-        this.shadowRoot
+      this.shadowRoot
         .querySelector('#progress2')
         .addEventListener('promise-progress-finished', e => {
           if (e.detail.value) {
@@ -46,10 +48,12 @@ export class HAXCMSbtoproProgress extends SimpleColors {
               this.shadowRoot.querySelector('#max').textContent;
             text.textContent = 'All loaded';
             text.classList.add('game');
-            text.addEventListener('click', e => {
+            text.addEventListener('click', () => {
               alert('go do something');
             });
-            this.shadowRoot.querySelector('#progress2').parentNode.appendChild(text);
+            this.shadowRoot
+              .querySelector('#progress2')
+              .parentNode.appendChild(text);
           }
         });
     }, 0);
@@ -88,14 +92,14 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           font-size: 30px;
           font-weight: bold;
           text-align: center;
-          width: 331px;
+          width: 333px;
           background-color: var(--simple-colors-default-theme-red-7, red);
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0;
           z-index: 1;
           display: block;
-          margin-top: -110px;
-          margin-left: 40px;
+          margin-top: -85px;
+          margin-left: 39px;
           height: 70px;
         }
         .game:focus,
@@ -126,7 +130,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
         id="progress2"
         accent-color="red"
         class="progress"
-        .promises=${this.promises}
+        .list=${this.promises}
       ></promise-progress>
     `;
   }

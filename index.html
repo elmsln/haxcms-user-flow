@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -58,12 +59,12 @@
 
     console.log("I started")
     // local development and mobx
+    /* eslint-disable import/no-extraneous-dependencies */
     window.process = window.process || {
       env: {
         NODE_ENV: "development"
       }
     };
-<<<<<<< HEAD
     setTimeout(() => {
     const ary = [
       () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
@@ -77,18 +78,10 @@
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
       document.querySelector("#bar").promises = ary;
-      document.querySelector("#bar").process();
+      setTimeout(() => {document.querySelector("#bar").process();}, 100)
     }, 400
-=======
-  </script>
-
-  <haxcms-app></haxcms-app>
-  
->>>>>>> 4a0d9a9c5939c51cc3b6fb00ab5744e4971fa780
 
     );
-   
-    
   </script>
 
 </body>

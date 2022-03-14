@@ -50,5 +50,3 @@ export class RandomWord extends LitElement {
     return html`<slot></slot>`;
   }
 }
-
-customElements.define(RandomWord.tag, RandomWord);
