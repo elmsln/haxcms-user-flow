@@ -8,7 +8,6 @@ import { autorun, toJS } from 'mobx';
 import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
-import '@lrnwebcomponents/promise-progress';
 import './random-word.js';
 
 export class HAXAppSteps extends SimpleColors {
@@ -104,6 +103,22 @@ export class HAXAppSteps extends SimpleColors {
         setTimeout(() => {
           this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
         }, 0);
+        import('./src/HAXCMS-btopro-Progress.js').then(() => {
+          // We will actually need to hit the HAXCMS endpoint to generate the promises
+          // These are just placeholders for now
+          const ary = [
+            () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
+            () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
+            () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
+            () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
+            () => import('@lrnwebcomponents/utils/utils.js'),
+            () => import('mobx/dist/mobx.esm.js'),
+            () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
+            () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
+            () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
+          ];
+          this.shadowRoot.querySelector('#testProg').promises = ary;
+        });
       }
       if (['step', 'routes'].includes(propName)) {
         store[propName] = this[propName];
@@ -149,20 +164,6 @@ export class HAXAppSteps extends SimpleColors {
         this.shadowRoot.querySelector('#link-step-1').click();
       }
     });
-
-    const ary = [
-      () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
-      () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
-      () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
-      () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
-      () => import('@lrnwebcomponents/utils/utils.js'),
-      () => import('mobx/dist/mobx.esm.js'),
-      () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
-      () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
-      () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
-    ];
-
-    this.shadowRoot.querySelector('#testProg').promises = ary;
   }
 
   static get styles() {
