@@ -103,7 +103,7 @@ export class HAXAppSteps extends SimpleColors {
         setTimeout(() => {
           this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
         }, 0);
-        import('./src/HAXCMS-btopro-Progress.js').then(() => {
+        import('./HAXCMS-btopro-Progress.js').then(() => {
           // We will actually need to hit the HAXCMS endpoint to generate the promises
           // These are just placeholders for now
           const ary = [
@@ -175,8 +175,6 @@ export class HAXAppSteps extends SimpleColors {
           --scrollbar-height: 0px;
           --scrollbar-padding: 0;
           --viewport-overflow-x: hidden;
-          border: 1px yellow solid;
-          background: linear-gradient(to top, #f9f8f7 12px, transparent 12px);
           overflow: hidden;
         }
         #hide-my-butt {
@@ -194,7 +192,7 @@ export class HAXAppSteps extends SimpleColors {
           scroll-snap-stop: always;
           width: var(--viewport-width);
           height: 500px;
-          background-color: #f9f8f7;
+
           font-size: 1.5rem;
           line-height: 10vh;
           text-align: center;
@@ -215,7 +213,6 @@ export class HAXAppSteps extends SimpleColors {
         li a.active-step {
           background-color: orange;
           color: white;
-          border: 1px solid black;
         }
       `,
     ];
@@ -310,4 +307,5 @@ export class HAXAppSteps extends SimpleColors {
     `;
   }
 }
+
 customElements.define(HAXAppSteps.tag, HAXAppSteps);

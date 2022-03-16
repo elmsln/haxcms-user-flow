@@ -11,6 +11,5 @@ customElements.define(RandomWord.tag, RandomWord);
 customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);
 customElements.define(WiredElementsTest.tag, WiredElementsTest);
 customElements.define(HAXCMSSiteButton.tag, HAXCMSSiteButton);
-customElements.define(HAXCMSSiteButton.tag, HAXCMSSiteButton);
 customElements.define(HAXCMSSiteDetails.tag, HAXCMSSiteDetails);
 customElements.define(HAXCMSWelcomeBar.tag, HAXCMSWelcomeBar);

@@ -8,9 +8,15 @@ export class HAXCMSApp extends LitElement {
     return 'haxcms-app';
   }
 
+  constructor() {
+    super();
+    this.demo = false;
+  }
+
   static get properties() {
     return {
       courses: { type: Array },
+      demo: { type: Boolean },
     };
   }
 
@@ -35,6 +41,14 @@ export class HAXCMSApp extends LitElement {
       });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  reset() {
+    console.log(`reset`);
+    localStorage.setItem('step', '');
+    localStorage.setItem('site', '');
+    window.location.reload();
+  }
+
   static get styles() {
     return [
       css`
@@ -42,14 +56,22 @@ export class HAXCMSApp extends LitElement {
           display: block;
           height: 100vh;
           width: 100vh;
-          border: 1px red solid;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
       `,
     ];
   }
 
   render() {
-    return html`<hax-app-steps></hax-app-steps>`;
+    return this.demo
+      ? html`
+          <button @click=${this.reset}>reset</button>
+          <hax-app-steps></hax-app-steps>
+        `
+      : html` <hax-app-steps></hax-app-steps> `;
   }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);
