@@ -6,6 +6,7 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 // import { WiredButton, WiredDialog } from 'wired-elements';
 import 'wired-elements/lib/wired-button.js';
 import 'wired-elements/lib/wired-dialog.js';
+import "./hax-wired-toggle.js";
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
@@ -117,6 +118,8 @@ export class WiredElementsTest extends SimpleColors {
             >Close dialog</wired-button
           >
         </div>
+        <hax-wired-toggle checked></hax-wired-toggle>
+
       </wired-dialog>
     `;
   }
