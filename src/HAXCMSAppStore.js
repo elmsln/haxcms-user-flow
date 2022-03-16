@@ -1,20 +1,53 @@
 /* eslint-disable max-classes-per-file */
-import { observable, makeObservable, computed, configure, autorun } from 'mobx';
+import {
+  observable,
+  makeObservable,
+  computed,
+  configure,
+  autorun,
+  toJS,
+} from 'mobx';
 
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
+
+function localStorageSet(name, newItem) {
+  try {
+    return localStorage.setItem(name, JSON.stringify(newItem));
+  } catch (e) {
+    return false;
+  }
+}
+
+function localStorageGet(name) {
+  try {
+    console.log(JSON.parse(localStorage.getItem(name)));
+    return JSON.parse(localStorage.getItem(name));
+  } catch (e) {
+    console.log(`Failed to get ${name}`);
+    return false;
+  }
+}
+
 class Store {
   constructor() {
     this.location = null;
-    this.step = 1;
+    this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
     this.routes = [];
+    this.site = !localStorageGet('site')
+      ? { structure: null, type: null, theme: null }
+      : localStorageGet('site');
+
+    console.log(this.site);
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
       routes: observable, // routes that are valid
+      site: observable, // information about the site being created
       activeItem: computed, // active item is route
     });
   }
 
+  // site{ structure, type, theme } (course, portfolio, buz, colors)
   get activeItem() {
     if (this.routes) {
       return this.routes.find(item => {
@@ -25,6 +58,11 @@ class Store {
       });
     }
     return null;
+  }
+
+  resetApp() {
+    this.step = 1;
+    this.site = { structure: null, type: null, theme: null };
   }
 }
 /**
@@ -67,8 +105,45 @@ export class HAXCMSAppStore extends HTMLElement {
     autorun(() => {
       if (store.location && store.location.route) {
         // get the id from the router
-        this.store.step = store.location.route.step;
+        const siteCopy = toJS(store.site);
+        siteCopy.step = toJS(store.location.route.step);
+        if (siteCopy.structure === null && siteCopy.step !== 1) {
+          store.step = 1;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type === null &&
+          siteCopy.step !== 2
+        ) {
+          store.step = 2;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme === null &&
+          siteCopy.step !== 3
+        ) {
+          store.step = 3;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme !== null
+        ) {
+          store.step = 4;
+        }
       }
+    });
+
+    // AutoRun block to detect to detect if site.structure is null but step == 3, set step to 2.
+
+    autorun(() => {
+      if (store.routes.length > 0 && store.location == null) {
+        store.location = toJS(store.routes[0]);
+      }
+    });
+    autorun(() => {
+      localStorageSet('step', toJS(store.step));
+    });
+    autorun(() => {
+      localStorageSet('site', toJS(store.site));
     });
   }
 }
