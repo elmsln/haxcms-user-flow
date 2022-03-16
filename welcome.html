@@ -19,7 +19,7 @@
     <style>
       body {
         height: 100vh;
-        width: auto;
+        width: 100vw;
         margin: 0;
         padding: 0;
         font-family: 'Press Start 2P', sans-serif;
@@ -27,32 +27,62 @@
       }
 
       :root {
-        background-image: url('lib/LMGridBox.svg'), url('lib/Design Light Mode.svg');
-        background-repeat: repeat, no-repeat;
-        background-position: 50% 50%;
-        background-size: auto, cover;
+        background-image: url('lib/LMGridBox.svg'), url('lib/Design Light Mode Left.svg'), url('lib/Design Light Mode Right.svg');
+        background-repeat: repeat, repeat-y, repeat-y;
+        background-position: center center, top left, top right;
+        background-size: auto, 20% auto, 20% auto;
         --accent-color: black;
       }
       
-      :root([dark]) {
-        background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode.svg');
-        background-repeat: repeat, no-repeat;
-        background-position: 50% 50%;
-        background-size: auto, cover;
-        --accent-color: white;
+      @media (prefers-color-scheme: dark) {
+        :root {
+          background-color: black;
+          background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode Left.svg'), url('lib/Design Dark Mode Right.svg');
+          background-repeat: repeat, repeat-y, repeat-y;
+          background-position: center center, top left, top right;
+          background-size: auto, 20% auto, 20% auto;
+          --accent-color: white;
+        }
+
+        .welcome {
+          -webkit-text-stroke: 0px var(--accent-color);
+          -webkit-text-fill-color: white;
+        }
       }
-      .menu {
-        display: flex;
-        justify-content: space-evenly;
+
+      @media (min-width: 721px) {
+        :root {
+          background-size: auto, 23% auto, 23% auto;
+        }
       }
-      .menu li {
-        display: inline-flex;
-        font-weight: bold;
-        padding: 40px;
+
+      @media (min-width: 601px) and (max-width: 720px) {
+        :root {
+          background-size: auto, 26% auto, 26% auto;
+        }
       }
+
+      @media (min-width: 481px) and (max-width: 600px) {
+        :root {
+          background-size: auto, 30% auto, 30% auto;
+        }
+      }
+
+      @media (min-width: 371px) and (max-width: 480px) {
+        :root {
+          background-size: auto, 35% auto, 35% auto;
+        }
+      }
+
+      @media (max-width: 370px) {
+        :root {
+          background-size: auto, 37% auto, 37% auto;
+        }
+      }
+
       .welcomeBox {
         text-align: center;
-        margin: 15vh auto;
+        margin: 0;
         font-size: 60px;
         
       }
@@ -66,23 +96,13 @@
         font-size: 100px;
         vertical-align: middle;
         -webkit-text-stroke: 0px;
-        -webkit-text-fill-color: black;
+        -webkit-text-fill-color: var(--accent-color);
       }
     </style>
     <title>Welcome to the fucking show</title>
   </head>
 
   <body>
-    <!-- <script>
-    // local development and mobx
-    window.process = window.process || {
-      env: {
-        NODE_ENV: "development"
-      }
-    };
-  </script> -->
-
-    <!-- <img src="lib/LMGrid.svg"> -->
     
       <div class="welcomeBox">
         <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>

@@ -12,7 +12,7 @@
     <meta name="Description" content="Put your description here." />
     <base href="/" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
@@ -37,13 +37,17 @@
         --accent-color: black;
       }
       
-      :root([dark]) {
-        background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode.svg');
-        background-repeat: repeat, no-repeat;
-        background-position: 50% 50%;
-        background-size: auto, cover;
-        --accent-color: white;
+      @media (prefers-color-scheme: dark) {
+        :root {
+          background-color: black;
+          background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode.svg');
+          background-repeat: repeat, no-repeat;
+          background-position: 50% 50%;
+          background-size: auto, cover;
+          --accent-color: white;
+        }
       }
+      
       .menu {
         display: flex;
         justify-content: space-evenly;
@@ -76,11 +80,10 @@
 </head>
 
 <body>
-  <div class="welcomeBox">
-    <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
+  <div class="wrapper">
+    <a href="./welcome.html">Hey let's go</a>
   </div>
-
-
+  
   <script type="module">
     import "./src/App.js";
     import './src/HAXCMSApp.js';
@@ -89,6 +92,7 @@
   <script async defer>
 
     console.log("I started")
+
     // local development and mobx
     /* eslint-disable import/no-extraneous-dependencies */
     window.process = window.process || {
@@ -96,6 +100,30 @@
         NODE_ENV: "development"
       }
     };
+  </script>
+  <haxcms-app></haxcms-app>
+  <div class="wrapper">
+  </div>
+
+  <div>
+    <haxcms-site-bar accent-color="blue">
+      <p slot="heading">Art 101</p>
+      <p slot="subHeading">Intro to Web Dev</p>
+      <haxcms-site-details slot="band"></haxcms-site-details>
+    </haxcms-site-bar>
+
+    <div id="testing">
+      <wired-elements-test label="> PORTFOLIO"></wired-elements-test>
+      <hax-cms-site-button label="cheese"></hax-cms-site-button>
+    </div>
+  </div>
+  <br>
+
+  <script type="module">
+    import "./src/App.js";
+    import "./src/test.js";
+    import "./src/HAXCMSApp.js";
+    
     setTimeout(() => {
     const ary = [
       () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),

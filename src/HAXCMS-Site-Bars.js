@@ -130,6 +130,11 @@ export class HAXCMSSiteBars extends SimpleColors {
     this.opened = !this.opened;
   }
 
+  _toggleDetails(e) {
+    console.log(`${this} , ${e}`);
+    console.log('clicked');
+  }
+
   // HTML - specific to Lit
   render() {
     return html`
@@ -157,6 +162,6 @@ export class HAXCMSSiteBars extends SimpleColors {
    * haxProperties integration via file reference
    */
   static get haxProperties() {
-    return new URL(`../lib/rename-me.haxProperties.json`, import.meta.url).href;
+    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }
