@@ -15,7 +15,14 @@
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-
+    <script>
+      // local development and mobx
+      window.process = window.process || {
+        env: {
+          NODE_ENV: "development"
+        }
+      };
+      </script>
     <style>
       body {
         height: 100vh;
@@ -103,7 +110,7 @@
         -webkit-text-fill-color: var(--accent-color);
       }
     </style>
-    <title>Welcome to the fucking show</title>
+    <title>Let's HAX your web</title>
   </head>
 
   <body>
@@ -111,22 +118,11 @@
       <div class="welcomeBox">
         <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
       </div>
-      <haxcms-app demo="true"></haxcms-app>
+      <haxcms-app demo></haxcms-app>
 
     <script type="module">
       import './src/App.js';
       import './src/HAXCMSApp.js';
     </script>
-     <script async defer>
-
-      console.log("I started")
-      // local development and mobx
-      /* eslint-disable import/no-extraneous-dependencies */
-      window.process = window.process || {
-        env: {
-          NODE_ENV: "development"
-        }
-      };
-      </script>
   </body>
 </html>

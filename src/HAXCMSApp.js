@@ -61,20 +61,24 @@ export class HAXCMSApp extends LitElement {
           align-items: center;
           justify-content: center;
         }
-        button {
-          width: 100%;
+        #btn {
+          bottom: 0;
+          right: 0;
+          position: absolute;
+          font-size: 50px;
+          border: 0;
+          background-color: orange;
+          color: text;
+          cursor: pointer;
         }
       `,
     ];
   }
 
   render() {
-    return this.demo
-      ? html`
-          <button @click=${this.reset}>reset</button>
-          <hax-app-steps></hax-app-steps>
-        `
-      : html` <hax-app-steps></hax-app-steps> `;
+    return html`${this.demo
+        ? html`<button id="btn" @click=${this.reset}>reset app</button>`
+        : ``} <hax-app-steps></hax-app-steps>`;
   }
 }
 customElements.define(HAXCMSApp.tag, HAXCMSApp);
