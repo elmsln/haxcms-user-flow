@@ -92,14 +92,15 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           font-size: 26px;
           font-weight: bold;
           text-align: center;
-          width: 308px;
+          width: 310px;
           background-color: var(--simple-colors-default-theme-red-7, red);
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
-          position: absolute;
           height: 48px;
-          left: 240px;
-          margin-top: -106px;
+          margin-top: -93px;
+          display: block;
+          position: relative;
+          margin-left: 238px;
         }
         .game:focus,
         .game:hover {
