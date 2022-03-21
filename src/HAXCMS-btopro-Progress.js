@@ -92,12 +92,12 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           font-size: 26px;
           font-weight: bold;
           text-align: center;
-          width: 310px;
+          width: 312px;
           background-color: var(--simple-colors-default-theme-red-7, red);
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
           height: 48px;
-          margin-top: -93px;
+          margin-top: -98px;
           display: block;
           position: relative;
           margin-left: 238px;
