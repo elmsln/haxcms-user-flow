@@ -75,7 +75,6 @@ export class HAXCMSSiteButton extends SimpleColors {
         background-color: white;
         color: black;
         font-size: 36px;
-        border: 10px;
       }
       .dialogBox {
         color: #0f460f;
