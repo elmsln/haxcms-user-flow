@@ -10,6 +10,7 @@ import './HAXCMSAppRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
+import './HAXCMS-btopro-Progress.js';
 
 export class HAXAppSteps extends SimpleColors {
   static get tag() {
@@ -18,8 +19,19 @@ export class HAXAppSteps extends SimpleColors {
 
   constructor() {
     super();
+    this._progressReady = false;
     this.step = 1;
-
+    this.callList = [
+      () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
+      () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
+      () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
+      () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
+      () => import('@lrnwebcomponents/utils/utils.js'),
+      () => import('mobx/dist/mobx.esm.js'),
+      () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
+      () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
+      () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
+    ];
     this.routes = [
       {
         path: 'step-1',
@@ -61,9 +73,11 @@ export class HAXAppSteps extends SimpleColors {
 
   static get properties() {
     return {
+      ...super.properties,
       step: { type: Number, reflect: true },
       routes: { type: Array },
       phrases: { type: Object },
+      callList: { type: Array },
     };
   }
 
@@ -77,6 +91,7 @@ export class HAXAppSteps extends SimpleColors {
 
   chooseStructure(e) {
     const { value } = e.target;
+    // Do a type of and check that this is a string"
     store.site.structure = value;
     this.playSound();
   }
@@ -95,36 +110,42 @@ export class HAXAppSteps extends SimpleColors {
     this.playSound();
   }
 
+  progressReady(e) {
+    if (e.detail) {
+      this._progressReady = true;
+      if (this.step === 4) {
+        setTimeout(() => {
+          this.shadowRoot.querySelector('haxcms-btopro-progress').process();
+        }, 300);
+      }
+    }
+  }
+
   updated(changedProperties) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
     changedProperties.forEach((oldValue, propName) => {
+      // tee up
       if (this.step !== 1 && oldValue === undefined && propName === 'step') {
         setTimeout(() => {
           this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
         }, 0);
-        import('./HAXCMS-btopro-Progress.js').then(() => {
-          // We will actually need to hit the HAXCMS endpoint to generate the promises
-          // These are just placeholders for now
-          const ary = [
-            () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
-            () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
-            () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
-            () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
-            () => import('@lrnwebcomponents/utils/utils.js'),
-            () => import('mobx/dist/mobx.esm.js'),
-            () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
-            () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
-            () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
-          ];
-          this.shadowRoot.querySelector('#testProg').promises = ary;
-        });
       }
+      // for if we start here
+      if (
+        this.step === 4 &&
+        propName === 'step' &&
+        this.shadowRoot &&
+        this._progressReady
+      ) {
+        setTimeout(() => {
+          this.shadowRoot.querySelector('haxcms-btopro-progress').process();
+        }, 600);
+      }
+      // update the store
       if (['step', 'routes'].includes(propName)) {
         store[propName] = this[propName];
-      }
-      if (this.step === 4 && propName === 'step') {
-        setTimeout(() => {
-          this.shadowRoot.querySelector('#testProg').process();
-        }, 100);
       }
     });
   }
@@ -288,7 +309,10 @@ export class HAXAppSteps extends SimpleColors {
             ></haxcms-site-button>
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
-            <haxcms-btopro-progress id="testProg"></haxcms-btopro-progress>
+            <haxcms-btopro-progress
+              @progress-ready="${this.progressReady}"
+              .promises="${this.callList}"
+            ></haxcms-btopro-progress>
           </div>
         </div>
       </scrollable-component>

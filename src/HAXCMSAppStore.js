@@ -20,10 +20,8 @@ function localStorageSet(name, newItem) {
 
 function localStorageGet(name) {
   try {
-    console.log(JSON.parse(localStorage.getItem(name)));
     return JSON.parse(localStorage.getItem(name));
   } catch (e) {
-    console.log(`Failed to get ${name}`);
     return false;
   }
 }
@@ -37,7 +35,6 @@ class Store {
       ? { structure: null, type: null, theme: null }
       : localStorageGet('site');
 
-    console.log(this.site);
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build

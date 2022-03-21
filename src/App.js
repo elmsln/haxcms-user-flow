@@ -7,7 +7,7 @@ import { RandomWord } from './random-word.js';
 import { HAXCMSbtoproProgress } from './HAXCMS-btopro-Progress.js';
 import { HAXWiredToggle } from './hax-wired-toggle.js';
 
-customElements.define(HAXCMSbtoproProgress.tag, HAXCMSbtoproProgress);
+
 customElements.define(RandomWord.tag, RandomWord);
 customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);
 customElements.define(WiredElementsTest.tag, WiredElementsTest);
