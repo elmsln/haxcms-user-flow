@@ -188,6 +188,10 @@ export class HAXAppSteps extends SimpleColors {
           grid-gap: 30px;
         }
         .carousel-with-snapping-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           scroll-snap-align: center;
           scroll-snap-stop: always;
           width: var(--viewport-width);
@@ -246,16 +250,18 @@ export class HAXAppSteps extends SimpleColors {
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
-            <haxcms-site-button
-              label="> Course"
-              value="course"
-              @click=${this.chooseStructure}
-            ></haxcms-site-button>
-            <haxcms-site-button
-              label="> Portfolio"
-              value="portfolio"
-              @click=${this.chooseStructure}
-            ></haxcms-site-button>
+            <div class="step-wrapper">
+              <haxcms-site-button
+                label="> Course"
+                value="course"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+              <haxcms-site-button
+                label="> Portfolio"
+                value="portfolio"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
             <haxcms-site-button
