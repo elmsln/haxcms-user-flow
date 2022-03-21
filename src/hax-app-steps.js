@@ -1,3 +1,4 @@
+/* eslint-disable lit/attribute-value-entities */
 /* eslint-disable lit/binding-positions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -194,6 +195,8 @@ export class HAXAppSteps extends SimpleColors {
           --scrollbar-padding: 0;
           --viewport-overflow-x: hidden;
           overflow: hidden;
+          width: 100%;
+          border: 3px solid red;
         }
         #hide-my-butt {
           visibility: hidden;
@@ -206,6 +209,10 @@ export class HAXAppSteps extends SimpleColors {
           grid-gap: 30px;
         }
         .carousel-with-snapping-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           scroll-snap-align: center;
           scroll-snap-stop: always;
           width: var(--viewport-width);
@@ -264,58 +271,42 @@ export class HAXAppSteps extends SimpleColors {
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
-            <input
-              type="radio"
-              id="course"
-              name="site_structure"
-              value="course"
-              @click=${this.chooseStructure}
-            />
-            <label for="course">Course</label><br />
-            <input
-              type="radio"
-              id="portfolio"
-              name="site_structure"
-              value="portfolio"
-              @click=${this.chooseStructure}
-            />
-            <label for="portfolio">Portfolio</label><br />
+            <div class="step-wrapper">
+              <haxcms-site-button
+                label="> Course"
+                value="course"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+              <haxcms-site-button
+                label="> Portfolio"
+                value="portfolio"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
-            <input
-              type="radio"
-              id="business"
-              name="site_type"
+            <haxcms-site-button
+              label="business"
               value="business"
               @click=${this.chooseType}
-            />
-            <label for="business">business</label><br />
-            <input
-              type="radio"
-              id="technology"
-              name="site_type"
+            ></haxcms-site-button>
+            <haxcms-site-button
+              label="Technology"
               value="technology"
               @click=${this.chooseType}
-            />
-            <label for="technology">tech</label><br />
+            ></haxcms-site-button>
           </div>
           <div class="carousel-with-snapping-item" id="step-3">
-            <input
-              type="radio"
-              id="theme1"
-              name="site_style"
+            <haxcms-site-button
+              label="Theme1"
               value="theme1"
               @click=${this.chooseTheme}
-            />
-            <label for="theme1">Theme1</label><br />
-            <input
-              type="radio"
-              id="theme2"
-              name="site_style"
+            ></haxcms-site-button>
+            <haxcms-site-button
+              label="theme2"
               value="theme2"
               @click=${this.chooseTheme}
-            />
-            <label for="theme2">Theme2</label><br />
+            ></haxcms-site-button>
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
             <haxcms-btopro-progress

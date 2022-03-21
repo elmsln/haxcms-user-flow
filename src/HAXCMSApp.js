@@ -43,7 +43,6 @@ export class HAXCMSApp extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   reset() {
-    console.log(`reset`);
     localStorage.setItem('step', '');
     localStorage.setItem('site', '');
     window.location.reload();
