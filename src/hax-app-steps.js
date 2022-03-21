@@ -200,8 +200,6 @@ export class HAXAppSteps extends SimpleColors {
           --scrollbar-padding: 0;
           --viewport-overflow-x: hidden;
           overflow: hidden;
-          width: 100%;
-          border: 3px solid red;
         }
         #grid-container {
           display: grid;

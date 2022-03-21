@@ -57,7 +57,7 @@ export class HAXCMSApp extends LitElement {
           width: 100vh;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: stretch;
           justify-content: center;
         }
         #btn {
