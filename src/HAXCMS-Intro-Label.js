@@ -1,8 +1,6 @@
 // dependencies / things imported
 import { LitElement, html, css } from 'lit';
 
-// EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
-// which has the magic life-cycles and developer experience below added
 export class HAXCMSIntroLabel extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
@@ -22,32 +20,11 @@ export class HAXCMSIntroLabel extends LitElement {
     };
   }
 
-  // Lit life-cycle; this fires the 1st time the element is rendered on the screen
-  // this is a sign it is safe to make calls to this.shadowRoot
-  firstUpdated(changedProperties) {
-    if (super.firstUpdated) {
-      super.firstUpdated(changedProperties);
-    }
-  }
-
-  // HTMLElement life-cycle, element has been connected to the page / added or moved
-  // this fires EVERY time the element is moved
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  // HTMLElement life-cycle, element has been removed from the page OR moved
-  // this fires every time the element moves
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-
   // CSS - specific to Lit
   static get styles() {
     return css`
       :host {
         font: sans-serif;
-        color: white;
       }
       :root {
         --accent-color: white;
@@ -72,6 +49,14 @@ export class HAXCMSIntroLabel extends LitElement {
       .title {
         -webkit-text-stroke: 1px var(--accent-color);
         -webkit-text-fill-color: white;
+        font-weight: normal;
+        margin-bottom: 0px;
+      }
+
+      .subtitle {
+        color: var(--accent-color);
+        font-weight: normal;
+        margin-top: 0px;
       }
 
       .bracket {
@@ -82,13 +67,16 @@ export class HAXCMSIntroLabel extends LitElement {
         -webkit-text-fill-color: var(--accent-color);
       }
 
-      .title {
-        display: inline;
-      }
       .title ::slotted(*) {
         display: inline;
         font-size: 50px;
         vertical-align: middle;
+      }
+
+      .subtitle ::slotted(*) {
+        font-size: 24px;
+        vertical-align: middle;
+        padding-top: 0px;
       }
     `;
   }
@@ -108,11 +96,6 @@ export class HAXCMSIntroLabel extends LitElement {
     `;
   }
 
-  // HAX specific callback
-  // This teaches HAX how to edit and work with your web component
-  /**
-   * haxProperties integration via file reference
-   */
   static get haxProperties() {
     return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
