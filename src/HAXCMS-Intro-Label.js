@@ -3,19 +3,24 @@ import { LitElement, html, css } from 'lit';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class HAXCMSWelcomeBar extends LitElement {
+export class HAXCMSIntroLabel extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-welcome-bar';
+    return 'haxcms-intro-label';
   }
 
-  // updated fires every time a property defined above changes
-  // this allows you to react to variables changing and use javascript to perform logic
-  // updated(changedProperties) {
-  //   changedProperties.forEach((oldValue, propName) => {
+  constructor() {
+    super();
+    this.title = 'Welcome';
+    this.subtitle = 'Start your journey now!';
+  }
 
-  //   });
-  // }
+  static get properties() {
+    return {
+      title: { type: String, reflect: true },
+      subtitle: { type: String, reflect: true },
+    };
+  }
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
@@ -42,24 +47,48 @@ export class HAXCMSWelcomeBar extends LitElement {
     return css`
       :host {
         font: sans-serif;
+        color: white;
+      }
+      :root {
+        --accent-color: white;
       }
 
-      .welcomeBox {
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --accent-color: black;
+        }
+        .titles {
+          -webkit-text-stroke: 0px var(--accent-color);
+          -webkit-text-fill-color: white;
+        }
+      }
+
+      .introLabel {
         text-align: center;
-        /* margin: 15vh auto; */
         margin: 0;
-        font-size: 60px;
+        font-size: 50px;
       }
 
-      .welcome {
+      .title {
         -webkit-text-stroke: 1px var(--accent-color);
         -webkit-text-fill-color: white;
       }
 
       .bracket {
         font-size: 100px;
+        font-weight: 400;
         vertical-align: middle;
-        -webkit-text-fill-color: black;
+        -webkit-text-stroke: 0px;
+        -webkit-text-fill-color: var(--accent-color);
+      }
+
+      .title {
+        display: inline;
+      }
+      .title ::slotted(*) {
+        display: inline;
+        font-size: 50px;
+        vertical-align: middle;
       }
     `;
   }
@@ -67,11 +96,14 @@ export class HAXCMSWelcomeBar extends LitElement {
   // HTML - specific to Lit
   render() {
     return html`
-      <div class="welcomeBox">
-        <p class="welcome">
-          <span class="bracket">&#60;</span><slot></slot
+      <div class="introLabel">
+        <h1 class="title">
+          <span class="bracket">&#60;</span><slot name="title"></slot
           ><span class="bracket">&#62;</span>
-        </p>
+        </h1>
+        <h2 class="subtitle">
+          <slot name="subtitle"></slot>
+        </h2>
       </div>
     `;
   }

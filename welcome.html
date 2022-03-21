@@ -89,7 +89,7 @@
 
       .welcome {
         -webkit-text-stroke: 1px var(--accent-color);
-	      -webkit-text-fill-color: white;
+        -webkit-text-fill-color: white;
       }
 
       .bracket {
@@ -99,14 +99,28 @@
         -webkit-text-fill-color: var(--accent-color);
       }
     </style>
-    <title>Welcome to the fucking show</title>
+    <title>Welcome to the show</title>
   </head>
 
   <body>
-    
-      <div class="welcomeBox">
-        <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
-      </div>
+    <script>
+      // local development and mobx
+      window.process = window.process || {
+        env: {
+          NODE_ENV: "development"
+        }
+      };
+    </script>
+
+    <!-- <div class="welcomeBox">
+      <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
+    </div>   -->
+
+    <haxcms-intro-label>
+      <p slot="title">Welcome</p>
+      <p slot="subtitle">Words</p>
+
+    </haxcms-intro-label>
     
 
     <script type="module">
