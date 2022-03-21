@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // dependencies / things imported
 import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
@@ -10,13 +11,14 @@ import 'wired-elements/lib/wired-button.js';
 export class HAXCMSSiteButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'hax-cms-site-button';
+    return 'haxcms-site-button';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
   constructor() {
     super();
     this.label = null;
+    this.value = null;
     this.disabled = false;
     this.elevation = '3';
     this.addEventListener('keydown', this._handleKeydown);
@@ -31,6 +33,7 @@ export class HAXCMSSiteButton extends SimpleColors {
   static get properties() {
     return {
       label: { type: String },
+      value: { type: String },
       disabled: { type: Boolean, reflect: true },
       elevation: { type: Number },
     };
@@ -72,7 +75,6 @@ export class HAXCMSSiteButton extends SimpleColors {
         background-color: white;
         color: black;
         font-size: 36px;
-        border: 10px;
       }
       .dialogBox {
         color: #0f460f;

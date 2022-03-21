@@ -1,3 +1,4 @@
+/* eslint-disable lit/attribute-value-entities */
 /* eslint-disable lit/binding-positions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -10,6 +11,11 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
+import './HAXCMS-Profolio-Button.js';
+
+const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
+const greyStyle = new URL('../assets/Grey Style.svg', import.meta.url).href;
+const partyStyle = new URL('../assets/Party Style.svg', import.meta.url).href;
 
 export class HAXAppSteps extends SimpleColors {
   static get tag() {
@@ -195,6 +201,10 @@ export class HAXAppSteps extends SimpleColors {
           --viewport-overflow-x: hidden;
           overflow: hidden;
         }
+        #grid-container {
+          display: grid;
+          grid-template-columns: 200px 200px;
+        }
         #hide-my-butt {
           visibility: hidden;
           width: 0;
@@ -206,6 +216,10 @@ export class HAXAppSteps extends SimpleColors {
           grid-gap: 30px;
         }
         .carousel-with-snapping-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           scroll-snap-align: center;
           scroll-snap-stop: always;
           width: var(--viewport-width);
@@ -231,6 +245,22 @@ export class HAXAppSteps extends SimpleColors {
         li a.active-step {
           background-color: orange;
           color: white;
+        }
+        haxcms-profolio-button {
+          padding: 10px 0px 10px 0px;
+        }
+        #theme-container {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
+        img {
+          pointer-events: none;
+        }
+        .theme-button {
+          background-color: transparent;
+          border: none;
         }
       `,
     ];
@@ -264,58 +294,62 @@ export class HAXAppSteps extends SimpleColors {
       <scrollable-component>
         <div class="carousel-with-snapping-track">
           <div class="carousel-with-snapping-item" id="step-1">
-            <input
-              type="radio"
-              id="course"
-              name="site_structure"
-              value="course"
-              @click=${this.chooseStructure}
-            />
-            <label for="course">Course</label><br />
-            <input
-              type="radio"
-              id="portfolio"
-              name="site_structure"
-              value="portfolio"
-              @click=${this.chooseStructure}
-            />
-            <label for="portfolio">Portfolio</label><br />
+            <div class="step-wrapper">
+              <haxcms-site-button
+                label="> Course"
+                value="course"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+              <haxcms-site-button
+                label="> Portfolio"
+                value="portfolio"
+                @click=${this.chooseStructure}
+              ></haxcms-site-button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
-            <input
-              type="radio"
-              id="business"
-              name="site_type"
-              value="business"
-              @click=${this.chooseType}
-            />
-            <label for="business">business</label><br />
-            <input
-              type="radio"
-              id="technology"
-              name="site_type"
-              value="technology"
-              @click=${this.chooseType}
-            />
-            <label for="technology">tech</label><br />
+            <div id="grid-container">
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Technology"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Business"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Art"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+              ></haxcms-profolio-button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-3">
-            <input
-              type="radio"
-              id="theme1"
-              name="site_style"
-              value="theme1"
-              @click=${this.chooseTheme}
-            />
-            <label for="theme1">Theme1</label><br />
-            <input
-              type="radio"
-              id="theme2"
-              name="site_style"
-              value="theme2"
-              @click=${this.chooseTheme}
-            />
-            <label for="theme2">Theme2</label><br />
+            <div id="themeContainer">
+              <button
+                value="blue"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${blueStyle} alt="" />
+              </button>
+              <button
+                value="gray"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${greyStyle} alt="" />
+              </button>
+              <button
+                value="party"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${partyStyle} alt="" />
+              </button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
             <haxcms-btopro-progress

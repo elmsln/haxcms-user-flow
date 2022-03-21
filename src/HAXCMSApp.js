@@ -43,7 +43,6 @@ export class HAXCMSApp extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   reset() {
-    console.log(`reset`);
     localStorage.setItem('step', '');
     localStorage.setItem('site', '');
     window.location.reload();
@@ -58,7 +57,7 @@ export class HAXCMSApp extends LitElement {
           width: 100vh;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: stretch;
           justify-content: center;
         }
         #btn {
