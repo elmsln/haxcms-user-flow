@@ -14,6 +14,7 @@ export class HAXCMSPortfolioButton extends SimpleColors {
     this.value = null;
     this.disabled = false;
     this.elevation = '3';
+    this.addEventListener('click', this._handleClick);
   }
 
   static get properties() {
@@ -35,15 +36,19 @@ export class HAXCMSPortfolioButton extends SimpleColors {
         switch (this.type) {
           case 'Technology':
             this.icon = 'hardware:desktop-mac';
+            this.value = 'technology';
             break;
           case 'Business':
             this.icon = 'maps:local-atm';
+            this.value = 'business';
             break;
           case 'Art':
             this.icon = 'image:palette';
+            this.value = 'art';
             break;
           default:
             this.icon = 'image:photo-filter';
+            this.value = 'own';
             this.type = 'Create Your Own';
             break;
         }
@@ -68,14 +73,19 @@ export class HAXCMSPortfolioButton extends SimpleColors {
       :host {
         background-color: white;
         font-family: 'Press Start 2P', cursive;
+      }
+      #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
         width: 132px;
         height: 112px;
       }
-      .haxButton {
+      wired-button {
         background-color: white;
         color: black;
-        width: 132px;
-        height: 112px;
+        display: inline-flex;
       }
       simple-icon {
         --simple-icon-width: 60px;
@@ -97,9 +107,11 @@ export class HAXCMSPortfolioButton extends SimpleColors {
           ?disabled=${this.disabled}
           class="haxButton"
         >
-          <simple-icon icon=${this.icon}> </simple-icon>
+          <div id="container">
+            <simple-icon icon=${this.icon}> </simple-icon>
 
-          <p>${this.type}</p>
+            <p>${this.type}</p>
+          </div>
         </wired-button>
       </div>
     `;

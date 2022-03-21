@@ -11,6 +11,11 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
+import './HAXCMS-Profolio-Button.js';
+
+const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
+const greyStyle = new URL('../assets/Grey Style.svg', import.meta.url).href;
+const partyStyle = new URL('../assets/Party Style.svg', import.meta.url).href;
 
 export class HAXAppSteps extends SimpleColors {
   static get tag() {
@@ -198,6 +203,10 @@ export class HAXAppSteps extends SimpleColors {
           width: 100%;
           border: 3px solid red;
         }
+        #grid-container {
+          display: grid;
+          grid-template-columns: 200px 200px;
+        }
         #hide-my-butt {
           visibility: hidden;
           width: 0;
@@ -238,6 +247,22 @@ export class HAXAppSteps extends SimpleColors {
         li a.active-step {
           background-color: orange;
           color: white;
+        }
+        haxcms-profolio-button {
+          padding: 10px 0px 10px 0px;
+        }
+        #theme-container {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
+        img {
+          pointer-events: none;
+        }
+        .theme-button {
+          background-color: transparent;
+          border: none;
         }
       `,
     ];
@@ -285,28 +310,48 @@ export class HAXAppSteps extends SimpleColors {
             </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
-            <haxcms-site-button
-              label="business"
-              value="business"
-              @click=${this.chooseType}
-            ></haxcms-site-button>
-            <haxcms-site-button
-              label="Technology"
-              value="technology"
-              @click=${this.chooseType}
-            ></haxcms-site-button>
+            <div id="grid-container">
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Technology"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Business"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+                type="Art"
+              ></haxcms-profolio-button>
+              <haxcms-profolio-button
+                @click=${this.chooseType}
+              ></haxcms-profolio-button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-3">
-            <haxcms-site-button
-              label="Theme1"
-              value="theme1"
-              @click=${this.chooseTheme}
-            ></haxcms-site-button>
-            <haxcms-site-button
-              label="theme2"
-              value="theme2"
-              @click=${this.chooseTheme}
-            ></haxcms-site-button>
+            <div id="themeContainer">
+              <button
+                value="blue"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${blueStyle} alt="" />
+              </button>
+              <button
+                value="gray"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${greyStyle} alt="" />
+              </button>
+              <button
+                value="party"
+                class="theme-button"
+                @click=${this.chooseTheme}
+              >
+                <img src=${partyStyle} alt="" />
+              </button>
+            </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-4">
             <haxcms-btopro-progress
