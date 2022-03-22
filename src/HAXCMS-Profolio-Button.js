@@ -1,4 +1,4 @@
-import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/simple-icon';
 import { html, css } from 'lit';
 

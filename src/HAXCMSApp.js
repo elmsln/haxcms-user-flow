@@ -1,5 +1,4 @@
 import { LitElement, css, html } from 'lit';
-import 'scrollable-component';
 import './HAXCMSAppRouter.js';
 import './hax-app-steps.js';
 

@@ -3,7 +3,7 @@
 import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
-import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import 'wired-elements/lib/wired-button.js';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
@@ -74,10 +74,16 @@ export class HAXCMSSiteButton extends SimpleColors {
       .haxButton {
         background-color: white;
         color: black;
-        font-size: 36px;
+        font-size: var(--haxcms-site-button-font-size, 26px);
       }
       .dialogBox {
         color: #0f460f;
+      }
+      span {
+        width: var(--haxcms-site-button-width, auto);
+        min-width: var(--haxcms-site-button-min-width, auto);
+        height: var(--haxcms-site-button-height, auto);
+        display: inline-flex;
       }
     `;
   }
@@ -129,15 +135,13 @@ export class HAXCMSSiteButton extends SimpleColors {
   // HTML - specific to Lit
   render() {
     return html`
-      <div>
-        <wired-button
-          elevation=${this.elevation}
-          ?disabled=${this.disabled}
-          class="haxButton"
-          @click="${this.buttonAlert}"
-          >${this.label}</wired-button
-        >
-      </div>
+      <wired-button
+        elevation=${this.elevation}
+        ?disabled=${this.disabled}
+        class="haxButton"
+        @click="${this.buttonAlert}"
+        ><span>${this.label}</span></wired-button
+      >
     `;
   }
 

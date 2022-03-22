@@ -1,5 +1,5 @@
 import { html, css } from 'lit';
-import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
 export class HAXCMSbtoproProgress extends SimpleColors {
@@ -43,6 +43,11 @@ export class HAXCMSbtoproProgress extends SimpleColors {
         .querySelector('#progress2')
         .addEventListener('promise-progress-finished', e => {
           if (e.detail.value) {
+            this.dispatchEvent(
+              new CustomEvent('promise-progress-finished', {
+                detail: true,
+              })
+            );
             const text = document.createElement('button');
             this.shadowRoot.querySelector('#value').textContent =
               this.shadowRoot.querySelector('#max').textContent;
@@ -79,7 +84,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           pointer-events: none;
         }
         .progress {
-          margin-top: -182px;
+          margin-top: -188px;
           margin-left: 8px;
           z-index: -1;
         }
@@ -89,7 +94,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
         }
         .game {
           font-family: 'Press Start 2P', cursive;
-          font-size: 26px;
+          font-size: 28px;
           font-weight: bold;
           text-align: center;
           width: 312px;
@@ -97,10 +102,10 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
           height: 48px;
-          margin-top: -98px;
+          margin-top: -110px;
           display: block;
           position: relative;
-          margin-left: 238px;
+          margin-left: 50px;
         }
         .game:focus,
         .game:hover {

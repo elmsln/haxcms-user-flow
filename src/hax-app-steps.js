@@ -7,11 +7,13 @@ import { html, css } from 'lit';
 import 'scrollable-component';
 import { autorun, toJS } from 'mobx';
 import './HAXCMSAppRouter.js';
-import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import '@lrnwebcomponents/rpg-character/rpg-character.js';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
 import './HAXCMS-Profolio-Button.js';
+import './HAXCMS-Site-Button.js';
 
 const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
 const greyStyle = new URL('../assets/Grey Style.svg', import.meta.url).href;
@@ -26,8 +28,8 @@ export class HAXAppSteps extends SimpleColors {
     super();
     this._progressReady = false;
     this.step = 1;
+    this.loaded = false;
     this.callList = [
-      () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
       () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
       () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
       () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
@@ -83,6 +85,7 @@ export class HAXAppSteps extends SimpleColors {
       routes: { type: Array },
       phrases: { type: Object },
       callList: { type: Array },
+      loaded: { type: Boolean, reflect: true },
     };
   }
 
@@ -153,6 +156,29 @@ export class HAXAppSteps extends SimpleColors {
         store[propName] = this[propName];
       }
     });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', this.maintainScroll.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('resize', this.maintainScroll.bind(this));
+    super.disconnectedCallback();
+  }
+
+  // account for resizing
+
+  maintainScroll() {
+    console.log('here');
+    if (this.shadowRoot && this.step) {
+      this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
+      // account for an animated window drag... stupid.
+      setTimeout(() => {
+        this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
+      }, 100);
+    }
   }
 
   firstUpdated(changedProperties) {
@@ -262,12 +288,27 @@ export class HAXAppSteps extends SimpleColors {
           background-color: transparent;
           border: none;
         }
+        haxcms-site-button {
+          --haxcms-site-button-width: 30vw;
+          --haxcms-site-button-min-width: 300px;
+        }
+        rpg-character {
+          position: fixed;
+          bottom: 17px;
+          left: 0;
+        }
       `,
     ];
   }
 
   getNewWord() {
     this.shadowRoot.querySelector('random-word').getNewWord();
+  }
+
+  progressFinished(e) {
+    if (e.detail) {
+      this.loaded = true;
+    }
   }
 
   render() {
@@ -296,11 +337,13 @@ export class HAXAppSteps extends SimpleColors {
           <div class="carousel-with-snapping-item" id="step-1">
             <div class="step-wrapper">
               <haxcms-site-button
+                tabindex="${this.step !== 1 ? '-1' : ''}"
                 label="> Course"
                 value="course"
                 @click=${this.chooseStructure}
               ></haxcms-site-button>
               <haxcms-site-button
+                tabindex="${this.step !== 1 ? '-1' : ''}"
                 label="> Portfolio"
                 value="portfolio"
                 @click=${this.chooseStructure}
@@ -310,18 +353,22 @@ export class HAXAppSteps extends SimpleColors {
           <div class="carousel-with-snapping-item" id="step-2">
             <div id="grid-container">
               <haxcms-profolio-button
+                tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Technology"
               ></haxcms-profolio-button>
               <haxcms-profolio-button
+                tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Business"
               ></haxcms-profolio-button>
               <haxcms-profolio-button
+                tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Art"
               ></haxcms-profolio-button>
               <haxcms-profolio-button
+                tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
               ></haxcms-profolio-button>
             </div>
@@ -332,6 +379,7 @@ export class HAXAppSteps extends SimpleColors {
                 value="blue"
                 class="theme-button"
                 @click=${this.chooseTheme}
+                tabindex="${this.step !== 3 ? '-1' : ''}"
               >
                 <img src=${blueStyle} alt="" />
               </button>
@@ -339,6 +387,7 @@ export class HAXAppSteps extends SimpleColors {
                 value="gray"
                 class="theme-button"
                 @click=${this.chooseTheme}
+                tabindex="${this.step !== 3 ? '-1' : ''}"
               >
                 <img src=${greyStyle} alt="" />
               </button>
@@ -346,6 +395,7 @@ export class HAXAppSteps extends SimpleColors {
                 value="party"
                 class="theme-button"
                 @click=${this.chooseTheme}
+                tabindex="${this.step !== 3 ? '-1' : ''}"
               >
                 <img src=${partyStyle} alt="" />
               </button>
@@ -354,13 +404,15 @@ export class HAXAppSteps extends SimpleColors {
           <div class="carousel-with-snapping-item" id="step-4">
             <haxcms-btopro-progress
               @progress-ready="${this.progressReady}"
+              @promise-progress-finished="${this.progressFinished}"
               .promises="${this.callList}"
+              tabindex="${this.step !== 4 ? '-1' : ''}"
             ></haxcms-btopro-progress>
+            <rpg-character ?walking="${!this.loaded}"></rpg-character>
           </div>
         </div>
       </scrollable-component>
     `;
   }
 }
-
 customElements.define(HAXAppSteps.tag, HAXAppSteps);
