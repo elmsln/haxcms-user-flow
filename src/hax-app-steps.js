@@ -294,8 +294,9 @@ export class HAXAppSteps extends SimpleColors {
         }
         rpg-character {
           position: fixed;
-          bottom: 17px;
-          left: 0;
+          top: -34px;
+          right: -29px;
+          transform: scale(0.5);
         }
       `,
     ];
@@ -408,10 +409,10 @@ export class HAXAppSteps extends SimpleColors {
               .promises="${this.callList}"
               tabindex="${this.step !== 4 ? '-1' : ''}"
             ></haxcms-btopro-progress>
-            <rpg-character ?walking="${!this.loaded}"></rpg-character>
           </div>
         </div>
       </scrollable-component>
+      <rpg-character circle></rpg-character>
     `;
   }
 }

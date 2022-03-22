@@ -84,7 +84,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           pointer-events: none;
         }
         .progress {
-          margin-top: -188px;
+          margin-top: -170px;
           margin-left: 8px;
           z-index: -1;
         }
@@ -102,7 +102,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
           height: 48px;
-          margin-top: -110px;
+          margin-top: -95px;
           display: block;
           position: relative;
           margin-left: 50px;
