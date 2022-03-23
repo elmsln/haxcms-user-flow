@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // dependencies / things imported
 import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
@@ -165,3 +166,4 @@ export class HAXCMSSiteBars extends SimpleColors {
     return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }
+customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);
