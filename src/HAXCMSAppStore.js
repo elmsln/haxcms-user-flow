@@ -29,6 +29,7 @@ function localStorageGet(name) {
 class Store {
   constructor() {
     this.location = null;
+    this.isNewUser = true;
     this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
     this.routes = [];
     this.site = !localStorageGet('site')
