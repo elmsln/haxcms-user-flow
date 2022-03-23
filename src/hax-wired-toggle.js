@@ -1,13 +1,23 @@
-import { rectangle, hachureEllipseFill, ellipse, svgNode } from 'wired-elements/lib/wired-lib.js';
-import {WiredToggle} from 'wired-elements/lib/wired-toggle.js';
-import { css, unsafeCSS } from "lit";
+import {
+  rectangle,
+  hachureEllipseFill,
+  ellipse,
+  svgNode,
+} from 'wired-elements/lib/wired-lib.js';
+import { WiredToggle } from 'wired-elements/lib/wired-toggle.js';
+import { css, unsafeCSS } from 'lit';
 // need to highjack in order to alter the scale so we can fit our icon
 // for states
-const sun = new URL("../assets/sun.svg",import.meta.url).href;
-const moon = new URL("../assets/moon.svg",import.meta.url).href;
+const sun = new URL('../assets/sun.svg', import.meta.url).href;
+const moon = new URL('../assets/moon.svg', import.meta.url).href;
 export class HAXWiredToggle extends WiredToggle {
+  // eslint-disable-next-line class-methods-use-this
   canvasSize() {
     return [100, 60];
+  }
+
+  static get tag() {
+    return 'hax-wired-toggle';
   }
 
   draw(svg, size) {
@@ -24,34 +34,34 @@ export class HAXWiredToggle extends WiredToggle {
 
   static get properties() {
     return {
-        checked: {
-          type: Boolean,
-          reflect: true
-        },
-        disabled: {
-            type: Boolean,
-            reflect: true
-          },
+      checked: {
+        type: Boolean,
+        reflect: true,
+      },
+      disabled: {
+        type: Boolean,
+        reflect: true,
+      },
     };
   }
 
   static get styles() {
-      return [...super.styles,
-        css`
+    return [
+      ...super.styles,
+      css`
         :host div {
-            background-image: url("${unsafeCSS(sun)}");
-            background-repeat: no-repeat;
-            background-position: right;
-            background-size: 45%;
-            --wired-toggle-off-color: #00e1ff;
-            --wired-toggle-on-color: #060638;
+          background-image: url('${unsafeCSS(sun)}');
+          background-repeat: no-repeat;
+          background-position: right;
+          background-size: 45%;
+          --wired-toggle-off-color: #00e1ff;
+          --wired-toggle-on-color: #060638;
         }
         :host([checked]) div {
-            background-image: url("${unsafeCSS(moon)}");
-            background-position: left;
+          background-image: url('${unsafeCSS(moon)}');
+          background-position: left;
         }
-        `];
+      `,
+    ];
   }
 }
-
-customElements.define("hax-wired-toggle", HAXWiredToggle);

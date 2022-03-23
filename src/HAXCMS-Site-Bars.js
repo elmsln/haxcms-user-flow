@@ -2,7 +2,7 @@
 import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
-import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors';
+import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { animate } from '@lit-labs/motion';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
