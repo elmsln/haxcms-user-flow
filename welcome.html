@@ -44,11 +44,12 @@
           --accent-color: white;
         }
 
-        .welcome {
-          -webkit-text-stroke: 0px var(--accent-color);
-          -webkit-text-fill-color: white;
-        }
       }
+
+      .introLabel {
+        margin-top: 10%;
+      }
+
 
       @media (min-width: 721px) {
         :root {
@@ -80,24 +81,6 @@
         }
       }
 
-      .welcomeBox {
-        text-align: center;
-        margin: 0;
-        font-size: 60px;
-        
-      }
-
-      .welcome {
-        -webkit-text-stroke: 1px var(--accent-color);
-        -webkit-text-fill-color: white;
-      }
-
-      .bracket {
-        font-size: 100px;
-        vertical-align: middle;
-        -webkit-text-stroke: 0px;
-        -webkit-text-fill-color: var(--accent-color);
-      }
     </style>
     <title>Welcome to the show</title>
   </head>
@@ -111,11 +94,9 @@
         }
       };
     </script>
-
-    <haxcms-intro-label>
-      <p slot="title">Welcome</p>
-      <p slot="subtitle">Start your journey now!</p>
-    </haxcms-intro-label>
+    <div class="introLabel">
+      <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
+    </div>
     
 
     <script type="module">

@@ -1,5 +1,6 @@
 // dependencies / things imported
 import { LitElement, html, css } from 'lit';
+import '@lrnwebcomponents/future-terminal-text/future-terminal-text.js';
 
 export class HAXCMSIntroLabel extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
@@ -15,12 +16,12 @@ export class HAXCMSIntroLabel extends LitElement {
 
   static get properties() {
     return {
-      title: { type: String, reflect: true },
-      subtitle: { type: String, reflect: true },
+      title: { type: String },
+      subtitle: { type: String },
     };
   }
 
-  // CSS - specific to Lit
+  // TODO: If scaling is weird with font-sizes, try using clamp() (https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/)
   static get styles() {
     return css`
       :host {
@@ -42,56 +43,54 @@ export class HAXCMSIntroLabel extends LitElement {
 
       .introLabel {
         text-align: center;
-        margin: 0;
-        font-size: 50px;
+        font-size: 5vw;
       }
 
       .title {
         -webkit-text-stroke: 1px var(--accent-color);
         -webkit-text-fill-color: white;
         font-weight: normal;
-        margin-bottom: 0px;
+        font-size: 5vw;
       }
 
       .subtitle {
         color: var(--accent-color);
         font-weight: normal;
-        margin-top: 0px;
+        margin-top: 2.5px;
+        font-size: 2.5vw;
       }
 
       .bracket {
-        font-size: 100px;
-        font-weight: 400;
+        font-size: 10vw;
+        font-weight: normal;
         vertical-align: middle;
         -webkit-text-stroke: 0px;
         -webkit-text-fill-color: var(--accent-color);
       }
 
-      .title ::slotted(*) {
-        display: inline;
-        font-size: 50px;
-        vertical-align: middle;
+      /* .title ::slotted(*),
+      .title .titleContent {
+        
       }
 
-      .subtitle ::slotted(*) {
-        font-size: 24px;
-        vertical-align: middle;
-        padding-top: 0px;
-      }
+      .subtitle ::slotted(*),
+      .subtitle .subtitleContent {
+        
+      } */
     `;
   }
 
-  // HTML - specific to Lit
   render() {
     return html`
       <div class="introLabel">
-        <h1 class="title">
-          <span class="bracket">&#60;</span><slot name="title"></slot
+        <div class="title" part="title">
+          <span class="bracket">&#60;</span
+          ><slot name="title">${this.title}</slot
           ><span class="bracket">&#62;</span>
-        </h1>
-        <h2 class="subtitle">
-          <slot name="subtitle"></slot>
-        </h2>
+        </div>
+        <div class="subtitle" part="subtitle">
+          <slot name="subtitle">${this.subtitle}</slot>
+        </div>
       </div>
     `;
   }
