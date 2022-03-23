@@ -49,3 +49,4 @@ export class HAXCMSTitleLabel extends SimpleColors {
     return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }
+customElements.define(HAXCMSTitleLabel.tag, HAXCMSTitleLabel);

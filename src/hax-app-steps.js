@@ -12,6 +12,7 @@ import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
 import './HAXCMS-Profolio-Button.js';
+import './HAXCMS-Title-Label.js';
 
 const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
 const greyStyle = new URL('../assets/Grey Style.svg', import.meta.url).href;
@@ -26,6 +27,7 @@ export class HAXAppSteps extends SimpleColors {
     super();
     this._progressReady = false;
     this.step = 1;
+    this.label = 'Welcome';
     this.callList = [
       () => import('@lrnwebcomponents/simple-colors/simple-colors.js'),
       () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
@@ -50,7 +52,7 @@ export class HAXAppSteps extends SimpleColors {
         component: 'fake',
         step: 2,
         id: 'step-2',
-        label: 'Step 2',
+        label: 'Select Type',
       },
       {
         path: 'step-3',
@@ -74,12 +76,16 @@ export class HAXAppSteps extends SimpleColors {
     autorun(() => {
       this.step = toJS(store.step);
     });
+    autorun(() => {
+      this.label = toJS(store.location.route.label);
+    });
   }
 
   static get properties() {
     return {
       ...super.properties,
       step: { type: Number, reflect: true },
+      label: { type: String },
       routes: { type: Array },
       phrases: { type: Object },
       callList: { type: Array },
@@ -278,6 +284,7 @@ export class HAXAppSteps extends SimpleColors {
         .phrases="${this.phrases}"
         @click="${this.getNewWord}"
       ></random-word>
+      <haxcms-title-label text=${this.label}></haxcms-title-label>
       <ul id="hide-my-butt">
         ${this.routes.map(
           item =>
