@@ -26,6 +26,7 @@
     "@lrnwebcomponents/simple-colors": "^4.0.20",
     "@lrnwebcomponents/simple-icon": "^4.0.20",
     "@lrnwebcomponents/rpg-character": "^4.0.20",
+    "@lrnwebcomponents/jwt-login": "^4.0.20",
     "@vaadin/router": "^1.7.4",
     "lit": "^2.2.1",
     "mobx": "^6.3.13",
