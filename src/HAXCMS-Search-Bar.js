@@ -1,6 +1,7 @@
 /* eslint-disable no-return-assign */
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { html, css } from 'lit';
+import { store } from './HAXCMSAppStore.js';
 import './HAXCMS-Site-Bars.js';
 
 export class HAXCMSSearchBar extends SimpleColors {
@@ -12,9 +13,6 @@ export class HAXCMSSearchBar extends SimpleColors {
   constructor() {
     super();
     this.searchTerm = '';
-    this.searchItems = [];
-    this.displayItems = [];
-    this.jsonLoc = '../assets/site.json';
   }
 
   // Site.json is coming from
@@ -23,20 +21,7 @@ export class HAXCMSSearchBar extends SimpleColors {
     return {
       ...super.properties,
       searchTerm: { type: String, reflect: true },
-      searchItems: { type: Array },
-      displayItems: { type: Array },
-      jsonLoc: { type: String },
     };
-  }
-
-  firstUpdated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === 'searchItems') {
-        fetch(this.jsonLoc)
-          .then(res => res.json())
-          .then(data => (this.searchItems = data.items));
-      }
-    });
   }
 
   updated(changedProperties) {
@@ -45,19 +30,7 @@ export class HAXCMSSearchBar extends SimpleColors {
         this.displayItems = [...this.searchItems];
       }
       if (propName === 'searchTerm') {
-        this.displayItems = this.searchItems.filter(word => {
-          if (
-            word.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            word.description
-              .toLowerCase()
-              .includes(this.searchTerm.toLowerCase()) ||
-            word.author.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            word.slug.toLowerCase().includes(this.searchTerm.toLowerCase())
-          ) {
-            return true;
-          }
-          return false;
-        });
+        store.searchTerm = this.searchTerm;
       }
     });
   }
@@ -83,18 +56,6 @@ export class HAXCMSSearchBar extends SimpleColors {
     return html`
       <p>Enter Stuff into Me</p>
       <input id="searchField" @input=${this.search} type="text" />
-      <ul id="results">
-        ${this.displayItems.map(
-          item =>
-            html`<li>
-              <haxcms-site-bar accent-color="green">
-                <p slot="heading">${item.title}</p>
-                <p slot="sub-heading">${item.author}</p>
-                <p slot="band">${item.description}</p>
-              </haxcms-site-bar>
-            </li>`
-        )}
-      </ul>
     `;
   }
 

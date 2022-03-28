@@ -32,6 +32,7 @@ class Store {
     this.isNewUser = true;
     this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
     this.routes = [];
+    this.searchTerm = '';
     this.site = !localStorageGet('site')
       ? { structure: null, type: null, theme: null }
       : localStorageGet('site');
@@ -39,6 +40,7 @@ class Store {
     makeObservable(this, {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
+      searchTerm: observable,
       routes: observable, // routes that are valid
       site: observable, // information about the site being created
       activeItem: computed, // active item is route

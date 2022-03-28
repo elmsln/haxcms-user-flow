@@ -6,6 +6,7 @@ import { RandomWord } from './random-word.js';
 import { HAXWiredToggle } from './hax-wired-toggle.js';
 import { HAXCMSPortfolioButton } from './HAXCMS-Profolio-Button.js';
 import { HAXCMSSearchBar } from './HAXCMS-Search-Bar.js';
+import { HAXCMSSearchResults } from './HAXCMS-Search-Results.js';
 
 customElements.define(RandomWord.tag, RandomWord);
 customElements.define(WiredElementsTest.tag, WiredElementsTest);
@@ -15,3 +16,4 @@ customElements.define(HAXCMSWelcomeBar.tag, HAXCMSWelcomeBar);
 customElements.define(HAXWiredToggle.tag, HAXWiredToggle);
 customElements.define(HAXCMSPortfolioButton.tag, HAXCMSPortfolioButton);
 customElements.define(HAXCMSSearchBar.tag, HAXCMSSearchBar);
+customElements.define(HAXCMSSearchResults.tag, HAXCMSSearchResults);
