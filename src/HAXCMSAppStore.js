@@ -41,6 +41,7 @@ class Store {
       location: observable.ref, // router location in url
       step: observable, // step that we're on in our build
       searchTerm: observable,
+      isNewUser: observable,
       routes: observable, // routes that are valid
       site: observable, // information about the site being created
       activeItem: computed, // active item is route

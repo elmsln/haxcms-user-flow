@@ -28,6 +28,7 @@ export class HAXAppSteps extends SimpleColors {
     super();
     this._progressReady = false;
     this.step = 1;
+    this.isNewUser = true;
     this.loaded = false;
     this.callList = [
       () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
@@ -76,6 +77,9 @@ export class HAXAppSteps extends SimpleColors {
     autorun(() => {
       this.step = toJS(store.step);
     });
+    autorun(() => {
+      this.isNewUser = toJS(store.isNewUser);
+    });
   }
 
   static get properties() {
@@ -83,6 +87,7 @@ export class HAXAppSteps extends SimpleColors {
       ...super.properties,
       step: { type: Number, reflect: true },
       routes: { type: Array },
+      isNewUser: { type: Boolean, reflect: true },
       phrases: { type: Object },
       callList: { type: Array },
       loaded: { type: Boolean, reflect: true },
@@ -313,107 +318,109 @@ export class HAXAppSteps extends SimpleColors {
   }
 
   render() {
-    return html`
-      <haxcms-app-router></haxcms-app-router>
-      <random-word
-        key="new"
-        .phrases="${this.phrases}"
-        @click="${this.getNewWord}"
-      ></random-word>
-      <ul id="hide-my-butt">
-        ${this.routes.map(
-          item =>
-            html`<li>
-              <a
-                href="${item.path}"
-                id="link-${item.id}"
-                class="${this.step === item.step ? 'active-step' : ''}"
-                >${item.label}</a
-              >
-            </li>`
-        )}
-      </ul>
-      <scrollable-component>
-        <div class="carousel-with-snapping-track">
-          <div class="carousel-with-snapping-item" id="step-1">
-            <div class="step-wrapper">
-              <haxcms-site-button
-                tabindex="${this.step !== 1 ? '-1' : ''}"
-                label="> Course"
-                value="course"
-                @click=${this.chooseStructure}
-              ></haxcms-site-button>
-              <haxcms-site-button
-                tabindex="${this.step !== 1 ? '-1' : ''}"
-                label="> Portfolio"
-                value="portfolio"
-                @click=${this.chooseStructure}
-              ></haxcms-site-button>
+    return html`${store.isNewUser
+      ? html` <p>Hello new User</p> `
+      : html`
+          <haxcms-app-router></haxcms-app-router>
+          <random-word
+            key="new"
+            .phrases="${this.phrases}"
+            @click="${this.getNewWord}"
+          ></random-word>
+          <ul id="hide-my-butt">
+            ${this.routes.map(
+              item =>
+                html`<li>
+                  <a
+                    href="${item.path}"
+                    id="link-${item.id}"
+                    class="${this.step === item.step ? 'active-step' : ''}"
+                    >${item.label}</a
+                  >
+                </li>`
+            )}
+          </ul>
+          <scrollable-component>
+            <div class="carousel-with-snapping-track">
+              <div class="carousel-with-snapping-item" id="step-1">
+                <div class="step-wrapper">
+                  <haxcms-site-button
+                    tabindex="${this.step !== 1 ? '-1' : ''}"
+                    label="> Course"
+                    value="course"
+                    @click=${this.chooseStructure}
+                  ></haxcms-site-button>
+                  <haxcms-site-button
+                    tabindex="${this.step !== 1 ? '-1' : ''}"
+                    label="> Portfolio"
+                    value="portfolio"
+                    @click=${this.chooseStructure}
+                  ></haxcms-site-button>
+                </div>
+              </div>
+              <div class="carousel-with-snapping-item" id="step-2">
+                <div id="grid-container">
+                  <haxcms-profolio-button
+                    tabindex="${this.step !== 2 ? '-1' : ''}"
+                    @click=${this.chooseType}
+                    type="Technology"
+                  ></haxcms-profolio-button>
+                  <haxcms-profolio-button
+                    tabindex="${this.step !== 2 ? '-1' : ''}"
+                    @click=${this.chooseType}
+                    type="Business"
+                  ></haxcms-profolio-button>
+                  <haxcms-profolio-button
+                    tabindex="${this.step !== 2 ? '-1' : ''}"
+                    @click=${this.chooseType}
+                    type="Art"
+                  ></haxcms-profolio-button>
+                  <haxcms-profolio-button
+                    tabindex="${this.step !== 2 ? '-1' : ''}"
+                    @click=${this.chooseType}
+                  ></haxcms-profolio-button>
+                </div>
+              </div>
+              <div class="carousel-with-snapping-item" id="step-3">
+                <div id="themeContainer">
+                  <button
+                    value="blue"
+                    class="theme-button"
+                    @click=${this.chooseTheme}
+                    tabindex="${this.step !== 3 ? '-1' : ''}"
+                  >
+                    <img src=${blueStyle} alt="" />
+                  </button>
+                  <button
+                    value="gray"
+                    class="theme-button"
+                    @click=${this.chooseTheme}
+                    tabindex="${this.step !== 3 ? '-1' : ''}"
+                  >
+                    <img src=${greyStyle} alt="" />
+                  </button>
+                  <button
+                    value="party"
+                    class="theme-button"
+                    @click=${this.chooseTheme}
+                    tabindex="${this.step !== 3 ? '-1' : ''}"
+                  >
+                    <img src=${partyStyle} alt="" />
+                  </button>
+                </div>
+              </div>
+              <div class="carousel-with-snapping-item" id="step-4">
+                <haxcms-btopro-progress
+                  @progress-ready="${this.progressReady}"
+                  @promise-progress-finished="${this.progressFinished}"
+                  .promises="${this.callList}"
+                  tabindex="${this.step !== 4 ? '-1' : ''}"
+                ></haxcms-btopro-progress>
+              </div>
             </div>
-          </div>
-          <div class="carousel-with-snapping-item" id="step-2">
-            <div id="grid-container">
-              <haxcms-profolio-button
-                tabindex="${this.step !== 2 ? '-1' : ''}"
-                @click=${this.chooseType}
-                type="Technology"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
-                tabindex="${this.step !== 2 ? '-1' : ''}"
-                @click=${this.chooseType}
-                type="Business"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
-                tabindex="${this.step !== 2 ? '-1' : ''}"
-                @click=${this.chooseType}
-                type="Art"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
-                tabindex="${this.step !== 2 ? '-1' : ''}"
-                @click=${this.chooseType}
-              ></haxcms-profolio-button>
-            </div>
-          </div>
-          <div class="carousel-with-snapping-item" id="step-3">
-            <div id="themeContainer">
-              <button
-                value="blue"
-                class="theme-button"
-                @click=${this.chooseTheme}
-                tabindex="${this.step !== 3 ? '-1' : ''}"
-              >
-                <img src=${blueStyle} alt="" />
-              </button>
-              <button
-                value="gray"
-                class="theme-button"
-                @click=${this.chooseTheme}
-                tabindex="${this.step !== 3 ? '-1' : ''}"
-              >
-                <img src=${greyStyle} alt="" />
-              </button>
-              <button
-                value="party"
-                class="theme-button"
-                @click=${this.chooseTheme}
-                tabindex="${this.step !== 3 ? '-1' : ''}"
-              >
-                <img src=${partyStyle} alt="" />
-              </button>
-            </div>
-          </div>
-          <div class="carousel-with-snapping-item" id="step-4">
-            <haxcms-btopro-progress
-              @progress-ready="${this.progressReady}"
-              @promise-progress-finished="${this.progressFinished}"
-              .promises="${this.callList}"
-              tabindex="${this.step !== 4 ? '-1' : ''}"
-            ></haxcms-btopro-progress>
-          </div>
-        </div>
-      </scrollable-component>
-      <rpg-character circle></rpg-character>
-    `;
+          </scrollable-component>
+          <rpg-character circle></rpg-character>
+        `} `;
   }
 }
 customElements.define(HAXAppSteps.tag, HAXAppSteps);
