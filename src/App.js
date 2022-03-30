@@ -4,7 +4,7 @@ import { HAXCMSSiteDetails } from './HAXCMS-Site-Details.js';
 import { HAXCMSWelcomeBar } from './HAXCMS-Welcome-Bar.js';
 import { RandomWord } from './random-word.js';
 import { HAXWiredToggle } from './hax-wired-toggle.js';
-import { HAXCMSPortfolioButton } from './HAXCMS-Profolio-Button.js';
+import { HAXCMSPortfolioButton } from './HAXCMS-portfolio-Button.js';
 import { HAXCMSSearchBar } from './HAXCMS-Search-Bar.js';
 import { HAXCMSSearchResults } from './HAXCMS-Search-Results.js';
 
