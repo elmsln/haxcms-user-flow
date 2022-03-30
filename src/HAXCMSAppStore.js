@@ -30,12 +30,14 @@ class Store {
   constructor() {
     this.location = null;
     this.isNewUser = true;
+   // If user is new, make sure they are on step 1
+
     if (this.isNewUser) {
       this.step = 1;
     } else {
       this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
     }
-
+    this.isLoggedIn = true;
     this.routes = [];
     this.searchTerm = '';
     this.site = !localStorageGet('site')
@@ -47,6 +49,7 @@ class Store {
       step: observable, // step that we're on in our build
       searchTerm: observable,
       isNewUser: observable,
+      isLoggedIn: observable,
       routes: observable, // routes that are valid
       site: observable, // information about the site being created
       activeItem: computed, // active item is route
