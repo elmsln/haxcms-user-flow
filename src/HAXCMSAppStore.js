@@ -30,7 +30,12 @@ class Store {
   constructor() {
     this.location = null;
     this.isNewUser = true;
-    this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
+    if (this.isNewUser) {
+      this.step = 1;
+    } else {
+      this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
+    }
+
     this.routes = [];
     this.searchTerm = '';
     this.site = !localStorageGet('site')
