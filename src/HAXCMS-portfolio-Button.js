@@ -5,7 +5,7 @@ import { html, css } from 'lit';
 export class HAXCMSPortfolioButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-profolio-button';
+    return 'haxcms-portfolio-button';
   }
 
   constructor() {

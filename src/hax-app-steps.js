@@ -12,7 +12,7 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
-import './HAXCMS-Profolio-Button.js';
+import './HAXCMS-portfolio-Button.js';
 import './HAXCMS-Site-Button.js';
 
 const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
@@ -278,7 +278,7 @@ export class HAXAppSteps extends SimpleColors {
           background-color: orange;
           color: white;
         }
-        haxcms-profolio-button {
+        haxcms-portfolio-button {
           padding: 10px 0px 10px 0px;
         }
         #theme-container {
@@ -380,7 +380,6 @@ export class HAXAppSteps extends SimpleColors {
                   @click=${this.chooseType}
                 ></haxcms-profolio-button>
               </div>
-            </div>
             <div class="carousel-with-snapping-item" id="step-3">
               <div id="themeContainer">
                 <button
