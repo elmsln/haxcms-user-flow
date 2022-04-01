@@ -5,7 +5,7 @@ import { html, css } from 'lit';
 export class HAXCMSPortfolioButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-profolio-button';
+    return 'haxcms-portfolio-button';
   }
 
   constructor() {
@@ -71,9 +71,26 @@ export class HAXCMSPortfolioButton extends SimpleColors {
   static get styles() {
     return css`
       :host {
-        background-color: white;
+        background-color: transparent;
         font-family: 'Press Start 2P', cursive;
       }
+
+      :root {
+        --accent-color: black;
+        --background-color: white;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --accent-color: white;
+          --background-color: black;
+        }
+        /* .haxButton {
+          color: var(--accent-color);
+          background-color: black;
+        } */
+      }
+
       #container {
         display: flex;
         flex-direction: column;
@@ -82,19 +99,19 @@ export class HAXCMSPortfolioButton extends SimpleColors {
         width: 132px;
         height: 112px;
       }
-      wired-button {
-        background-color: white;
-        color: black;
+      .haxButton {
+        background-color: var(--background-color);
+        color: var(--accent-color);
         display: inline-flex;
       }
       simple-icon {
         --simple-icon-width: 60px;
         --simple-icon-height: 60px;
-        --simple-icon-color: black;
+        --simple-icon-color: var(--accent-color);
       }
       p {
         font-size: 10px;
-        color: black;
+        color: var(--accent-color);
       }
     `;
   }

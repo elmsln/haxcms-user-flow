@@ -52,8 +52,6 @@ export class HAXCMSApp extends LitElement {
       css`
         :host {
           display: block;
-          height: 100vh;
-          width: 100vh;
           display: flex;
           flex-direction: column;
           align-items: stretch;

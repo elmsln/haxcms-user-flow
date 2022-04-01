@@ -26,6 +26,7 @@ export class HAXCMSIntroLabel extends LitElement {
     return css`
       :host {
         font: sans-serif;
+        font-family: 'Press Start 2P', cursive;
       }
       :root {
         --accent-color: white;
@@ -35,29 +36,25 @@ export class HAXCMSIntroLabel extends LitElement {
         :root {
           --accent-color: black;
         }
-        .titles {
-          -webkit-text-stroke: 0px var(--accent-color);
-          -webkit-text-fill-color: white;
-        }
       }
 
       .introLabel {
         text-align: center;
-        font-size: 5vw;
+        font-size: 4vw;
       }
 
       .title {
         -webkit-text-stroke: 1px var(--accent-color);
         -webkit-text-fill-color: white;
         font-weight: normal;
-        font-size: 5vw;
+        font-size: 4vw;
       }
 
       .subtitle {
         color: var(--accent-color);
         font-weight: normal;
         margin-top: 2.5px;
-        font-size: 2.5vw;
+        font-size: 2vw;
       }
 
       .bracket {
@@ -82,7 +79,7 @@ export class HAXCMSIntroLabel extends LitElement {
 
   render() {
     return html`
-      <div class="introLabel">
+      <div class="topBar">
         <div class="title" part="title">
           <span class="bracket">&#60;</span
           ><slot name="title">${this.title}</slot

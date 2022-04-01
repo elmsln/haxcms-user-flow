@@ -12,7 +12,7 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
 import './HAXCMS-btopro-Progress.js';
-import './HAXCMS-Profolio-Button.js';
+import './HAXCMS-Portfolio-Button.js';
 import './HAXCMS-Site-Button.js';
 
 const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
@@ -220,6 +220,9 @@ export class HAXAppSteps extends SimpleColors {
     return [
       ...super.styles,
       css`
+        :root {
+          background: blue;
+        }
         scrollable-component {
           --scrollbar-width: 0px;
           --scrollbar-height: 0px;
@@ -230,6 +233,7 @@ export class HAXAppSteps extends SimpleColors {
         #grid-container {
           display: grid;
           grid-template-columns: 200px 200px;
+          background: transparent;
         }
         #hide-my-butt {
           visibility: hidden;
@@ -272,8 +276,9 @@ export class HAXAppSteps extends SimpleColors {
           background-color: orange;
           color: white;
         }
-        haxcms-profolio-button {
+        haxcms-portfolio-button {
           padding: 10px 0px 10px 0px;
+          background: transparent;
         }
         #theme-container {
           display: flex;
@@ -353,25 +358,25 @@ export class HAXAppSteps extends SimpleColors {
           </div>
           <div class="carousel-with-snapping-item" id="step-2">
             <div id="grid-container">
-              <haxcms-profolio-button
+              <haxcms-portfolio-button
                 tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Technology"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
+              ></haxcms-portfolio-button>
+              <haxcms-portfolio-button
                 tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Business"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
+              ></haxcms-portfolio-button>
+              <haxcms-portfolio-button
                 tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
                 type="Art"
-              ></haxcms-profolio-button>
-              <haxcms-profolio-button
+              ></haxcms-portfolio-button>
+              <haxcms-portfolio-button
                 tabindex="${this.step !== 2 ? '-1' : ''}"
                 @click=${this.chooseType}
-              ></haxcms-profolio-button>
+              ></haxcms-portfolio-button>
             </div>
           </div>
           <div class="carousel-with-snapping-item" id="step-3">

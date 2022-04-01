@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="Description" content="Put your description here." />
+    <base href="/" />
+
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+
+    </style>
+    <script>
+      // local development and mobx
+      window.process = window.process || {
+        env: {
+          NODE_ENV: "development"
+        }
+      };
+      </script>
+    <title>Welcome to the show</title>
+  </head>
+
+  <body>
+    <haxcms-top-bar>
+      <div slot="itemsLeft">it's a </div>
+      <img src="lib\HAXLogoWhite.svg" slot="itemsCenter">
+      <div slot="itemsRight">start</div>
+    </haxcms-top-bar>
+
+    <script type="module">
+      import './src/App.js';
+      import './src/HAXCMSApp.js';
+    </script>
+  </body>
+  
+</html>

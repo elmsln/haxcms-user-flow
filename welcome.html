@@ -32,6 +32,7 @@
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
         --accent-color: black;
+        color: var(--accent-color);
       }
       
       @media (prefers-color-scheme: dark) {
@@ -42,6 +43,7 @@
           background-position: center center, top left, top right;
           background-size: auto, 20% auto, 20% auto;
           --accent-color: white;
+          color: var(--accent-color);
         }
 
       }
@@ -94,6 +96,8 @@
         }
       };
     </script>
+
+    <haxcms-top-bar></haxcms-top-bar>
     <div class="introLabel">
       <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
     </div>
@@ -101,7 +105,6 @@
 
     <script type="module">
       import './src/App.js';
-      import './src/test.js';
       import './src/HAXCMSApp.js';
     </script>
   </body>

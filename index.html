@@ -24,6 +24,8 @@
         }
       };
       </script>
+
+    <!-- TODO: Un-flex this.. -->
     <style>
       body {
         height: 100vh;
@@ -46,6 +48,10 @@
         --accent-color: black;
       }
       
+      .introLabel {
+        /* padding-top: 50%; */
+      }
+
       @media (prefers-color-scheme: dark) {
         :root {
           background-color: black;
@@ -56,10 +62,6 @@
           --accent-color: white;
         }
 
-        .welcome {
-          -webkit-text-stroke: 0px var(--accent-color);
-          -webkit-text-fill-color: white;
-        }
       }
 
       @media (min-width: 721px) {
@@ -92,32 +94,14 @@
         }
       }
 
-      .welcomeBox {
-        text-align: center;
-        margin: 0;
-        font-size: 60px;
-        
-      }
-
-      .welcome {
-        -webkit-text-stroke: 1px var(--accent-color);
-	      -webkit-text-fill-color: white;
-      }
-
-      .bracket {
-        font-size: 100px;
-        vertical-align: middle;
-        -webkit-text-stroke: 0px;
-        -webkit-text-fill-color: var(--accent-color);
-      }
     </style>
     <title>Let's HAX your web</title>
   </head>
 
   <body>
   
-      <div class="welcomeBox">
-        <p class="welcome"><span class="bracket">&#60;</span>Welcome<span class="bracket">&#62;</span></p>
+      <div class="introLabel">
+        <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
       </div>
       <haxcms-app demo></haxcms-app>
       
