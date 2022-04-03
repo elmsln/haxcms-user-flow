@@ -22,17 +22,20 @@
   },
   "dependencies": {
     "@lit-labs/motion": "^1.0.2",
+    "@lrnwebcomponents/future-terminal-text": "^4.0.18",
     "@lrnwebcomponents/promise-progress": "^4.0.20",
+    "@lrnwebcomponents/rpg-character": "^4.0.20",
     "@lrnwebcomponents/simple-colors": "^4.0.20",
     "@lrnwebcomponents/simple-icon": "^4.0.20",
-    "@lrnwebcomponents/rpg-character": "^4.0.20",
     "@lrnwebcomponents/jwt-login": "^4.0.20",
     "@vaadin/router": "^1.7.4",
     "lit": "^2.2.1",
     "mobx": "^6.3.13",
+    "roughjs": "4.4",
     "scrollable-component": "^1.2.0",
-    "wired-elements": "3.0.0-rc.6",
-    "roughjs": "4.4"
+    "simple-colors": "^0.1.0",
+    "simple-icons": "^6.7.0",
+    "wired-elements": "3.0.0-rc.6"
   },
   "resolutions": {
     "roughjs": "4.4",

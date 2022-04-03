@@ -15,17 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <script src="./node_modules/@lrnwebcomponents/deduping-fix/deduping-fix.js"></script>
-    <script>
-      // local development and mobx
-      window.process = window.process || {
-        env: {
-          NODE_ENV: "development"
-        }
-      };
-      </script>
 
-    <!-- TODO: Un-flex this.. -->
     <style>
       body {
         height: 100vh;
@@ -34,10 +24,6 @@
         padding: 0;
         font-family: 'Press Start 2P', sans-serif;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
       }
 
       :root {
@@ -46,12 +32,9 @@
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
         --accent-color: black;
+        color: var(--accent-color);
       }
       
-      .introLabel {
-        /* padding-top: 50%; */
-      }
-
       @media (prefers-color-scheme: dark) {
         :root {
           background-color: black;
@@ -60,9 +43,15 @@
           background-position: center center, top left, top right;
           background-size: auto, 20% auto, 20% auto;
           --accent-color: white;
+          color: var(--accent-color);
         }
 
       }
+
+      .introLabel {
+        margin-top: 10%;
+      }
+
 
       @media (min-width: 721px) {
         :root {
@@ -95,26 +84,28 @@
       }
 
     </style>
-    <title>Let's HAX your web</title>
+    <title>Welcome to the show</title>
   </head>
 
   <body>
-  
-      <div class="introLabel">
-        <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
-      </div>
-      <haxcms-app demo></haxcms-app>
+    <script>
+      // local development and mobx
+      window.process = window.process || {
+        env: {
+          NODE_ENV: "development"
+        }
+      };
+    </script>
 
-      <!-- <haxcms-search-bar></haxcms-search-bar>
-      <haxcms-search-results></haxcms-search-results> -->
-
-      <!-- <haxcms-site-login></haxcms-site-login> -->
-      
+    <haxcms-top-bar></haxcms-top-bar>
+    <div class="introLabel">
+      <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
+    </div>
+    
 
     <script type="module">
       import './src/App.js';
       import './src/HAXCMSApp.js';
-      import './src/HAXCMS-Site-Login.js';
     </script>
   </body>
 </html>
