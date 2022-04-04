@@ -2,9 +2,9 @@ import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
-export class HAXCMSbtoproProgress extends SimpleColors {
+export class HAXCMSHatProgress extends SimpleColors {
   static get tag() {
-    return 'haxcms-btopro-progress';
+    return 'haxcms-hat-progress';
   }
 
   constructor() {
@@ -74,7 +74,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           margin-left: 30px;
           font-size: 30px;
           color: var(--simple-colors-default-theme-grey-1, white);
-          font-family: 'Press Start 2P', cursive;
+          font-family: 'Press Start 2P', sans-serif;
           width: 350px;
           text-align: center;
         }
@@ -93,7 +93,7 @@ export class HAXCMSbtoproProgress extends SimpleColors {
           width: 350px;
         }
         .game {
-          font-family: 'Press Start 2P', cursive;
+          font-family: 'Press Start 2P', sans-serif;
           font-size: 28px;
           font-weight: bold;
           text-align: center;
@@ -140,4 +140,4 @@ export class HAXCMSbtoproProgress extends SimpleColors {
     `;
   }
 }
-customElements.define(HAXCMSbtoproProgress.tag, HAXCMSbtoproProgress);
+customElements.define(HAXCMSHatProgress.tag, HAXCMSHatProgress);

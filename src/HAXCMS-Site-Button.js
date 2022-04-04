@@ -68,7 +68,7 @@ export class HAXCMSSiteButton extends SimpleColors {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'Press Start 2P', sans-serif;
         width: fit-content;
       }
       .haxButton {
@@ -150,7 +150,4 @@ export class HAXCMSSiteButton extends SimpleColors {
   /**
    * haxProperties integration via file reference
    */
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
-  }
 }

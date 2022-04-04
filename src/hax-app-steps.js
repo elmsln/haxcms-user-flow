@@ -11,7 +11,7 @@ import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './HAXCMSAppStore.js';
 import './random-word.js';
-import './HAXCMS-btopro-Progress.js';
+import './app-hax-hat-progress.js';
 import './HAXCMS-Portfolio-Button.js';
 import './HAXCMS-Site-Button.js';
 
@@ -129,7 +129,7 @@ export class HAXAppSteps extends SimpleColors {
       this._progressReady = true;
       if (this.step === 4) {
         setTimeout(() => {
-          this.shadowRoot.querySelector('haxcms-btopro-progress').process();
+          this.shadowRoot.querySelector('haxcms-hat-progress').process();
         }, 300);
       }
     }
@@ -154,7 +154,7 @@ export class HAXAppSteps extends SimpleColors {
         this._progressReady
       ) {
         setTimeout(() => {
-          this.shadowRoot.querySelector('haxcms-btopro-progress').process();
+          this.shadowRoot.querySelector('haxcms-hat-progress').process();
         }, 600);
       }
       // update the store
@@ -414,12 +414,12 @@ export class HAXAppSteps extends SimpleColors {
               </div>
             </div>
             <div class="carousel-with-snapping-item" id="step-4">
-              <haxcms-btopro-progress
+              <haxcms-hat-progress
                 @progress-ready="${this.progressReady}"
                 @promise-progress-finished="${this.progressFinished}"
                 .promises="${this.callList}"
                 tabindex="${this.step !== 4 ? '-1' : ''}"
-              ></haxcms-btopro-progress>
+              ></haxcms-hat-progress>
             </div>
           </div>
         </scrollable-component>

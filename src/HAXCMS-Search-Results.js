@@ -96,8 +96,4 @@ export class HAXCMSSearchResults extends SimpleColors {
       </ul>
     `;
   }
-
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
-  }
 }

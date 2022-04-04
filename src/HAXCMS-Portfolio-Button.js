@@ -72,7 +72,7 @@ export class HAXCMSPortfolioButton extends SimpleColors {
     return css`
       :host {
         background-color: transparent;
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'Press Start 2P', sans-serif;
       }
 
       :root {
@@ -132,9 +132,5 @@ export class HAXCMSPortfolioButton extends SimpleColors {
         </wired-button>
       </div>
     `;
-  }
-
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }

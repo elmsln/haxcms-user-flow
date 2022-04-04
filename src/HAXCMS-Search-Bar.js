@@ -58,8 +58,4 @@ export class HAXCMSSearchBar extends SimpleColors {
       <input id="searchField" @input=${this.search} type="text" />
     `;
   }
-
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
-  }
 }

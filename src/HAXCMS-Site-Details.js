@@ -137,7 +137,4 @@ export class HAXCMSSiteDetails extends LitElement {
   /**
    * haxProperties integration via file reference
    */
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
-  }
 }

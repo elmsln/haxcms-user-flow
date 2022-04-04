@@ -26,7 +26,7 @@ export class HAXCMSIntroLabel extends LitElement {
     return css`
       :host {
         font: sans-serif;
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'Press Start 2P', sans-serif;
       }
       :root {
         --accent-color: white;
@@ -90,9 +90,5 @@ export class HAXCMSIntroLabel extends LitElement {
         </div>
       </div>
     `;
-  }
-
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
   }
 }

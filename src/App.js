@@ -1,4 +1,3 @@
-import { WiredElementsTest } from './WiredElementsTest.js';
 import { HAXCMSSiteButton } from './HAXCMS-Site-Button.js';
 import { HAXCMSSiteDetails } from './HAXCMS-Site-Details.js';
 import { HAXCMSIntroLabel } from './HAXCMS-Intro-Label.js';
@@ -10,7 +9,6 @@ import { HAXCMSSearchBar } from './HAXCMS-Search-Bar.js';
 import { HAXCMSSearchResults } from './HAXCMS-Search-Results.js';
 
 customElements.define(RandomWord.tag, RandomWord);
-customElements.define(WiredElementsTest.tag, WiredElementsTest);
 customElements.define(HAXCMSSiteButton.tag, HAXCMSSiteButton);
 customElements.define(HAXCMSSiteDetails.tag, HAXCMSSiteDetails);
 customElements.define(HAXCMSIntroLabel.tag, HAXCMSIntroLabel);

@@ -162,8 +162,5 @@ export class HAXCMSSiteBars extends SimpleColors {
   /**
    * haxProperties integration via file reference
    */
-  static get haxProperties() {
-    return new URL(`../lib/app.haxProperties.json`, import.meta.url).href;
-  }
 }
 customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);
