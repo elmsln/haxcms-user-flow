@@ -1,19 +1,20 @@
 import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
-import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
-export class HAXCMSHatProgress extends SimpleColors {
+export class AppHaxHatProgress extends SimpleColors {
   static get tag() {
-    return 'haxcms-hat-progress';
+    return 'app-hax-hat-progress';
   }
 
   constructor() {
     super();
     this.promises = [];
+    import('@lrnwebcomponents/promise-progress/promise-progress.js');
   }
 
   static get properties() {
     return {
+      ...super.properties,
       promises: { type: Array },
     };
   }
@@ -128,7 +129,7 @@ export class HAXCMSHatProgress extends SimpleColors {
         <span id="value">0</span>/<span id="max">100</span>
       </div>
       <img
-        src="${new URL('../assets/HatBlank.svg', import.meta.url).href}"
+        src="${new URL('../lib/assets/images/HatBlank.svg', import.meta.url).href}"
         alt=""
       />
       <promise-progress
@@ -140,4 +141,4 @@ export class HAXCMSHatProgress extends SimpleColors {
     `;
   }
 }
-customElements.define(HAXCMSHatProgress.tag, HAXCMSHatProgress);
+customElements.define(AppHaxHatProgress.tag, AppHaxHatProgress);

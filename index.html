@@ -41,7 +41,7 @@
       }
 
       :root {
-        background-image: url('lib/LMGridBox.svg'), url('lib/Design Light Mode Left.svg'), url('lib/Design Light Mode Right.svg');
+        background-image: url('lib/assets/images/LMGridBox.svg'), url('lib/assets/images/DesignLightModeLeft.svg'), url('lib/assets/images/DesignLightModeRight.svg');
         background-repeat: repeat, repeat-y, repeat-y;
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
@@ -49,13 +49,13 @@
       }
       
       .introLabel {
-        /* padding-top: 50%; */
+        padding-top: 20px;
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
           background-color: black;
-          background-image: url('lib/DMGridBox.svg'), url('lib/Design Dark Mode Left.svg'), url('lib/Design Dark Mode Right.svg');
+          background-image: url('lib/assets/images/DMGridBox.svg'), url('lib/assets/images/DesignDarkModeLeft.svg'), url('lib/assets/images/DesignDarkModeRight.svg');
           background-repeat: repeat, repeat-y, repeat-y;
           background-position: center center, top left, top right;
           background-size: auto, 20% auto, 20% auto;
@@ -101,20 +101,68 @@
   <body>
   
       <div class="introLabel">
-        <haxcms-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></haxcms-intro-label>
+        <app-hax-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></app-hax-intro-label>
       </div>
-      <haxcms-app demo></haxcms-app>
+      <app-hax></app-hax>
 
-      <!-- <haxcms-search-bar></haxcms-search-bar>
-      <haxcms-search-results></haxcms-search-results> -->
+      <!-- <app-hax-search-bar></app-hax-search-bar>
+      <app-hax-search-results></app-hax-search-results> -->
 
-      <!-- <haxcms-site-login></haxcms-site-login> -->
-      
+      <!-- <app-hax-site-login></app-hax-site-login> -->
+      <div id="demo">
+        <style>
+          #resetbtn {
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            font-size: 50px;
+            border: 0;
+            background-color: orange;
+            color: text;
+            cursor: pointer;
+          }
+          #togglebtn {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            font-size: 50px;
+            border: 0;
+            background-color: orange;
+            color: text;
+            cursor: pointer;
+          }
+          #loginbtn {
+            bottom: 0;
+            left: 50vw;
+            position: absolute;
+            font-size: 50px;
+            border: 0;
+            background-color: orange;
+            color: text;
+            cursor: pointer;
+          }
+        </style>
+        <button id="resetbtn">reset app</button>
+        <button id="togglebtn">toggle user</button>
+        <button id="loginbtn">Login</button>
+        <script>
+          function dqs(sel) { return document.querySelector(sel)}
+          dqs("#resetbtn").addEventListener("click", (e) => {
+            dqs("app-hax").reset();
+          });
+          dqs("#togglebtn").addEventListener("click", (e) => {
+            dqs("app-hax").toggleUser();
+          });
+          dqs("#loginbtn").addEventListener("click", (e) => {
+            dqs("app-hax").login();
+          });
+        </script>
+      </div>
 
-    <script type="module">
-      import './src/App.js';
-      import './src/HAXCMSApp.js';
-      import './src/HAXCMS-Site-Login.js';
-    </script>
+
+      <script type="module">
+        import './src/app-hax.js';
+        import './src/app-hax-site-login.js';
+      </script>
   </body>
 </html>

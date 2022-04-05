@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import "@lrnwebcomponents/jwt-login/jwt-login.js";
-import { store } from "./HAXCMSAppStore.js";
+import { store } from "./AppHaxStore.js";
 
 // this element will manage all connectivity to the backend
 // this way everything is forced to request through calls to this

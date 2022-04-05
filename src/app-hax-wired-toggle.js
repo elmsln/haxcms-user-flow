@@ -8,16 +8,16 @@ import { WiredToggle } from 'wired-elements/lib/wired-toggle.js';
 import { css, unsafeCSS } from 'lit';
 // need to highjack in order to alter the scale so we can fit our icon
 // for states
-const sun = new URL('../assets/sun.svg', import.meta.url).href;
-const moon = new URL('../assets/moon.svg', import.meta.url).href;
-export class HAXWiredToggle extends WiredToggle {
+const sun = new URL('../lib/assets/images/sun.svg', import.meta.url).href;
+const moon = new URL('../lib/assets/images/moon.svg', import.meta.url).href;
+export class AppHAXWiredToggle extends WiredToggle {
   // eslint-disable-next-line class-methods-use-this
   canvasSize() {
     return [100, 60];
   }
 
   static get tag() {
-    return 'hax-wired-toggle';
+    return 'app-hax-wired-toggle';
   }
 
   draw(svg, size) {
@@ -65,3 +65,4 @@ export class HAXWiredToggle extends WiredToggle {
     ];
   }
 }
+customElements.define(AppHAXWiredToggle.tag, AppHAXWiredToggle);

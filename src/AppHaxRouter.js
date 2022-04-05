@@ -1,11 +1,11 @@
 import { Router } from '@vaadin/router';
 import { autorun, toJS } from 'mobx';
-import { store } from './HAXCMSAppStore.js';
+import { store } from './AppHaxStore.js';
 
 /**
- * `haxcms-app-router`
+ * `app-hax-router`
  */
-export class HAXCMSAppRouter extends HTMLElement {
+export class AppHaxRouter extends HTMLElement {
   get baseURI() {
     return this.getAttribute('base-uri');
   }
@@ -18,7 +18,7 @@ export class HAXCMSAppRouter extends HTMLElement {
    */
 
   static get tag() {
-    return 'haxcms-app-router';
+    return 'app-hax-router';
   }
   /**
    * ready life cycle
@@ -75,4 +75,4 @@ export class HAXCMSAppRouter extends HTMLElement {
     store.location = e.detail.location;
   }
 }
-customElements.define(HAXCMSAppRouter.tag, HAXCMSAppRouter);
+customElements.define(AppHaxRouter.tag, AppHaxRouter);

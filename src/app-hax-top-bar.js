@@ -1,10 +1,12 @@
 // dependencies / things imported
 import { LitElement, html, css } from 'lit';
+import "./app-hax-wired-toggle.js";
 
-export class HAXCMSTopBar extends LitElement {
+// top bar of the UI
+export class AppHaxTopBar extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-top-bar';
+    return 'app-hax-top-bar';
   }
 
   // constructor() {
@@ -62,26 +64,26 @@ export class HAXCMSTopBar extends LitElement {
         border: 1px solid black;
       } */
 
-      .topBar .itemsLeft {
+      .topBar .left {
         text-align: left;
       }
 
-      .topBar .itemsCenter {
+      .topBar .center {
         text-align: center;
       }
 
-      .topBar .itemsRight {
+      .topBar .right {
         text-align: right;
       }
 
-      .itemsLeft ::slotted(*) {
+      .left ::slotted(*) {
         color: red;
       }
-      .itemsCenter ::slotted(img) {
+      .center ::slotted(img) {
         height: var(--logo-height);
         padding-top: var(--logo-padding);
       }
-      .itemsRight ::slotted(*) {
+      .right ::slotted(*) {
         background-color: blue;
       }
     `;
@@ -90,16 +92,17 @@ export class HAXCMSTopBar extends LitElement {
   render() {
     return html`
       <div class="topBar">
-        <div class="itemsLeft" part="itemsLeft">
-          <slot name="itemsLeft"></slot>
+        <div class="left" part="left">
+          <slot name="left"></slot>
         </div>
-        <div class="itemsCenter" part="itemsCenter">
-          <slot name="itemsCenter"></slot>
+        <div class="center" part="center">
+          <slot name="center"></slot>
         </div>
-        <div class="itemsRight" part="itemsRight">
-          <slot name="itemsRight"></slot>
+        <div class="right" part="right">
+          <slot name="right"></slot>
         </div>
       </div>
     `;
   }
 }
+customElements.define(AppHaxTopBar.tag, AppHaxTopBar);

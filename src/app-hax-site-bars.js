@@ -8,10 +8,10 @@ import { animate } from '@lit-labs/motion';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class HAXCMSSiteBars extends SimpleColors {
+export class AppHaxSiteBars extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-site-bar';
+    return 'app-hax-site-bar';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -163,4 +163,4 @@ export class HAXCMSSiteBars extends SimpleColors {
    * haxProperties integration via file reference
    */
 }
-customElements.define(HAXCMSSiteBars.tag, HAXCMSSiteBars);
+customElements.define(AppHaxSiteBars.tag, AppHaxSiteBars);

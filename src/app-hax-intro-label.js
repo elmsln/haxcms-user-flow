@@ -2,10 +2,10 @@
 import { LitElement, html, css } from 'lit';
 import '@lrnwebcomponents/future-terminal-text/future-terminal-text.js';
 
-export class HAXCMSIntroLabel extends LitElement {
+export class AppHaxIntroLabel extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-intro-label';
+    return 'app-hax-intro-label';
   }
 
   constructor() {
@@ -92,3 +92,4 @@ export class HAXCMSIntroLabel extends LitElement {
     `;
   }
 }
+customElements.define(AppHaxIntroLabel.tag, AppHaxIntroLabel);

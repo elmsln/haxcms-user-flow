@@ -3,10 +3,10 @@ import { LitElement, html, css } from 'lit';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class HAXCMSSiteDetails extends LitElement {
+export class AppHaxSiteDetails extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-site-details';
+    return 'app-hax-site-details';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -138,3 +138,4 @@ export class HAXCMSSiteDetails extends LitElement {
    * haxProperties integration via file reference
    */
 }
+customElements.define(AppHaxSiteDetails.tag, AppHaxSiteDetails);

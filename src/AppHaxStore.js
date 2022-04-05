@@ -1,3 +1,4 @@
+import { localStorageGet, localStorageSet } from "@lrnwebcomponents/utils/utils.js";
 /* eslint-disable max-classes-per-file */
 import {
   observable,
@@ -7,24 +8,7 @@ import {
   autorun,
   toJS,
 } from 'mobx';
-
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
-
-function localStorageSet(name, newItem) {
-  try {
-    return localStorage.setItem(name, JSON.stringify(newItem));
-  } catch (e) {
-    return false;
-  }
-}
-
-function localStorageGet(name) {
-  try {
-    return JSON.parse(localStorage.getItem(name));
-  } catch (e) {
-    return false;
-  }
-}
 
 class Store {
   constructor() {
@@ -79,27 +63,27 @@ class Store {
  */
 export const store = new Store();
 // register globally so we can make sure there is only one
-window.HAXCMS = window.HAXCMS || {};
+window.AppHax = window.AppHax || {};
 // request if this exists. This helps invoke the element existing in the dom
 // as well as that there is only one of them. That way we can ensure everything
 // is rendered through the same modal
-window.HAXCMS.requestAvailability = () => {
-  if (!window.HAXCMS.instance) {
-    window.HAXCMS.instance = document.createElement('haxcms-app-store');
-    document.body.appendChild(window.HAXCMS.instance);
+window.AppHax.requestAvailability = () => {
+  if (!window.AppHax.instance) {
+    window.AppHax.instance = document.createElement('app-hax-store');
+    document.body.appendChild(window.AppHax.instance);
   }
-  return window.HAXCMS.instance;
+  return window.AppHax.instance;
 };
 
 // weird, but self appending
-export const HAXcmsStore = window.HAXCMS.requestAvailability();
+export const AppHaxStore = window.AppHax.requestAvailability();
 
 /**
  * HTMLElement
  */
-export class HAXCMSAppStore extends HTMLElement {
+export class AppHaxStoreEl extends HTMLElement {
   static get tag() {
-    return 'haxcms-app-store';
+    return 'app-hax-store';
   }
 
   constructor() {
@@ -108,6 +92,8 @@ export class HAXCMSAppStore extends HTMLElement {
     this.store = store;
     // source for reading in the store if different than default site.json
     this.source = '';
+    // centralized sound source to not flood sounds when playing
+    this.sound = new Audio();
     /**
      * When location changes update activeItem
      */
@@ -155,5 +141,21 @@ export class HAXCMSAppStore extends HTMLElement {
       localStorageSet('site', toJS(store.site));
     });
   }
+  // eslint-disable-next-line class-methods-use-this
+  playSound(sound) {
+    switch (sound) {
+      case 'click':
+      case 'click2':
+      case 'coin':
+      case 'coin2':
+      case 'hit':
+      case 'success':
+        this.audio = new Audio(
+          new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
+        );
+        this.audio.play();
+      break;
+    }
+  }
 }
-customElements.define(HAXCMSAppStore.tag, HAXCMSAppStore);
+customElements.define(AppHaxStoreEl.tag, AppHaxStoreEl);

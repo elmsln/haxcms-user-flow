@@ -6,22 +6,22 @@
 import { html, css } from 'lit';
 import 'scrollable-component';
 import { autorun, toJS } from 'mobx';
-import './HAXCMSAppRouter.js';
+import './AppHaxRouter.js';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
-import { store } from './HAXCMSAppStore.js';
+import { store, AppHaxStore } from './AppHaxStore.js';
 import './random-word.js';
 import './app-hax-hat-progress.js';
-import './HAXCMS-Portfolio-Button.js';
-import './HAXCMS-Site-Button.js';
+import './app-hax-portfolio-button.js';
+import './app-hax-site-button.js';
 
-const blueStyle = new URL('../assets/Blue Style.svg', import.meta.url).href;
-const greyStyle = new URL('../assets/Grey Style.svg', import.meta.url).href;
-const partyStyle = new URL('../assets/Party Style.svg', import.meta.url).href;
+const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url).href;
+const greyStyle = new URL('../lib/assets/images/GreyStyle.svg', import.meta.url).href;
+const partyStyle = new URL('../lib/assets/images/PartyStyle.svg', import.meta.url).href;
 
-export class HAXAppSteps extends SimpleColors {
+export class AppHaxSteps extends SimpleColors {
   static get tag() {
-    return 'hax-app-steps';
+    return 'app-hax-steps';
   }
 
   constructor() {
@@ -35,8 +35,8 @@ export class HAXAppSteps extends SimpleColors {
       () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
       () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
       () => import('@lrnwebcomponents/utils/utils.js'),
-      () => import('mobx/dist/mobx.esm.js'),
       () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
+      () => import('mobx/dist/mobx.esm.js'),
       () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
@@ -95,33 +95,25 @@ export class HAXAppSteps extends SimpleColors {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  playSound() {
-    const audio = new Audio(
-      new URL(`../assets/Hork.mp3`, import.meta.url).href
-    );
-    audio.play();
-  }
-
   chooseStructure(e) {
     const { value } = e.target;
     // Do a type of and check that this is a string"
     store.site.structure = value;
-    this.playSound();
+    AppHaxStore.playSound('click');
   }
 
   chooseType(e) {
     const { value } = e.target;
     store.site.type = value;
     this.step = 2;
-    this.playSound();
+    AppHaxStore.playSound('click');
   }
 
   chooseTheme(e) {
     const { value } = e.target;
     store.site.theme = value;
     this.step = 3;
-    this.playSound();
+    AppHaxStore.playSound('click2');
   }
 
   progressReady(e) {
@@ -129,7 +121,7 @@ export class HAXAppSteps extends SimpleColors {
       this._progressReady = true;
       if (this.step === 4) {
         setTimeout(() => {
-          this.shadowRoot.querySelector('haxcms-hat-progress').process();
+          this.shadowRoot.querySelector('app-hax-hat-progress').process();
         }, 300);
       }
     }
@@ -140,7 +132,10 @@ export class HAXAppSteps extends SimpleColors {
       super.updated(changedProperties);
     }
     changedProperties.forEach((oldValue, propName) => {
-      // tee up
+      // start the 'game'
+      if (this.step === 1 && oldValue === undefined && propName === 'step') {
+        AppHaxStore.playSound('coin2');
+      }
       if (this.step !== 1 && oldValue === undefined && propName === 'step') {
         setTimeout(() => {
           this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
@@ -154,7 +149,7 @@ export class HAXAppSteps extends SimpleColors {
         this._progressReady
       ) {
         setTimeout(() => {
-          this.shadowRoot.querySelector('haxcms-hat-progress').process();
+          this.shadowRoot.querySelector('app-hax-hat-progress').process();
         }, 600);
       }
       // update the store
@@ -282,7 +277,7 @@ export class HAXAppSteps extends SimpleColors {
           background-color: orange;
           color: white;
         }
-        haxcms-portfolio-button {
+        app-hax-portfolio-button {
           padding: 10px 0px 10px 0px;
           background: transparent;
         }
@@ -299,9 +294,9 @@ export class HAXAppSteps extends SimpleColors {
           background-color: transparent;
           border: none;
         }
-        haxcms-site-button {
-          --haxcms-site-button-width: 30vw;
-          --haxcms-site-button-min-width: 300px;
+        app-hax-site-button {
+          --app-hax-site-button-width: 30vw;
+          --app-hax-site-button-min-width: 300px;
         }
         rpg-character {
           position: fixed;
@@ -320,12 +315,13 @@ export class HAXAppSteps extends SimpleColors {
   progressFinished(e) {
     if (e.detail) {
       this.loaded = true;
+      AppHaxStore.playSound('success');
     }
   }
 
   render() {
     return html`
-      <haxcms-app-router></haxcms-app-router>
+      <app-hax-router></app-hax-router>
       <random-word
         key="new"
         .phrases="${this.phrases}"
@@ -349,41 +345,41 @@ export class HAXAppSteps extends SimpleColors {
           <div class="carousel-with-snapping-track">
             <div class="carousel-with-snapping-item" id="step-1">
               <div class="step-wrapper">
-                <haxcms-site-button
+                <app-hax-site-button
                   tabindex="${this.step !== 1 ? '-1' : ''}"
                   label="> Course"
                   value="course"
                   @click=${this.chooseStructure}
-                ></haxcms-site-button>
-                <haxcms-site-button
+                ></app-hax-site-button>
+                <app-hax-site-button
                   tabindex="${this.step !== 1 ? '-1' : ''}"
                   label="> Portfolio"
                   value="portfolio"
                   @click=${this.chooseStructure}
-                ></haxcms-site-button>
+                ></app-hax-site-button>
               </div>
             </div>
             <div class="carousel-with-snapping-item" id="step-2">
               <div id="grid-container">
-                <haxcms-profolio-button
+                <app-hax-profolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Technology"
-                ></haxcms-profolio-button>
-                <haxcms-profolio-button
+                ></app-hax-profolio-button>
+                <app-hax-profolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Business"
-                ></haxcms-profolio-button>
-                <haxcms-profolio-button
+                ></app-hax-profolio-button>
+                <app-hax-profolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Art"
-                ></haxcms-profolio-button>
-                <haxcms-profolio-button
+                ></app-hax-profolio-button>
+                <app-hax-profolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
-                ></haxcms-profolio-button>
+                ></app-hax-profolio-button>
               </div>
             <div class="carousel-with-snapping-item" id="step-3">
               <div id="themeContainer">
@@ -414,12 +410,12 @@ export class HAXAppSteps extends SimpleColors {
               </div>
             </div>
             <div class="carousel-with-snapping-item" id="step-4">
-              <haxcms-hat-progress
+              <app-hax-hat-progress
                 @progress-ready="${this.progressReady}"
                 @promise-progress-finished="${this.progressFinished}"
                 .promises="${this.callList}"
                 tabindex="${this.step !== 4 ? '-1' : ''}"
-              ></haxcms-hat-progress>
+              ></app-hax-hat-progress>
             </div>
           </div>
         </scrollable-component>
@@ -428,4 +424,4 @@ export class HAXAppSteps extends SimpleColors {
     `;
   }
 }
-customElements.define(HAXAppSteps.tag, HAXAppSteps);
+customElements.define(AppHaxSteps.tag, AppHaxSteps);

@@ -3,10 +3,10 @@ import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 
-export class HAXCMSSiteLogin extends SimpleColors {
+export class AppHaxSiteLogin extends SimpleColors {
     // a convention I enjoy so you can change the tag name in 1 place
     static get tag() {
-      return 'haxcms-site-login';
+      return 'app-hax-site-login';
     }
   
     // HTMLElement life-cycle, built in; use this for setting defaults
@@ -112,7 +112,7 @@ export class HAXCMSSiteLogin extends SimpleColors {
 
     render() {
         return html`
-        <p>HAXCMS Login</p>
+        <p>AppHax Login</p>
         <rpg-character circle></rpg-character> 
 
         <div id="inputContainer">
@@ -125,4 +125,4 @@ export class HAXCMSSiteLogin extends SimpleColors {
         `;
     }
 }
-customElements.define(HAXCMSSiteLogin.tag, HAXCMSSiteLogin);
+customElements.define(AppHaxSiteLogin.tag, AppHaxSiteLogin);

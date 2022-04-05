@@ -1,12 +1,12 @@
 {
-  "name": "@lrnwebcomponents/rename-me",
-  "description": "HAX Capable web component to build a better future",
+  "name": "@lrnwebcomponents/app-hax",
+  "description": "Front door to HAX as a fun app layer",
   "license": "Apache-2.0",
   "author": "btopro",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elmsln/project-3.git"
+    "url": "https://github.com/elmsln/lrnwebcomponents.git"
   },
   "scripts": {
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
@@ -28,6 +28,7 @@
     "@lrnwebcomponents/simple-colors": "^4.0.20",
     "@lrnwebcomponents/simple-icon": "^4.0.20",
     "@lrnwebcomponents/jwt-login": "^4.0.20",
+    "@lrnwebcomponents/utils": "^4.0.8",
     "@vaadin/router": "^1.7.4",
     "lit": "^2.2.1",
     "mobx": "^6.3.13",
@@ -42,6 +43,7 @@
     "lit": "2.2.1"
   },
   "devDependencies": {
+    "rollup-plugin-copy": "3.4.0",
     "@babel/preset-env": "^7.15.6",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@lrnwebcomponents/deduping-fix": "^4.0.0",

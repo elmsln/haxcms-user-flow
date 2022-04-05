@@ -2,10 +2,10 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/simple-icon';
 import { html, css } from 'lit';
 
-export class HAXCMSPortfolioButton extends SimpleColors {
+export class AppHaxPortfolioButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-portfolio-button';
+    return 'app-hax-portfolio-button';
   }
 
   constructor() {
@@ -134,3 +134,4 @@ export class HAXCMSPortfolioButton extends SimpleColors {
     `;
   }
 }
+customElements.define(AppHaxPortfolioButton.tag, AppHaxPortfolioButton);

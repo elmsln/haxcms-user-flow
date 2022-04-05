@@ -2,13 +2,13 @@
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { html, css } from 'lit';
 import { autorun, toJS } from 'mobx';
-import { store } from './HAXCMSAppStore.js';
-import './HAXCMS-Site-Bars.js';
+import { store } from './AppHaxStore.js';
+import './app-hax-site-bars.js';
 
-export class HAXCMSSearchResults extends SimpleColors {
+export class AppHaxSearchResults extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-search-results';
+    return 'app-hax-search-results';
   }
 
   constructor() {
@@ -21,7 +21,7 @@ export class HAXCMSSearchResults extends SimpleColors {
 
     this.searchItems = [];
     this.displayItems = [];
-    this.jsonLoc = '../assets/site.json';
+    this.jsonLoc = '../demo/site.json';
   }
 
   // Site.json is coming from
@@ -86,11 +86,11 @@ export class HAXCMSSearchResults extends SimpleColors {
         ${this.displayItems.map(
           item =>
             html`<li>
-              <haxcms-site-bar accent-color="green">
+              <app-hax-site-bar accent-color="green">
                 <p slot="heading">${item.title}</p>
                 <p slot="sub-heading">${item.author}</p>
                 <p slot="band">${item.description}</p>
-              </haxcms-site-bar>
+              </app-hax-site-bar>
             </li>`
         )}
       </ul>

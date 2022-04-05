@@ -1,13 +1,13 @@
 /* eslint-disable no-return-assign */
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { html, css } from 'lit';
-import { store } from './HAXCMSAppStore.js';
-import './HAXCMS-Site-Bars.js';
+import { store } from './AppHaxStore.js';
+import './app-hax-site-bars.js';
 
-export class HAXCMSSearchBar extends SimpleColors {
+export class AppHaxSearchBar extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-search-bar';
+    return 'app-hax-search-bar';
   }
 
   constructor() {

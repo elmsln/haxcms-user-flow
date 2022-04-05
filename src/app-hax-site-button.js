@@ -8,10 +8,10 @@ import 'wired-elements/lib/wired-button.js';
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class HAXCMSSiteButton extends SimpleColors {
+export class AppHaxSiteButton extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'haxcms-site-button';
+    return 'app-hax-site-button';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -74,15 +74,15 @@ export class HAXCMSSiteButton extends SimpleColors {
       .haxButton {
         background-color: white;
         color: black;
-        font-size: var(--haxcms-site-button-font-size, 26px);
+        font-size: var(--app-hax-site-button-font-size, 26px);
       }
       .dialogBox {
         color: #0f460f;
       }
       span {
-        width: var(--haxcms-site-button-width, auto);
-        min-width: var(--haxcms-site-button-min-width, auto);
-        height: var(--haxcms-site-button-height, auto);
+        width: var(--app-hax-site-button-width, auto);
+        min-width: var(--app-hax-site-button-min-width, auto);
+        height: var(--app-hax-site-button-height, auto);
         display: inline-flex;
       }
     `;
@@ -151,3 +151,5 @@ export class HAXCMSSiteButton extends SimpleColors {
    * haxProperties integration via file reference
    */
 }
+
+customElements.define(AppHaxSiteButton.tag, AppHaxSiteButton);
