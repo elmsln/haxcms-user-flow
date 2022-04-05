@@ -20,13 +20,12 @@ export class AppHaxSiteButton extends SimpleColors {
     this.label = null;
     this.value = null;
     this.disabled = false;
-    this.elevation = '3';
-    this.addEventListener('keydown', this._handleKeydown);
+    this.elevation = '2';
     this.addEventListener('click', this._handleClick);
     this.addEventListener('focus', this._handleFocus);
     this.addEventListener('blur', this._handleBlur);
-    this.addEventListener('mouseover', this._handleMouseover);
-    this.addEventListener('mouseout', this._handleMouseout);
+    this.addEventListener('mouseover', this._handleFocus);
+    this.addEventListener('mouseout', this._handleBlur);
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
@@ -37,26 +36,6 @@ export class AppHaxSiteButton extends SimpleColors {
       disabled: { type: Boolean, reflect: true },
       elevation: { type: Number },
     };
-  }
-
-  // Lit life-cycle; this fires the 1st time the element is rendered on the screen
-  // this is a sign it is safe to make calls to this.shadowRoot
-  firstUpdated(changedProperties) {
-    if (super.firstUpdated) {
-      super.firstUpdated(changedProperties);
-    }
-  }
-
-  // HTMLElement life-cycle, element has been connected to the page / added or moved
-  // this fires EVERY time the element is moved
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  // HTMLElement life-cycle, element has been removed from the page OR moved
-  // this fires every time the element moves
-  disconnectedCallback() {
-    super.disconnectedCallback();
   }
 
   // CSS - specific to Lit
@@ -70,6 +49,7 @@ export class AppHaxSiteButton extends SimpleColors {
         align-items: center;
         font-family: 'Press Start 2P', sans-serif;
         width: fit-content;
+        margin: 20px 0;
       }
       .haxButton {
         background-color: white;
@@ -84,6 +64,9 @@ export class AppHaxSiteButton extends SimpleColors {
         min-width: var(--app-hax-site-button-min-width, auto);
         height: var(--app-hax-site-button-height, auto);
         display: inline-flex;
+      }
+      .active {
+        color: #42596b;
       }
     `;
   }
@@ -104,30 +87,17 @@ export class AppHaxSiteButton extends SimpleColors {
   }
 
   _handleFocus() {
-    console.log('focus');
-    this.shadowRoot.querySelector('.haxButton').style.color = '#42596b';
+    this.shadowRoot.querySelector('.haxButton').classList.add('active');
+    this.elevation = '4';
   }
 
   _handleBlur() {
-    console.log('blur');
-    // this.shadowRoot.querySelector('.haxButton').blur();
-    this.shadowRoot.querySelector('.haxButton').style.color = 'black';
+    this.shadowRoot.querySelector('.haxButton').classList.remove('active');
+    this.elevation = '2';
   }
 
-  _handleMouseover() {
-    console.log('mouseover');
-    this.elevation = '5';
-  }
-
-  _handleMouseout() {
-    console.log('mouseout');
-    this.elevation = '3';
-  }
-
-  buttonAlert() {
-    console.log(`button PRESS + ${this.disabled}`);
+  _handleClick() {
     if (!this.disabled) {
-      // alert('hey');
       this.shadowRoot.querySelector('.haxButton').blur();
     }
   }
@@ -139,7 +109,7 @@ export class AppHaxSiteButton extends SimpleColors {
         elevation=${this.elevation}
         ?disabled=${this.disabled}
         class="haxButton"
-        @click="${this.buttonAlert}"
+        @click="${this._handleClick}"
         ><span>${this.label}</span></wired-button
       >
     `;

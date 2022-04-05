@@ -1,6 +1,6 @@
 // dependencies / things imported
 import { LitElement, html, css } from 'lit';
-import "./app-hax-wired-toggle.js";
+import './app-hax-wired-toggle.js';
 
 // top bar of the UI
 export class AppHaxTopBar extends LitElement {
@@ -24,8 +24,6 @@ export class AppHaxTopBar extends LitElement {
         --bg-color: orange;
         --accent-color: white;
         --top-bar-height: 48px;
-        --logo-height: calc(var(--top-bar-height) * 0.88);
-        --logo-padding: calc((var(--top-bar-height) - var(--logo-height)) / 2);
         display: block;
       }
 
@@ -45,7 +43,6 @@ export class AppHaxTopBar extends LitElement {
         overflow: hidden;
         background-color: var(--bg-color);
         color: var(--accent-color);
-        width: 100vw;
         height: var(--top-bar-height);
         border-bottom: 2px var(--accent-color) solid;
         text-align: center;
@@ -75,10 +72,6 @@ export class AppHaxTopBar extends LitElement {
 
       .left ::slotted(*) {
         color: red;
-      }
-      .center ::slotted(img) {
-        height: var(--logo-height);
-        padding-top: var(--logo-padding);
       }
     `;
   }

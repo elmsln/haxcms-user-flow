@@ -14,9 +14,14 @@ import './app-hax-hat-progress.js';
 import './app-hax-portfolio-button.js';
 import './app-hax-site-button.js';
 
-const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url).href;
-const greyStyle = new URL('../lib/assets/images/GreyStyle.svg', import.meta.url).href;
-const partyStyle = new URL('../lib/assets/images/PartyStyle.svg', import.meta.url).href;
+const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url)
+  .href;
+const greyStyle = new URL('../lib/assets/images/GreyStyle.svg', import.meta.url)
+  .href;
+const partyStyle = new URL(
+  '../lib/assets/images/PartyStyle.svg',
+  import.meta.url
+).href;
 
 export class AppHaxSteps extends SimpleColors {
   static get tag() {
@@ -98,14 +103,14 @@ export class AppHaxSteps extends SimpleColors {
     const { value } = e.target;
     // Do a type of and check that this is a string"
     store.site.structure = value;
-    AppHaxStore.playSound('click');
+    AppHaxStore.playSound('click2');
   }
 
   chooseType(e) {
     const { value } = e.target;
     store.site.type = value;
     this.step = 2;
-    AppHaxStore.playSound('click');
+    AppHaxStore.playSound('click2');
   }
 
   chooseTheme(e) {
