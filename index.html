@@ -25,43 +25,29 @@
       };
       </script>
 
-    <!-- TODO: Un-flex this.. -->
     <style>
       body {
-        height: 100vh;
-        width: 100vw;
-        margin: 0;
+        margin: 65px 0 0 0;
         padding: 0;
         font-family: 'Press Start 2P', sans-serif;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
       }
 
-      :root {
+      body {
         background-image: url('lib/assets/images/LMGridBox.svg'), url('lib/assets/images/DesignLightModeLeft.svg'), url('lib/assets/images/DesignLightModeRight.svg');
         background-repeat: repeat, repeat-y, repeat-y;
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
         --accent-color: black;
       }
-      
-      .introLabel {
-        padding-top: 20px;
-      }
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          background-color: black;
-          background-image: url('lib/assets/images/DMGridBox.svg'), url('lib/assets/images/DesignDarkModeLeft.svg'), url('lib/assets/images/DesignDarkModeRight.svg');
-          background-repeat: repeat, repeat-y, repeat-y;
-          background-position: center center, top left, top right;
-          background-size: auto, 20% auto, 20% auto;
-          --accent-color: white;
-        }
-
+      body.dark-mode {
+        background-color: black;
+        background-image: url('lib/assets/images/DMGridBox.svg'), url('lib/assets/images/DesignDarkModeLeft.svg'), url('lib/assets/images/DesignDarkModeRight.svg');
+        background-repeat: repeat, repeat-y, repeat-y;
+        background-position: center center, top left, top right;
+        background-size: auto, 20% auto, 20% auto;
+        --accent-color: white;
       }
 
       @media (min-width: 721px) {
@@ -99,12 +85,7 @@
   </head>
 
   <body>
-  
-      <div class="introLabel">
-        <app-hax-intro-label><div>Welcome</div><div slot="subtitle">Start your journey now!</div></app-hax-intro-label>
-      </div>
       <app-hax></app-hax>
-
       <!-- <app-hax-search-bar></app-hax-search-bar>
       <app-hax-search-results></app-hax-search-results> -->
 

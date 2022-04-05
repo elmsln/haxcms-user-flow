@@ -6,11 +6,22 @@ import {
 } from 'wired-elements/lib/wired-lib.js';
 import { WiredToggle } from 'wired-elements/lib/wired-toggle.js';
 import { css, unsafeCSS } from 'lit';
+import { store, AppHaxStore } from './AppHaxStore.js';
+import {
+  autorun,
+  toJS,
+} from 'mobx';
 // need to highjack in order to alter the scale so we can fit our icon
 // for states
 const sun = new URL('../lib/assets/images/sun.svg', import.meta.url).href;
 const moon = new URL('../lib/assets/images/moon.svg', import.meta.url).href;
 export class AppHAXWiredToggle extends WiredToggle {
+  constructor() {
+    super();
+    autorun(() => {
+      this.checked = toJS(store.darkMode);
+    });
+  }
   // eslint-disable-next-line class-methods-use-this
   canvasSize() {
     return [100, 60];
@@ -45,22 +56,41 @@ export class AppHAXWiredToggle extends WiredToggle {
     };
   }
 
+  updated(changedProperties) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === "checked" && oldValue !== undefined) {
+        store.darkMode = this[propName];
+        AppHaxStore.playSound('click');
+      }
+    });
+  }
+
   static get styles() {
     return [
       ...super.styles,
       css`
         :host div {
-          background-image: url('${unsafeCSS(sun)}');
+          background-image: url(http://localhost:8000/lib/assets/images/sun.svg);
           background-repeat: no-repeat;
-          background-position: right;
-          background-size: 45%;
           --wired-toggle-off-color: #00e1ff;
-          --wired-toggle-on-color: #060638;
+          --wired-toggle-on-color: #00e1ff;
+          background-position-x: 50px;
+          width: 100px;
+          display: inline-flex;
         }
         :host([checked]) div {
           background-image: url('${unsafeCSS(moon)}');
           background-position: left;
         }
+        input {
+          width: 100px;
+          height: 60px;
+          padding: 0;
+          margin: 0;
+      }
       `,
     ];
   }

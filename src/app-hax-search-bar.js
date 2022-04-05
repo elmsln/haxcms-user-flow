@@ -59,3 +59,4 @@ export class AppHaxSearchBar extends SimpleColors {
     `;
   }
 }
+customElements.define(AppHaxSearchBar.tag, AppHaxSearchBar);

@@ -25,8 +25,8 @@ export class AppHaxIntroLabel extends LitElement {
   static get styles() {
     return css`
       :host {
-        font: sans-serif;
         font-family: 'Press Start 2P', sans-serif;
+        text-align: center;
       }
       :root {
         --accent-color: white;
@@ -36,11 +36,6 @@ export class AppHaxIntroLabel extends LitElement {
         :root {
           --accent-color: black;
         }
-      }
-
-      .introLabel {
-        text-align: center;
-        font-size: 4vw;
       }
 
       .title {
@@ -82,7 +77,7 @@ export class AppHaxIntroLabel extends LitElement {
       <div class="topBar">
         <div class="title" part="title">
           <span class="bracket">&#60;</span
-          ><slot name="title">${this.title}</slot
+          ><slot>${this.title}</slot
           ><span class="bracket">&#62;</span>
         </div>
         <div class="subtitle" part="subtitle">

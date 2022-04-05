@@ -1,5 +1,7 @@
 import { LitElement, css, html } from 'lit';
+import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { store } from './AppHaxStore.js';
+import { toJS, autorun } from "mobx";
 import './AppHaxRouter.js';
 import './app-hax-steps.js';
 import './app-hax-site-login.js'
@@ -23,12 +25,14 @@ export class AppHax extends LitElement {
     // @todo need this from app deploy itself
     this.sitesBase = 'https://iam.hax.psu.edu';
     import('@lrnwebcomponents/simple-modal/simple-modal.js');
+    autorun(() => { this.userName = toJS(store.user.name)});
   }
 
   static get properties() {
     return {
       courses: { type: Array },
       source: { type: String },
+      userName: { type: String}
     };
   }
 
@@ -55,6 +59,7 @@ export class AppHax extends LitElement {
   // eslint-disable-next-line class-methods-use-this
   reset() {
     localStorage.setItem('step', '');
+    localStorage.setItem('darkMode', '');
     localStorage.setItem('site', '');
     window.location.reload();
   }
@@ -74,7 +79,7 @@ export class AppHax extends LitElement {
         bubbles: true,
         cancelable: true,
         detail: {
-          title: 'Some stuff pulled in',
+          title: 'Please login to get started',
           elements: { content: p },
           invokedBy: this,
         }
@@ -90,10 +95,23 @@ export class AppHax extends LitElement {
       css`
         :host {
           display: block;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          justify-content: center;
+        }
+        rpg-character {
+          transform: scale(.4, 0.4);
+          margin: -70px -35px 0px 0px;
+          vertical-align: text-top;
+        }
+        app-hax-top-bar {
+          top: 0;
+          position: sticky;
+        }
+        .introLabel {
+          text-align: center;
+          font-size: 4vw;
+        }
+        app-hax-intro-label {
+          margin-top: 200px;
+          display: block;
         }
       `,
     ];
@@ -103,7 +121,11 @@ export class AppHax extends LitElement {
     return html`
         <app-hax-top-bar>
           <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
+          <rpg-character seed="${this.userName}" circle slot="right"></rpg-character>
         </app-hax-top-bar>
+        <div class="introLabel">
+          <app-hax-intro-label><span>Whatever</span><div slot="subtitle">Start your journey now!</div></app-hax-intro-label>
+        </div>
         <app-hax-steps></app-hax-steps>`;
   }
 }

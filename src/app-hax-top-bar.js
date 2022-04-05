@@ -21,16 +21,12 @@ export class AppHaxTopBar extends LitElement {
   static get styles() {
     return css`
       :host {
-        --bg-color: black;
+        --bg-color: orange;
         --accent-color: white;
-        --top-bar-height: 50px;
+        --top-bar-height: 48px;
         --logo-height: calc(var(--top-bar-height) * 0.88);
         --logo-padding: calc((var(--top-bar-height) - var(--logo-height)) / 2);
-        display: inline-block;
-      }
-
-      :root {
-        font: sans-serif;
+        display: block;
       }
 
       /* @media (prefers-color-scheme: dark) {
@@ -46,6 +42,7 @@ export class AppHaxTopBar extends LitElement {
       } */
 
       .topBar {
+        overflow: hidden;
         background-color: var(--bg-color);
         color: var(--accent-color);
         width: 100vw;
@@ -82,9 +79,6 @@ export class AppHaxTopBar extends LitElement {
       .center ::slotted(img) {
         height: var(--logo-height);
         padding-top: var(--logo-padding);
-      }
-      .right ::slotted(*) {
-        background-color: blue;
       }
     `;
   }

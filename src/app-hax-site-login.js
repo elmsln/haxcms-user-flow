@@ -2,7 +2,9 @@ import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
-
+import '@lrnwebcomponents/rpg-character/rpg-character.js';
+import { store } from './AppHaxStore.js';
+import { toJS, autorun } from "mobx";
 export class AppHaxSiteLogin extends SimpleColors {
     // a convention I enjoy so you can change the tag name in 1 place
     static get tag() {
@@ -28,6 +30,13 @@ export class AppHaxSiteLogin extends SimpleColors {
         hidePassword: {type: Boolean}
       };
     }
+
+    firstUpdated() {
+      super.firstUpdated();
+      setTimeout(() => {
+        this.shadowRoot.querySelector('input').focus();        
+      }, 0);
+    }
   
     // updated fires every time a property defined above changes
     // this allows you to react to variables changing and use javascript to perform logic
@@ -42,6 +51,7 @@ export class AppHaxSiteLogin extends SimpleColors {
         ...super.styles,
         css`
         :host {
+            height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -63,6 +73,10 @@ export class AppHaxSiteLogin extends SimpleColors {
             background-color: lightblue;
             color: red;
             font-weight: bold;
+        }
+        rpg-character {
+          display: block;
+          margin: 50px;
         }
         `,
     ];
@@ -87,16 +101,18 @@ export class AppHaxSiteLogin extends SimpleColors {
         // eslint-disable-next-line prefer-destructuring
         const value = this.shadowRoot.querySelector("#password").value;
         if(value === "1234"){
+          autorun(() => { store.user = {
+            name: this.username
+          }});
             const evt = new CustomEvent("simple-modal-hide", {
                 bubbles: true,
                 cancelable: true,
                 detail: {
-                  title: 'Close Modal',
-                  invokedBy: this,
                 }
               });
         
             this.dispatchEvent(evt);
+            // @todo need to set local storage from here
         } else {
             alert('invalid password');
             this.errorMSG = "Invalid Password";
@@ -109,15 +125,15 @@ export class AppHaxSiteLogin extends SimpleColors {
         this.username='';
         this.hidePassword = true;
     }
-
+    nameChange(e) {
+      this.username = this.shadowRoot.querySelector("#username").value;
+    }
     render() {
         return html`
-        <p>AppHax Login</p>
-        <rpg-character circle></rpg-character> 
-
+        <rpg-character circle seed="${this.username}"></rpg-character> 
         <div id="inputContainer">
             ${this.hidePassword
-            ? html `<input id="username" type="text" placeholder="abc123@psu.edu"/>  <button @click=${this.checkUsername}>next</button>`
+            ? html `<input id="username" type="text" placeholder="abc123@psu.edu" @input="${this.nameChange}"/>  <button @click=${this.checkUsername}>next</button>`
             : html `<p> Hey ${this.username}! <a @click=${this.reset}>not you?</a></p><input id="password" type="text" placeholder="insert password here"/>   <button @click=${this.checkPassword}>Login</button>`
             }
         </div>

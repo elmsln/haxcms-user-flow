@@ -97,3 +97,4 @@ export class AppHaxSearchResults extends SimpleColors {
     `;
   }
 }
+customElements.define(AppHaxSearchResults.tag, AppHaxSearchResults);

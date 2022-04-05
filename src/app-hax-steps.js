@@ -4,10 +4,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html, css } from 'lit';
-import 'scrollable-component';
+import 'scrollable-component/index.js';
 import { autorun, toJS } from 'mobx';
 import './AppHaxRouter.js';
-import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store, AppHaxStore } from './AppHaxStore.js';
 import './random-word.js';
@@ -254,10 +253,7 @@ export class AppHaxSteps extends SimpleColors {
           scroll-snap-align: center;
           scroll-snap-stop: always;
           width: var(--viewport-width);
-          height: 500px;
-
           font-size: 1.5rem;
-          line-height: 10vh;
           text-align: center;
         }
         li {
@@ -297,12 +293,6 @@ export class AppHaxSteps extends SimpleColors {
         app-hax-site-button {
           --app-hax-site-button-width: 30vw;
           --app-hax-site-button-min-width: 300px;
-        }
-        rpg-character {
-          position: fixed;
-          top: -34px;
-          right: -29px;
-          transform: scale(0.5);
         }
       `,
     ];
@@ -420,7 +410,6 @@ export class AppHaxSteps extends SimpleColors {
           </div>
         </scrollable-component>
       </div>
-      <rpg-character circle></rpg-character>
     `;
   }
 }

@@ -24,9 +24,16 @@ class Store {
     this.isLoggedIn = true;
     this.routes = [];
     this.searchTerm = '';
+    this.user = {
+      name: "btopro",
+    };
     this.site = !localStorageGet('site')
       ? { structure: null, type: null, theme: null }
       : localStorageGet('site');
+
+    this.darkMode = !localStorageGet('darkMode')
+      ? false
+      : localStorageGet('darkMode');
 
     makeObservable(this, {
       location: observable.ref, // router location in url
@@ -37,6 +44,8 @@ class Store {
       routes: observable, // routes that are valid
       site: observable, // information about the site being created
       activeItem: computed, // active item is route
+      darkMode: observable,
+      user: observable,
     });
   }
 
@@ -140,6 +149,15 @@ export class AppHaxStoreEl extends HTMLElement {
     autorun(() => {
       localStorageSet('site', toJS(store.site));
     });
+    autorun(() => {
+      localStorageSet('darkMode', toJS(store.darkMode));
+      if (toJS(store.darkMode)) {
+        document.body.classList.add('dark-mode');
+      }
+      else {
+        document.body.classList.remove('dark-mode');
+      }
+    });
   }
   // eslint-disable-next-line class-methods-use-this
   playSound(sound) {
@@ -156,6 +174,22 @@ export class AppHaxStoreEl extends HTMLElement {
         this.audio.play();
       break;
     }
+  }
+  darkToggle(e) {
+    if (e.matches) {
+      //dark mode
+      store.darkMode = true;
+    } else {
+      //light mode
+      store.darkMode = false;
+    }
+  }
+  connectedCallback() {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.darkToggle.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.darkToggle.bind(this));
   }
 }
 customElements.define(AppHaxStoreEl.tag, AppHaxStoreEl);
