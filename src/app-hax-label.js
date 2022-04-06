@@ -38,6 +38,8 @@ export class AppHaxLabel extends LitElement {
         );
         font-weight: normal;
         font-size: 4vw;
+        display: inline-flex;
+        align-items: center;
       }
 
       .subtitle {

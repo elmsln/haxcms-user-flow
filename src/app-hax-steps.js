@@ -8,7 +8,7 @@ import 'scrollable-component/index.js';
 import { autorun, toJS } from 'mobx';
 import './AppHaxRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
-import { store, AppHaxStore } from './AppHaxStore.js';
+import { store } from './AppHaxStore.js';
 import './random-word.js';
 import './app-hax-hat-progress.js';
 import './app-hax-portfolio-button.js';
@@ -74,7 +74,7 @@ export class AppHaxSteps extends SimpleColors {
         component: 'fake',
         step: 4,
         id: 'step-4',
-        label: 'Loading journey',
+        label: 'Loading',
         statement: "Let's get writing!",
       },
     ];
@@ -106,21 +106,21 @@ export class AppHaxSteps extends SimpleColors {
   chooseStructure(e) {
     const { value } = e.target;
     store.site.structure = value;
-    AppHaxStore.playSound('click2');
+    store.appEl.playSound('click2');
   }
 
   chooseType(e) {
     const { value } = e.target;
     store.site.type = value;
     this.step = 2;
-    AppHaxStore.playSound('click2');
+    store.appEl.playSound('click2');
   }
 
   chooseTheme(e) {
     const { value } = e.target;
     store.site.theme = value;
     this.step = 3;
-    AppHaxStore.playSound('click2');
+    store.appEl.playSound('click2');
   }
 
   progressReady(e) {
@@ -141,7 +141,7 @@ export class AppHaxSteps extends SimpleColors {
     changedProperties.forEach((oldValue, propName) => {
       // start the 'game'
       if (this.step === 1 && oldValue === undefined && propName === 'step') {
-        AppHaxStore.playSound('coin2');
+        store.appEl.playSound('coin2');
       }
       // for if we start here
       if (
@@ -332,7 +332,7 @@ export class AppHaxSteps extends SimpleColors {
   progressFinished(e) {
     if (e.detail) {
       this.loaded = true;
-      AppHaxStore.playSound('success');
+      store.appEl.playSound('success');
     }
   }
 

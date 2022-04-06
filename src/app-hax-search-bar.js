@@ -54,7 +54,6 @@ export class AppHaxSearchBar extends SimpleColors {
 
   render() {
     return html`
-      <p>Enter Stuff into Me</p>
       <input id="searchField" @input=${this.search} type="text" />
     `;
   }

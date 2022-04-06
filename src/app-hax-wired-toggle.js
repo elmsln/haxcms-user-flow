@@ -7,7 +7,7 @@ import {
 import { WiredToggle } from 'wired-elements/lib/wired-toggle.js';
 import { css, unsafeCSS } from 'lit';
 import { autorun, toJS } from 'mobx';
-import { store, AppHaxStore } from './AppHaxStore.js';
+import { store } from './AppHaxStore.js';
 // need to highjack in order to alter the scale so we can fit our icon
 // for states
 const sun = new URL('../lib/assets/images/sun.svg', import.meta.url).href;
@@ -61,7 +61,7 @@ export class AppHAXWiredToggle extends WiredToggle {
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'checked' && oldValue !== undefined) {
         store.darkMode = this[propName];
-        AppHaxStore.playSound('click');
+        store.appEl.playSound('click');
       }
     });
   }
