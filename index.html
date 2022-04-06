@@ -83,7 +83,8 @@
     <script>
       // reduce FOUC for dark mode so it starts in dark rapidly if selected
       if (window.localStorage && window.localStorage.getItem('darkMode')) {
-        if (window.localStorage.getItem('darkMode')) {
+        console.log(window.localStorage.getItem('darkMode'));
+        if (window.localStorage.getItem('darkMode') === 'true') {
           document.body.classList.add('dark-mode');
         }
         else {
