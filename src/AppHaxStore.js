@@ -18,6 +18,7 @@ class Store {
     this.location = null;
     this.isNewUser = true;
     this.appEl = null;
+    this.soundStatus = true;
     // If user is new, make sure they are on step 1
 
     if (this.isNewUser) {
@@ -49,6 +50,7 @@ class Store {
       site: observable, // information about the site being created
       activeItem: computed, // active item is route
       darkMode: observable,
+      soundStatus: observable,
       user: observable,
     });
   }

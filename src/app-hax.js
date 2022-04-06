@@ -30,25 +30,30 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   playSound(sound) {
-    switch (sound) {
-      case 'click':
-      case 'click2':
-      case 'coin':
-      case 'coin2':
-      case 'hit':
-      case 'success':
-        this.audio = new Audio(
-          new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
-        );
-        this.audio.play();
-        break;
-      default:
-        this.audio = new Audio(
-          new URL(`../lib/assets/sounds/hit.mp3`, import.meta.url).href
-        );
-        this.audio.play();
-        console.warn(`${sound} is not a valid sound file yet`);
-        break;
+    try {
+      switch (sound) {
+        case 'click':
+        case 'click2':
+        case 'coin':
+        case 'coin2':
+        case 'hit':
+        case 'success':
+          this.audio = new Audio(
+            new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
+          );
+          this.audio.play();
+          break;
+        default:
+          this.audio = new Audio(
+            new URL(`../lib/assets/sounds/hit.mp3`, import.meta.url).href
+          );
+          this.audio.play();
+          console.warn(`${sound} is not a valid sound file yet`);
+          break;
+      }
+    }
+    catch(e) {
+      console.warn(e);
     }
   }
 

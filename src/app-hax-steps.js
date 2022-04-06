@@ -13,6 +13,8 @@ import './random-word.js';
 import './app-hax-hat-progress.js';
 import './app-hax-portfolio-button.js';
 import './app-hax-site-button.js';
+import 'smoothscroll-polyfill';
+
 
 const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url)
   .href;
@@ -200,7 +202,7 @@ export class AppHaxSteps extends SimpleColors {
 
     autorun(() => {
       if (store.location && store.location.route && store.location.route.id) {
-        // use ID from location change to scroll into view
+        // account for an animated window drag... stupid.
         setTimeout(() => {
           this.shadowRoot
             .querySelector('#'.concat(toJS(store.location.route.id)))
