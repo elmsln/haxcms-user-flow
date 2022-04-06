@@ -18,7 +18,7 @@ class Store {
   constructor() {
     this.location = null;
     this.isNewUser = true;
-    // If user is new, make sure they are on step 1
+    // If user is new if Site.json.items.length = 0
 
     if (this.isNewUser) {
       this.step = 1;

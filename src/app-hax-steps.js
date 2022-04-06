@@ -44,6 +44,7 @@ export class AppHaxSteps extends SimpleColors {
       () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
       () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
     ];
+    // move to app-hax.js
     this.routes = [
       {
         path: 'step-1',

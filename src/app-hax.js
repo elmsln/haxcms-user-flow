@@ -151,6 +151,7 @@ export class AppHax extends LitElement {
           <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
         >
       </div>
+
       <app-hax-steps></app-hax-steps>`;
   }
 }
