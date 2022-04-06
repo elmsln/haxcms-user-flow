@@ -24,6 +24,7 @@
     "@lit-labs/motion": "^1.0.2",
     "@lrnwebcomponents/future-terminal-text": "^4.0.18",
     "@lrnwebcomponents/promise-progress": "^4.0.20",
+    "@lrnwebcomponents/simple-toast": "^4.0.20",
     "@lrnwebcomponents/rpg-character": "^4.0.20",
     "@lrnwebcomponents/simple-colors": "^4.0.20",
     "@lrnwebcomponents/simple-modal": "^4.0.20",
