@@ -54,6 +54,7 @@ export class AppHax extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    store.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', darkToggle);
