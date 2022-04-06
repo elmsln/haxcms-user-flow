@@ -201,6 +201,8 @@ export class AppHaxStoreEl extends HTMLElement {
   }
 
   connectedCallback() {
+    store.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', darkToggle);
