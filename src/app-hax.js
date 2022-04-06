@@ -1,7 +1,5 @@
 import { LitElement, css, html } from 'lit';
-import {
-  localStorageSet,
-} from '@lrnwebcomponents/utils/utils.js';
+import { localStorageSet } from '@lrnwebcomponents/utils/utils.js';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
@@ -65,8 +63,8 @@ export class AppHax extends LitElement {
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .removeEventListener('change', darkToggle);
-      super.disconnectedCallback();
-    }
+    super.disconnectedCallback();
+  }
 
   constructor() {
     super();
@@ -247,8 +245,7 @@ export class AppHax extends LitElement {
   }
 
   render() {
-    return html`
-      <app-hax-top-bar>
+    return html` <app-hax-top-bar>
         <app-hax-search-bar slot="center"></app-hax-search-bar>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
         <div class="space-hack" slot="right"></div>
@@ -264,6 +261,7 @@ export class AppHax extends LitElement {
           <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
         >
       </div>
+
       <app-hax-steps></app-hax-steps>`;
   }
 }
