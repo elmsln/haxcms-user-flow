@@ -219,6 +219,13 @@ export class AppHaxSteps extends SimpleColors {
     });
   }
 
+  /**
+   * Yet another reason Apple doesn't let us have nice things.
+   * This detects the NONSTANDARD BS VERSION OF SCROLLINTOVIEW
+   * and then ensures that it incorrectly calls to scroll into view
+   * WITHOUT the wonderful params that ALL OTHER BROWSERS ACCEPT
+   * AND MAKE OUR LIVES SO WONDERFUL TO SCROLL TO THINGS SMOOTHLY
+   */
   scrollToThing(sel) {
     const isSafari = window.safari !== undefined;
     if (isSafari) {
