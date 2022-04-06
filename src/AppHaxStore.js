@@ -1,5 +1,8 @@
-import { localStorageGet, localStorageSet } from "@lrnwebcomponents/utils/utils.js";
 /* eslint-disable max-classes-per-file */
+import {
+  localStorageGet,
+  localStorageSet,
+} from '@lrnwebcomponents/utils/utils.js';
 import {
   observable,
   makeObservable,
@@ -8,13 +11,14 @@ import {
   autorun,
   toJS,
 } from 'mobx';
+
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
 
 class Store {
   constructor() {
     this.location = null;
     this.isNewUser = true;
-   // If user is new, make sure they are on step 1
+    // If user is new, make sure they are on step 1
 
     if (this.isNewUser) {
       this.step = 1;
@@ -25,7 +29,7 @@ class Store {
     this.routes = [];
     this.searchTerm = '';
     this.user = {
-      name: "btopro",
+      name: 'btopro',
     };
     this.site = !localStorageGet('site')
       ? { structure: null, type: null, theme: null }
@@ -51,7 +55,7 @@ class Store {
 
   // site{ structure, type, theme } (course, portfolio, buz, colors)
   get activeItem() {
-    if (this.routes) {
+    if (this.routes.length > 0 && this.step) {
       return this.routes.find(item => {
         if (item.step !== this.step) {
           return false;
@@ -59,6 +63,7 @@ class Store {
         return true;
       });
     }
+    // fake it if we have nothing on initial tee-up
     return null;
   }
 
@@ -87,6 +92,17 @@ window.AppHax.requestAvailability = () => {
 // weird, but self appending
 export const AppHaxStore = window.AppHax.requestAvailability();
 
+// toggle store darkmode
+function darkToggle(e) {
+  if (e.matches) {
+    // dark mode
+    store.darkMode = true;
+  } else {
+    // light mode
+    store.darkMode = false;
+  }
+}
+
 /**
  * HTMLElement
  */
@@ -111,6 +127,7 @@ export class AppHaxStoreEl extends HTMLElement {
         // get the id from the router
         const siteCopy = toJS(store.site);
         siteCopy.step = toJS(store.location.route.step);
+        store.step = siteCopy.step;
         if (siteCopy.structure === null && siteCopy.step !== 1) {
           store.step = 1;
         } else if (
@@ -153,12 +170,12 @@ export class AppHaxStoreEl extends HTMLElement {
       localStorageSet('darkMode', toJS(store.darkMode));
       if (toJS(store.darkMode)) {
         document.body.classList.add('dark-mode');
-      }
-      else {
+      } else {
         document.body.classList.remove('dark-mode');
       }
     });
   }
+
   // eslint-disable-next-line class-methods-use-this
   playSound(sound) {
     switch (sound) {
@@ -172,24 +189,27 @@ export class AppHaxStoreEl extends HTMLElement {
           new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
         );
         this.audio.play();
-      break;
+        break;
+      default:
+        this.audio = new Audio(
+          new URL(`../lib/assets/sounds/hit.mp3`, import.meta.url).href
+        );
+        this.audio.play();
+        console.warn(`${sound} is not a valid sound file yet`);
+        break;
     }
   }
-  darkToggle(e) {
-    if (e.matches) {
-      //dark mode
-      store.darkMode = true;
-    } else {
-      //light mode
-      store.darkMode = false;
-    }
-  }
+
   connectedCallback() {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.darkToggle.bind(this));
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', darkToggle);
   }
 
   disconnectedCallback() {
-    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.darkToggle.bind(this));
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .removeEventListener('change', darkToggle);
   }
 }
 customElements.define(AppHaxStoreEl.tag, AppHaxStoreEl);

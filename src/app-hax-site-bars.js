@@ -86,7 +86,6 @@ export class AppHaxSiteBars extends SimpleColors {
         #band {
           display: flex;
           flex-direction: column;
-          transition: height 3s;
           height: 0px;
           width: var(--main-banner-width);
           overflow: hidden;

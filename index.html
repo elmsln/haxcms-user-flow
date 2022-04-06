@@ -23,8 +23,7 @@
           NODE_ENV: "development"
         }
       };
-      </script>
-
+    </script>
     <style>
       body {
         margin: 0;
@@ -35,14 +34,15 @@
         background-repeat: repeat, repeat-y, repeat-y;
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
-        --accent-color: black;
-        transition: background-color,background-image .3s ease-out;
+        --app-hax-accent-color: black;
+        --app-hax-background-color: white;
       }
 
       body.dark-mode {
         background-color: black;
         background-image: url('lib/assets/images/DMGridBox.svg'), url('lib/assets/images/DesignDarkModeLeft.svg'), url('lib/assets/images/DesignDarkModeRight.svg');
-        --accent-color: white;
+        --app-hax-accent-color: white;
+        --app-hax-background-color: black;
       }
 
       @media (min-width: 721px) {
@@ -80,6 +80,17 @@
   </head>
 
   <body>
+    <script>
+      // reduce FOUC for dark mode so it starts in dark rapidly if selected
+      if (window.localStorage && window.localStorage.getItem('darkMode')) {
+        if (window.localStorage.getItem('darkMode')) {
+          document.body.classList.add('dark-mode');
+        }
+        else {
+          document.body.classList.remove('dark-mode');
+        }
+      }
+    </script>
       <app-hax></app-hax>
       <!-- <app-hax-search-bar></app-hax-search-bar>
       <app-hax-search-results></app-hax-search-results> -->
@@ -118,9 +129,9 @@
             cursor: pointer;
           }
         </style>
-        <button id="resetbtn">reset app</button>
         <button id="togglebtn">toggle user</button>
         <button id="loginbtn">Login</button>
+        <button id="resetbtn">reset app</button>
         <script>
           function dqs(sel) { return document.querySelector(sel)}
           dqs("#resetbtn").addEventListener("click", (e) => {

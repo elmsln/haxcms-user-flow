@@ -10,11 +10,34 @@ export class AppHaxPortfolioButton extends SimpleColors {
 
   constructor() {
     super();
+    this.icon = 'save';
     this.type = '';
     this.value = null;
     this.disabled = false;
-    this.elevation = '3';
+    this.elevation = '2';
+    this.active = false;
     this.addEventListener('click', this._handleClick);
+    this.addEventListener('click', this._handleClick);
+    this.addEventListener('focus', this._handleFocus);
+    this.addEventListener('blur', this._handleBlur);
+    this.addEventListener('mouseover', this._handleFocus);
+    this.addEventListener('mouseout', this._handleBlur);
+  }
+
+  _handleFocus() {
+    this.active = true;
+    this.elevation = '4';
+  }
+
+  _handleBlur() {
+    this.active = false;
+    this.elevation = '2';
+  }
+
+  _handleClick() {
+    if (!this.disabled) {
+      this.shadowRoot.querySelector('.haxButton').blur();
+    }
   }
 
   static get properties() {
@@ -24,6 +47,7 @@ export class AppHaxPortfolioButton extends SimpleColors {
       value: { type: String },
       disabled: { type: Boolean, reflect: true },
       elevation: { type: Number },
+      active: { type: Boolean, reflect: true },
     };
   }
 
@@ -56,39 +80,27 @@ export class AppHaxPortfolioButton extends SimpleColors {
     });
   }
 
-  // HTMLElement life-cycle, element has been connected to the page / added or moved
-  // this fires EVERY time the element is moved
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  // HTMLElement life-cycle, element has been removed from the page OR moved
-  // this fires every time the element moves
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-
   static get styles() {
     return css`
       :host {
-        background-color: transparent;
+        display: block;
+        --background-color: transparent;
+        --background-color-active: white;
         font-family: 'Press Start 2P', sans-serif;
       }
-
-      :root {
-        --accent-color: black;
-        --background-color: white;
+      :host([active]) .haxButton {
+        color: var(--app-hax-background-color, var(--background-color-active));
+        background-color: var(--app-hax-accent-color, var(--accent-color));
       }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --accent-color: white;
-          --background-color: black;
-        }
-        /* .haxButton {
-          color: var(--accent-color);
-          background-color: black;
-        } */
+      :host([active]) simple-icon {
+        --simple-icon-color: var(
+          --app-hax-background-color,
+          var(--background-color-active)
+        );
+      }
+      :host([active]) .type {
+        background-color: var(--app-hax-accent-color, var(--accent-color));
+        color: var(--app-hax-background-color, var(--background-color-active));
       }
 
       #container {
@@ -100,37 +112,38 @@ export class AppHaxPortfolioButton extends SimpleColors {
         height: 112px;
       }
       .haxButton {
-        background-color: var(--background-color);
-        color: var(--accent-color);
+        background-color: var(
+          --app-hax-background-color,
+          var(--background-color)
+        );
+        color: var(--app-hax-accent-color, var(--accent-color));
         display: inline-flex;
       }
       simple-icon {
         --simple-icon-width: 60px;
         --simple-icon-height: 60px;
-        --simple-icon-color: var(--accent-color);
+        --simple-icon-color: var(--app-hax-accent-color, var(--accent-color));
       }
-      p {
+      .type {
         font-size: 10px;
-        color: var(--accent-color);
+        color: var(--app-hax-accent-color, var(--accent-color));
       }
     `;
   }
 
   render() {
     return html`
-      <div>
-        <wired-button
-          elevation=${this.elevation}
-          ?disabled=${this.disabled}
-          class="haxButton"
-        >
-          <div id="container">
-            <simple-icon icon=${this.icon}> </simple-icon>
+      <wired-button
+        elevation=${this.elevation}
+        ?disabled=${this.disabled}
+        class="haxButton"
+      >
+        <div id="container">
+          <simple-icon icon=${this.icon}> </simple-icon>
 
-            <p>${this.type}</p>
-          </div>
-        </wired-button>
-      </div>
+          <div class="type">${this.type}</div>
+        </div>
+      </wired-button>
     `;
   }
 }

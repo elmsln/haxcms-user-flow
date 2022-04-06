@@ -51,27 +51,31 @@ export class AppHaxSteps extends SimpleColors {
         step: 1,
         id: 'step-1',
         label: 'Welcome',
+        statement: "Let's start a new journey!",
       },
       {
         path: 'step-2',
         component: 'fake',
         step: 2,
         id: 'step-2',
-        label: 'Step 2',
+        label: 'Pick type',
+        statement: 'What are we making?',
       },
       {
         path: 'step-3',
         component: 'fake',
         step: 3,
         id: 'step-3',
-        label: 'Select styles',
+        label: 'Style Select',
+        statement: "What's it feel like?",
       },
       {
         path: 'step-4',
         component: 'fake',
         step: 4,
         id: 'step-4',
-        label: 'Get writing!',
+        label: 'Loading journey',
+        statement: "Let's get writing!",
       },
     ];
     this.phrases = {
@@ -101,7 +105,6 @@ export class AppHaxSteps extends SimpleColors {
 
   chooseStructure(e) {
     const { value } = e.target;
-    // Do a type of and check that this is a string"
     store.site.structure = value;
     AppHaxStore.playSound('click2');
   }
@@ -140,11 +143,6 @@ export class AppHaxSteps extends SimpleColors {
       if (this.step === 1 && oldValue === undefined && propName === 'step') {
         AppHaxStore.playSound('coin2');
       }
-      if (this.step !== 1 && oldValue === undefined && propName === 'step') {
-        setTimeout(() => {
-          this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
-        }, 0);
-      }
       // for if we start here
       if (
         this.step === 4 &&
@@ -176,12 +174,15 @@ export class AppHaxSteps extends SimpleColors {
   // account for resizing
 
   maintainScroll() {
-    console.log('here');
     if (this.shadowRoot && this.step) {
-      this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
+      this.shadowRoot
+        .querySelector(`#step-${this.step}`)
+        .scrollIntoView({ behavior: 'instant', block: 'center' });
       // account for an animated window drag... stupid.
       setTimeout(() => {
-        this.shadowRoot.querySelector(`#step-${this.step}`).scrollIntoView();
+        this.shadowRoot
+          .querySelector(`#step-${this.step}`)
+          .scrollIntoView({ behavior: 'instant', block: 'center' });
       }, 100);
     }
   }
@@ -190,6 +191,12 @@ export class AppHaxSteps extends SimpleColors {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    setTimeout(() => {
+      this.shadowRoot
+        .querySelector(`#step-${this.step}`)
+        .scrollIntoView({ behavior: 'instant', block: 'center' });
+    }, 0);
+
     autorun(() => {
       if (store.location && store.location.route && store.location.route.id) {
         // use ID from location change to scroll into view
@@ -212,9 +219,11 @@ export class AppHaxSteps extends SimpleColors {
         if (activeItem.step !== this.step) {
           this.step = activeItem.step;
         }
-        this.shadowRoot
-          .querySelector('#link-'.concat(toJS(activeItem.id)))
-          .click();
+        setTimeout(() => {
+          this.shadowRoot
+            .querySelector('#link-'.concat(toJS(activeItem.id)))
+            .click();
+        }, 0);
       } else {
         this.shadowRoot.querySelector('#link-step-1').click();
       }
@@ -225,8 +234,9 @@ export class AppHaxSteps extends SimpleColors {
     return [
       ...super.styles,
       css`
-        :root {
-          background: blue;
+        :host {
+          display: block;
+          color: var(--app-hax-accent-color, var(--accent-color));
         }
         scrollable-component {
           --scrollbar-width: 0px;
@@ -239,11 +249,6 @@ export class AppHaxSteps extends SimpleColors {
           display: grid;
           grid-template-columns: 200px 200px;
           background: transparent;
-        }
-        #hide-my-butt {
-          visibility: hidden;
-          width: 0;
-          height: 0;
         }
         .carousel-with-snapping-track {
           display: grid;
@@ -260,6 +265,10 @@ export class AppHaxSteps extends SimpleColors {
           width: var(--viewport-width);
           font-size: 1.5rem;
           text-align: center;
+          overflow: hidden;
+        }
+        #step-links {
+          display: none;
         }
         li {
           display: inline-flex;
@@ -295,9 +304,22 @@ export class AppHaxSteps extends SimpleColors {
           background-color: transparent;
           border: none;
         }
+        .theme-button:focus,
+        .theme-button:hover {
+          outline: 4px solid var(--app-hax-accent-color, var(--accent-color));
+          outline-offset: 4px;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+        }
         app-hax-site-button {
           --app-hax-site-button-width: 30vw;
           --app-hax-site-button-min-width: 300px;
+        }
+        app-hax-hat-progress {
+          height: 400px;
+          width: 400px;
+          display: block;
         }
       `,
     ];
@@ -323,7 +345,7 @@ export class AppHaxSteps extends SimpleColors {
         @click="${this.getNewWord}"
       ></random-word>
       <div id="container">
-        <ul id="hide-my-butt">
+        <ul id="step-links">
           ${this.routes.map(
             item =>
               html`<li>
@@ -356,27 +378,28 @@ export class AppHaxSteps extends SimpleColors {
             </div>
             <div class="carousel-with-snapping-item" id="step-2">
               <div id="grid-container">
-                <app-hax-profolio-button
+                <app-hax-portfolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Technology"
-                ></app-hax-profolio-button>
-                <app-hax-profolio-button
+                ></app-hax-portfolio-button>
+                <app-hax-portfolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Business"
-                ></app-hax-profolio-button>
-                <app-hax-profolio-button
+                ></app-hax-portfolio-button>
+                <app-hax-portfolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
                   type="Art"
-                ></app-hax-profolio-button>
-                <app-hax-profolio-button
+                ></app-hax-portfolio-button>
+                <app-hax-portfolio-button
                   tabindex="${this.step !== 2 ? '-1' : ''}"
                   @click=${this.chooseType}
-                ></app-hax-profolio-button>
+                ></app-hax-portfolio-button>
               </div>
-            <div class="carousel-with-snapping-item" id="step-3">
+          </div>
+          <div class="carousel-with-snapping-item" id="step-3">
               <div id="themeContainer">
                 <button
                   value="blue"
@@ -412,7 +435,6 @@ export class AppHaxSteps extends SimpleColors {
                 tabindex="${this.step !== 4 ? '-1' : ''}"
               ></app-hax-hat-progress>
             </div>
-          </div>
         </scrollable-component>
       </div>
     `;

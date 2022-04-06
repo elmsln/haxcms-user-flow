@@ -6,11 +6,8 @@ import {
 } from 'wired-elements/lib/wired-lib.js';
 import { WiredToggle } from 'wired-elements/lib/wired-toggle.js';
 import { css, unsafeCSS } from 'lit';
+import { autorun, toJS } from 'mobx';
 import { store, AppHaxStore } from './AppHaxStore.js';
-import {
-  autorun,
-  toJS,
-} from 'mobx';
 // need to highjack in order to alter the scale so we can fit our icon
 // for states
 const sun = new URL('../lib/assets/images/sun.svg', import.meta.url).href;
@@ -22,6 +19,7 @@ export class AppHAXWiredToggle extends WiredToggle {
       this.checked = toJS(store.darkMode);
     });
   }
+
   // eslint-disable-next-line class-methods-use-this
   canvasSize() {
     return [100, 60];
@@ -61,7 +59,7 @@ export class AppHAXWiredToggle extends WiredToggle {
       super.updated(changedProperties);
     }
     changedProperties.forEach((oldValue, propName) => {
-      if (propName === "checked" && oldValue !== undefined) {
+      if (propName === 'checked' && oldValue !== undefined) {
         store.darkMode = this[propName];
         AppHaxStore.playSound('click');
       }
@@ -72,11 +70,16 @@ export class AppHAXWiredToggle extends WiredToggle {
     return [
       ...super.styles,
       css`
+        :host {
+          opacity: 1;
+          display: inline-flex;
+          margin-top: -4px;
+        }
         :host div {
-          background-image: url(http://localhost:8000/lib/assets/images/sun.svg);
+          background-image: url('${unsafeCSS(sun)}');
           background-repeat: no-repeat;
-          --wired-toggle-off-color: #00e1ff;
-          --wired-toggle-on-color: #00e1ff;
+          --wired-toggle-off-color: #66edff;
+          --wired-toggle-on-color: #006b7a;
           background-position-x: 50px;
           width: 100px;
           display: inline-flex;
@@ -90,7 +93,7 @@ export class AppHAXWiredToggle extends WiredToggle {
           height: 60px;
           padding: 0;
           margin: 0;
-      }
+        }
       `,
     ];
   }

@@ -25,6 +25,7 @@ export class AppHaxTopBar extends LitElement {
         --accent-color: white;
         --top-bar-height: 48px;
         display: block;
+        height: var(--top-bar-height);
       }
 
       /* @media (prefers-color-scheme: dark) {
@@ -44,7 +45,6 @@ export class AppHaxTopBar extends LitElement {
         background-color: var(--bg-color);
         color: var(--accent-color);
         height: var(--top-bar-height);
-        border-bottom: 2px var(--accent-color) solid;
         text-align: center;
         vertical-align: middle;
         font-size: 2vw;
@@ -60,18 +60,20 @@ export class AppHaxTopBar extends LitElement {
 
       .topBar .left {
         text-align: left;
+        height: var(--top-bar-height);
+        vertical-align: text-top;
       }
 
       .topBar .center {
         text-align: center;
+        height: var(--top-bar-height);
+        vertical-align: text-top;
       }
 
       .topBar .right {
         text-align: right;
-      }
-
-      .left ::slotted(*) {
-        color: red;
+        height: var(--top-bar-height);
+        vertical-align: text-top;
       }
     `;
   }

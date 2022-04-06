@@ -2,10 +2,10 @@
 import { LitElement, html, css } from 'lit';
 import '@lrnwebcomponents/future-terminal-text/future-terminal-text.js';
 
-export class AppHaxIntroLabel extends LitElement {
+export class AppHaxLabel extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'app-hax-intro-label';
+    return 'app-hax-label';
   }
 
   constructor() {
@@ -28,25 +28,20 @@ export class AppHaxIntroLabel extends LitElement {
         font-family: 'Press Start 2P', sans-serif;
         text-align: center;
       }
-      :root {
-        --accent-color: white;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --accent-color: black;
-        }
-      }
 
       .title {
-        -webkit-text-stroke: 1px var(--accent-color);
-        -webkit-text-fill-color: white;
+        -webkit-text-stroke: 1px
+          var(--app-hax-accent-color, var(--accent-color));
+        -webkit-text-fill-color: var(
+          --app-hax-background-color,
+          var(--background-color)
+        );
         font-weight: normal;
         font-size: 4vw;
       }
 
       .subtitle {
-        color: var(--accent-color);
+        color: var(--app-hax-accent-color, var(--accent-color));
         font-weight: normal;
         margin-top: 2.5px;
         font-size: 2vw;
@@ -57,7 +52,10 @@ export class AppHaxIntroLabel extends LitElement {
         font-weight: normal;
         vertical-align: middle;
         -webkit-text-stroke: 0px;
-        -webkit-text-fill-color: var(--accent-color);
+        -webkit-text-fill-color: var(
+          --app-hax-accent-color,
+          var(--accent-color)
+        );
       }
 
       /* .title ::slotted(*),
@@ -76,8 +74,7 @@ export class AppHaxIntroLabel extends LitElement {
     return html`
       <div class="topBar">
         <div class="title" part="title">
-          <span class="bracket">&#60;</span
-          ><slot>${this.title}</slot
+          <span class="bracket">&#60;</span><slot>${this.title}</slot
           ><span class="bracket">&#62;</span>
         </div>
         <div class="subtitle" part="subtitle">
@@ -87,4 +84,4 @@ export class AppHaxIntroLabel extends LitElement {
     `;
   }
 }
-customElements.define(AppHaxIntroLabel.tag, AppHaxIntroLabel);
+customElements.define(AppHaxLabel.tag, AppHaxLabel);

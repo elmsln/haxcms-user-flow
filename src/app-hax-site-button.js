@@ -20,7 +20,8 @@ export class AppHaxSiteButton extends SimpleColors {
     this.label = null;
     this.value = null;
     this.disabled = false;
-    this.elevation = '2';
+    this.elevation = '3';
+    this.active = false;
     this.addEventListener('click', this._handleClick);
     this.addEventListener('focus', this._handleFocus);
     this.addEventListener('blur', this._handleBlur);
@@ -35,6 +36,7 @@ export class AppHaxSiteButton extends SimpleColors {
       value: { type: String },
       disabled: { type: Boolean, reflect: true },
       elevation: { type: Number },
+      active: { type: Boolean, reflect: true },
     };
   }
 
@@ -42,7 +44,8 @@ export class AppHaxSiteButton extends SimpleColors {
   static get styles() {
     return css`
       :host {
-        --hax-accent-color: '#42596b';
+        --background-color: transparent;
+        --background-color-active: white;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -51,49 +54,36 @@ export class AppHaxSiteButton extends SimpleColors {
         width: fit-content;
         margin: 20px 0;
       }
+      :host([active]) .haxButton {
+        color: var(--app-hax-background-color, var(--background-color-active));
+        background-color: var(--app-hax-accent-color, var(--accent-color));
+      }
       .haxButton {
-        background-color: white;
-        color: black;
+        background-color: var(
+          --app-hax-background-color,
+          var(--background-color)
+        );
+        color: var(--app-hax-accent-color, var(--accent-color));
         font-size: var(--app-hax-site-button-font-size, 26px);
       }
-      .dialogBox {
-        color: #0f460f;
-      }
-      span {
+
+      .label {
         width: var(--app-hax-site-button-width, auto);
         min-width: var(--app-hax-site-button-min-width, auto);
         height: var(--app-hax-site-button-height, auto);
         display: inline-flex;
       }
-      .active {
-        color: #42596b;
-      }
     `;
   }
 
-  // TODO: Use .js events to manage statefulness (hover, focus, click)
-  // Try making hover into elevation scales
-
-  // EVENT HANDLING
-  _handleKeydown(e) {
-    if (e.key === 'Escape') {
-      console.log('escape');
-      this.blur();
-    }
-
-    if (e.key === 'Spacebar') {
-      console.log('space');
-    }
-  }
-
   _handleFocus() {
-    this.shadowRoot.querySelector('.haxButton').classList.add('active');
-    this.elevation = '4';
+    this.active = true;
+    this.elevation = '5';
   }
 
   _handleBlur() {
-    this.shadowRoot.querySelector('.haxButton').classList.remove('active');
-    this.elevation = '2';
+    this.active = false;
+    this.elevation = '3';
   }
 
   _handleClick() {
@@ -110,7 +100,7 @@ export class AppHaxSiteButton extends SimpleColors {
         ?disabled=${this.disabled}
         class="haxButton"
         @click="${this._handleClick}"
-        ><span>${this.label}</span></wired-button
+        ><span class="label">${this.label}</span></wired-button
       >
     `;
   }

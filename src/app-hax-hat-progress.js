@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
+import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
 export class AppHaxHatProgress extends SimpleColors {
   static get tag() {
@@ -9,7 +10,7 @@ export class AppHaxHatProgress extends SimpleColors {
   constructor() {
     super();
     this.promises = [];
-    import('@lrnwebcomponents/promise-progress/promise-progress.js');
+    this.max = 100;
   }
 
   static get properties() {
@@ -38,7 +39,7 @@ export class AppHaxHatProgress extends SimpleColors {
       this.shadowRoot
         .querySelector('#progress2')
         .addEventListener('max-changed', e => {
-          this.shadowRoot.querySelector('#max').textContent = e.detail.value;
+          this.max = e.detail.value;
         });
       this.shadowRoot
         .querySelector('#progress2')
@@ -50,8 +51,7 @@ export class AppHaxHatProgress extends SimpleColors {
               })
             );
             const text = document.createElement('button');
-            this.shadowRoot.querySelector('#value').textContent =
-              this.shadowRoot.querySelector('#max').textContent;
+            this.shadowRoot.querySelector('#value').textContent = this.max;
             text.textContent = "Let's go!";
             text.classList.add('game');
             text.addEventListener('click', () => {
@@ -69,15 +69,10 @@ export class AppHaxHatProgress extends SimpleColors {
     return [
       ...super.styles,
       css`
-        .count {
-          position: absolute;
-          margin-top: 100px;
-          margin-left: 30px;
-          font-size: 30px;
-          color: var(--simple-colors-default-theme-grey-1, white);
-          font-family: 'Press Start 2P', sans-serif;
-          width: 350px;
-          text-align: center;
+        :host {
+          display: block;
+          height: 400px;
+          width: 400px;
         }
         img {
           width: 400px;
@@ -85,13 +80,24 @@ export class AppHaxHatProgress extends SimpleColors {
           pointer-events: none;
         }
         .progress {
-          margin-top: -170px;
-          margin-left: 8px;
+          margin-top: -146px;
+          margin-left: 16px;
           z-index: -1;
         }
         .progress::part(progress) {
           height: 100px;
           width: 350px;
+        }
+        .count {
+          color: var(--simple-colors-default-theme-grey-1, white);
+          font-family: 'Press Start 2P', sans-serif;
+          width: 350px;
+          text-align: center;
+          position: relative;
+          display: block;
+          font-size: 30px;
+          margin-top: -250px;
+          margin-left: 30px;
         }
         .game {
           font-family: 'Press Start 2P', sans-serif;
@@ -102,11 +108,12 @@ export class AppHaxHatProgress extends SimpleColors {
           background-color: var(--simple-colors-default-theme-red-7, red);
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
-          height: 48px;
-          margin-top: -95px;
+          height: 50px;
+          margin-top: 142px;
           display: block;
           position: relative;
           margin-left: 50px;
+          padding: 0;
         }
         .game:focus,
         .game:hover {
@@ -125,11 +132,9 @@ export class AppHaxHatProgress extends SimpleColors {
 
   render() {
     return html`
-      <div class="count">
-        <span id="value">0</span>/<span id="max">100</span>
-      </div>
       <img
-        src="${new URL('../lib/assets/images/HatBlank.svg', import.meta.url).href}"
+        src="${new URL('../lib/assets/images/HatBlank.svg', import.meta.url)
+          .href}"
         alt=""
       />
       <promise-progress
@@ -138,6 +143,7 @@ export class AppHaxHatProgress extends SimpleColors {
         class="progress"
         .list=${this.promises}
       ></promise-progress>
+      <div class="count"><span id="value">0</span>%</div>
     `;
   }
 }

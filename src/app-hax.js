@@ -1,14 +1,12 @@
 import { LitElement, css, html } from 'lit';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
+import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
-import { toJS, autorun } from "mobx";
 import './AppHaxRouter.js';
 import './app-hax-steps.js';
-import './app-hax-site-login.js'
-import './app-hax-site-button.js';
+import './app-hax-site-login.js';
 import './app-hax-site-details.js';
-import './app-hax-intro-label.js';
-import './app-hax-portfolio-button.js';
+import './app-hax-label.js';
 import './app-hax-top-bar.js';
 import './app-hax-search-bar.js';
 import './app-hax-search-results.js';
@@ -21,18 +19,24 @@ export class AppHax extends LitElement {
   constructor() {
     super();
     this.courses = [];
+    this.activeItem = {
+      label: 'Welcome',
+    };
     this.source = new URL('../demo/site.json', import.meta.url).href;
     // @todo need this from app deploy itself
     this.sitesBase = 'https://iam.hax.psu.edu';
     import('@lrnwebcomponents/simple-modal/simple-modal.js');
-    autorun(() => { this.userName = toJS(store.user.name)});
+    autorun(() => {
+      this.userName = toJS(store.user.name);
+    });
   }
 
   static get properties() {
     return {
       courses: { type: Array },
       source: { type: String },
-      userName: { type: String}
+      userName: { type: String },
+      activeItem: { type: Object },
     };
   }
 
@@ -69,26 +73,22 @@ export class AppHax extends LitElement {
     store.isNewUser = !store.isNewUser;
   }
 
-
-
   // eslint-disable-next-line class-methods-use-this
-  login(){
-    console.log("Login BTN clicked");
-    const p = document.createElement("app-hax-site-login");
-      const evt = new CustomEvent("simple-modal-show", {
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          title: 'Please login to get started',
-          elements: { content: p },
-          invokedBy: this,
-        }
-      });
+  login() {
+    console.log('Login BTN clicked');
+    const p = document.createElement('app-hax-site-login');
+    const evt = new CustomEvent('simple-modal-show', {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        title: 'Please login to get started',
+        elements: { content: p },
+        invokedBy: this,
+      },
+    });
 
     this.dispatchEvent(evt);
   }
-
-
 
   static get styles() {
     return [
@@ -97,36 +97,61 @@ export class AppHax extends LitElement {
           display: block;
         }
         rpg-character {
-          transform: scale(.4, 0.4);
-          margin: -70px -35px 0px 0px;
+          transform: scale(0.4, 0.4);
+          margin: -36px -35px 0px 0px;
           vertical-align: text-top;
+          position: fixed;
+          top: 0px;
+          right: 0px;
+          overflow: hidden;
+          height: 120px;
         }
         app-hax-top-bar {
           top: 0;
           position: sticky;
         }
-        .introLabel {
+        .label {
           text-align: center;
-          font-size: 4vw;
+          margin-top: 48px;
         }
-        app-hax-intro-label {
-          margin-top: 200px;
+        app-hax-label {
           display: block;
+        }
+        .space-hack {
+          display: inline-flex;
+          width: 64px;
+          height: 48px;
         }
       `,
     ];
   }
 
+  firstUpdated(changedProperties) {
+    if (super.firstUpdated) {
+      super.firstUpdated(changedProperties);
+    }
+    autorun(() => {
+      this.activeItem = toJS(store.activeItem);
+    });
+  }
+
   render() {
-    return html`
-        <app-hax-top-bar>
-          <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-          <rpg-character seed="${this.userName}" circle slot="right"></rpg-character>
-        </app-hax-top-bar>
-        <div class="introLabel">
-          <app-hax-intro-label><span>Whatever</span><div slot="subtitle">Start your journey now!</div></app-hax-intro-label>
-        </div>
-        <app-hax-steps></app-hax-steps>`;
+    return html` <app-hax-top-bar>
+        <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
+        <div class="space-hack" slot="right"></div>
+        <rpg-character
+          seed="${this.userName}"
+          circle
+          slot="right"
+        ></rpg-character>
+      </app-hax-top-bar>
+      <div class="label">
+        <app-hax-label
+          ><span>${this.activeItem.label}</span>
+          <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
+        >
+      </div>
+      <app-hax-steps></app-hax-steps>`;
   }
 }
 customElements.define(AppHax.tag, AppHax);
