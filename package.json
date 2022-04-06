@@ -21,7 +21,6 @@
     "start": "web-dev-server"
   },
   "dependencies": {
-    "smoothscroll-polyfill": "0.4.4",
     "@lit-labs/motion": "^1.0.2",
     "@lrnwebcomponents/future-terminal-text": "^4.0.18",
     "@lrnwebcomponents/promise-progress": "^4.0.20",

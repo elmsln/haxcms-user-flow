@@ -13,8 +13,6 @@ import './random-word.js';
 import './app-hax-hat-progress.js';
 import './app-hax-portfolio-button.js';
 import './app-hax-site-button.js';
-import 'smoothscroll-polyfill';
-
 
 const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url)
   .href;
@@ -178,14 +176,10 @@ export class AppHaxSteps extends SimpleColors {
 
   maintainScroll() {
     if (this.shadowRoot && this.step) {
-      this.shadowRoot
-        .querySelector(`#step-${this.step}`)
-        .scrollIntoView({ behavior: 'instant', block: 'center' });
+      this.scrollToThing(`#step-${this.step}`);
       // account for an animated window drag... stupid.
       setTimeout(() => {
-        this.shadowRoot
-          .querySelector(`#step-${this.step}`)
-          .scrollIntoView({ behavior: 'instant', block: 'center' });
+        this.scrollToThing(`#step-${this.step}`);
       }, 100);
     }
   }
@@ -195,22 +189,14 @@ export class AppHaxSteps extends SimpleColors {
       super.firstUpdated(changedProperties);
     }
     setTimeout(() => {
-      this.shadowRoot
-        .querySelector(`#step-${this.step}`)
-        .scrollIntoView({ behavior: 'instant', block: 'center' });
+      this.scrollToThing(`#step-${this.step}`);
     }, 0);
 
     autorun(() => {
       if (store.location && store.location.route && store.location.route.id) {
         // account for an animated window drag... stupid.
         setTimeout(() => {
-          this.shadowRoot
-            .querySelector('#'.concat(toJS(store.location.route.id)))
-            .scrollIntoView({
-              block: 'nearest',
-              inline: 'nearest',
-              behavior: 'smooth',
-            });
+          this.scrollToThing('#'.concat(toJS(store.location.route.id)));
         }, 300); // this delay helps w/ initial paint timing but also user perception
         // there's a desire to have a delay especialy when tapping things of
         // about 300ms
@@ -231,6 +217,19 @@ export class AppHaxSteps extends SimpleColors {
         this.shadowRoot.querySelector('#link-step-1').click();
       }
     });
+  }
+
+  scrollToThing(sel) {
+    const isSafari = window.safari !== undefined;
+    if (isSafari) {
+      this.shadowRoot.querySelector(sel).scrollIntoView();
+    } else {
+      this.shadowRoot.querySelector(sel).scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+        behavior: 'smooth',
+      });
+    }
   }
 
   static get styles() {
