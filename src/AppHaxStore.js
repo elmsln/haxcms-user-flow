@@ -18,13 +18,13 @@ class Store {
     this.location = null;
     this.isNewUser = true;
     this.appEl = null;
-    this.soundStatus = true;
+    this.soundStatus = localStorageGet('app-hax-soundStatus', true);
     // If user is new, make sure they are on step 1
 
     if (this.isNewUser) {
       this.step = 1;
     } else {
-      this.step = !localStorageGet('step') ? 1 : localStorageGet('step');
+      this.step = !localStorageGet('app-hax-step') ? 1 : localStorageGet('app-hax-step');
     }
     this.isLoggedIn = true;
     this.routes = [];
@@ -32,13 +32,13 @@ class Store {
     this.user = {
       name: 'btopro',
     };
-    this.site = !localStorageGet('site')
+    this.site = !localStorageGet('app-hax-site')
       ? { structure: null, type: null, theme: null }
-      : localStorageGet('site');
+      : localStorageGet('app-hax-site');
 
-    this.darkMode = !localStorageGet('darkMode')
+    this.darkMode = !localStorageGet('app-hax-darkMode')
       ? false
-      : localStorageGet('darkMode');
+      : localStorageGet('app-hax-darkMode');
 
     makeObservable(this, {
       location: observable.ref, // router location in url
@@ -67,11 +67,6 @@ class Store {
     }
     // fake it if we have nothing on initial tee-up
     return null;
-  }
-
-  resetApp() {
-    this.step = 1;
-    this.site = { structure: null, type: null, theme: null };
   }
 }
 /**

@@ -80,14 +80,22 @@ export class AppHaxHatProgress extends SimpleColors {
           pointer-events: none;
         }
         .progress {
-          margin-top: -146px;
-          margin-left: 16px;
+          margin: -148px 0 0 10px;
           z-index: -1;
         }
         .progress::part(progress) {
           height: 100px;
-          width: 350px;
+          width: 338px;
+          margin-top: -1px 0 0 -4px;
         }
+
+        .progress::part(progress)::-moz-progress-bar {
+          background-color: red;
+          height: 50px;
+          margin: 24px 0 0 0;
+          border: none;
+        }
+
         .count {
           color: var(--simple-colors-default-theme-grey-1, white);
           font-family: 'Press Start 2P', sans-serif;
@@ -104,16 +112,16 @@ export class AppHaxHatProgress extends SimpleColors {
           font-size: 28px;
           font-weight: bold;
           text-align: center;
-          width: 312px;
+          width: 310px;
           background-color: var(--simple-colors-default-theme-red-7, red);
           color: var(--simple-colors-default-theme-grey-1, white);
           border: 0px;
-          height: 50px;
-          margin-top: 142px;
+          height: 54px;
           display: block;
           position: relative;
-          margin-left: 50px;
+          margin: 138px 0px 0px 52px;
           padding: 0;
+          box-sizing: border-box;
         }
         .game:focus,
         .game:hover {

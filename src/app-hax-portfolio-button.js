@@ -1,5 +1,5 @@
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
-import '@lrnwebcomponents/simple-icon';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { html, css } from 'lit';
 
 export class AppHaxPortfolioButton extends SimpleColors {
@@ -92,7 +92,7 @@ export class AppHaxPortfolioButton extends SimpleColors {
         color: var(--app-hax-background-color, var(--background-color-active));
         background-color: var(--app-hax-accent-color, var(--accent-color));
       }
-      :host([active]) simple-icon {
+      :host([active]) simple-icon-lite {
         --simple-icon-color: var(
           --app-hax-background-color,
           var(--background-color-active)
@@ -119,7 +119,7 @@ export class AppHaxPortfolioButton extends SimpleColors {
         color: var(--app-hax-accent-color, var(--accent-color));
         display: inline-flex;
       }
-      simple-icon {
+      simple-icon-lite {
         --simple-icon-width: 60px;
         --simple-icon-height: 60px;
         --simple-icon-color: var(--app-hax-accent-color, var(--accent-color));
@@ -139,8 +139,7 @@ export class AppHaxPortfolioButton extends SimpleColors {
         class="haxButton"
       >
         <div id="container">
-          <simple-icon icon=${this.icon}> </simple-icon>
-
+          <simple-icon-lite icon=${this.icon}> </simple-icon-lite>
           <div class="type">${this.type}</div>
         </div>
       </wired-button>

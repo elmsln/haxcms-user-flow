@@ -176,10 +176,10 @@ export class AppHaxSteps extends SimpleColors {
 
   maintainScroll() {
     if (this.shadowRoot && this.step) {
-      this.scrollToThing(`#step-${this.step}`);
+      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
       // account for an animated window drag... stupid.
       setTimeout(() => {
-        this.scrollToThing(`#step-${this.step}`);
+        this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
       }, 100);
     }
   }
@@ -189,14 +189,18 @@ export class AppHaxSteps extends SimpleColors {
       super.firstUpdated(changedProperties);
     }
     setTimeout(() => {
-      this.scrollToThing(`#step-${this.step}`);
+      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
     }, 0);
 
     autorun(() => {
       if (store.location && store.location.route && store.location.route.id) {
         // account for an animated window drag... stupid.
         setTimeout(() => {
-          this.scrollToThing('#'.concat(toJS(store.location.route.id)));
+          this.scrollToThing('#'.concat(toJS(store.location.route.id)), {
+            block: 'nearest',
+            inline: 'nearest',
+            behavior: 'smooth',
+          });
         }, 300); // this delay helps w/ initial paint timing but also user perception
         // there's a desire to have a delay especialy when tapping things of
         // about 300ms
@@ -226,16 +230,12 @@ export class AppHaxSteps extends SimpleColors {
    * WITHOUT the wonderful params that ALL OTHER BROWSERS ACCEPT
    * AND MAKE OUR LIVES SO WONDERFUL TO SCROLL TO THINGS SMOOTHLY
    */
-  scrollToThing(sel) {
+  scrollToThing(sel, props) {
     const isSafari = window.safari !== undefined;
     if (isSafari) {
       this.shadowRoot.querySelector(sel).scrollIntoView();
     } else {
-      this.shadowRoot.querySelector(sel).scrollIntoView({
-        block: 'nearest',
-        inline: 'nearest',
-        behavior: 'smooth',
-      });
+      this.shadowRoot.querySelector(sel).scrollIntoView(props);
     }
   }
 
@@ -411,28 +411,31 @@ export class AppHaxSteps extends SimpleColors {
           <div class="carousel-with-snapping-item" id="step-3">
               <div id="themeContainer">
                 <button
+                  aria-label="Blue theme"
                   value="blue"
                   class="theme-button"
                   @click=${this.chooseTheme}
                   tabindex="${this.step !== 3 ? '-1' : ''}"
                 >
-                  <img src=${blueStyle} alt="" />
+                  <img src=${blueStyle} alt="" loading="lazy" decoding="async" />
                 </button>
                 <button
+                  aria-label="Gray theme"
                   value="gray"
                   class="theme-button"
                   @click=${this.chooseTheme}
                   tabindex="${this.step !== 3 ? '-1' : ''}"
                 >
-                  <img src=${greyStyle} alt="" />
+                  <img src=${greyStyle} alt="" loading="lazy" decoding="async" />
                 </button>
                 <button
+                  aria-label="Party theme"
                   value="party"
                   class="theme-button"
                   @click=${this.chooseTheme}
                   tabindex="${this.step !== 3 ? '-1' : ''}"
                 >
-                  <img src=${partyStyle} alt="" />
+                  <img src=${partyStyle} alt="" loading="lazy" ecoding="async" />
                 </button>
               </div>
             </div>
