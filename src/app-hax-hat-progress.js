@@ -60,6 +60,16 @@ export class AppHaxHatProgress extends SimpleColors {
             this.shadowRoot
               .querySelector('#progress2')
               .parentNode.appendChild(text);
+            // show you saying you got this!
+            window.dispatchEvent(new CustomEvent("rpg-character-toast-show", {
+              bubbles: true,
+              cancelable: true,
+              composed: true,
+              detail: {
+                text: `W00t!`,
+                duration: 3000,
+              },
+            }));
           }
         });
     }, 0);

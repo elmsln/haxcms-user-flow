@@ -16,7 +16,6 @@ export class AppHaxSearchResults extends SimpleColors {
 
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
-      console.log(`Search Term AutoRun: ${this.searchTerm}`);
     });
 
     this.searchItems = [];

@@ -132,7 +132,6 @@ export class AppHaxSiteBars extends SimpleColors {
 
   _toggleDetails(e) {
     console.log(`${this} , ${e}`);
-    console.log('clicked');
   }
 
   // HTML - specific to Lit

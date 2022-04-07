@@ -104,15 +104,22 @@ export class AppHaxSiteLogin extends SimpleColors {
           autorun(() => { store.user = {
             name: this.username
           }});
-            const evt = new CustomEvent("simple-modal-hide", {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                }
-              });
-        
-            this.dispatchEvent(evt);
-            // @todo need to set local storage from here
+          this.dispatchEvent(new CustomEvent("simple-modal-hide", {
+            bubbles: true,
+            cancelable: true,
+            detail: {
+            }
+          }));
+          window.dispatchEvent(new CustomEvent("rpg-character-toast-show", {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            detail: {
+              text: `Welcome ${this.username}!`,
+              duration: 5000,
+            },
+          }));
+          // @todo need to set local storage from here
         } else {
             alert('invalid password');
             this.errorMSG = "Invalid Password";

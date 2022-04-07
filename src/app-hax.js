@@ -11,6 +11,7 @@ import './app-hax-label.js';
 import './app-hax-top-bar.js';
 import './app-hax-search-bar.js';
 import './app-hax-search-results.js';
+import './rpg-character-toast.js';
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 // toggle store darkmode
@@ -195,7 +196,7 @@ export class AppHax extends LitElement {
       window.location.reload();
     }
     catch(e) {
-      console.log(e);
+      console.warn(e);
     }
   }
 
