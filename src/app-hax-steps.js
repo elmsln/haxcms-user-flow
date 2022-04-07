@@ -4,14 +4,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html, css } from 'lit';
-import 'scrollable-component/index.js';
 import { autorun, toJS } from 'mobx';
 import './AppHaxRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './AppHaxStore.js';
-import './random-word.js';
-import './app-hax-hat-progress.js';
-import './app-hax-portfolio-button.js';
+import 'scrollable-component/index.js';
 import './app-hax-site-button.js';
 
 const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url)
@@ -30,6 +27,9 @@ export class AppHaxSteps extends SimpleColors {
 
   constructor() {
     super();
+    import('./app-hax-hat-progress.js');
+    import('./app-hax-portfolio-button.js');
+
     this._progressReady = false;
     this.step = 1;
     this.isNewUser = true;
@@ -140,10 +140,6 @@ export class AppHaxSteps extends SimpleColors {
       super.updated(changedProperties);
     }
     changedProperties.forEach((oldValue, propName) => {
-      // start the 'game'
-      if (this.step === 1 && oldValue === undefined && propName === 'step') {
-        store.appEl.playSound('coin2');
-      }
       // for if we start here
       if (
         this.step === 4 &&
@@ -188,6 +184,7 @@ export class AppHaxSteps extends SimpleColors {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    import('./random-word.js');
     setTimeout(() => {
       this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
     }, 0);

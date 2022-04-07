@@ -1,17 +1,11 @@
 import { LitElement, css, html } from 'lit';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
-import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
 import './AppHaxRouter.js';
 import './app-hax-steps.js';
-import './app-hax-site-login.js';
-import './app-hax-site-details.js';
 import './app-hax-label.js';
 import './app-hax-top-bar.js';
-import './app-hax-search-bar.js';
-import './app-hax-search-results.js';
-import './rpg-character-toast.js';
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 // toggle store darkmode
@@ -246,13 +240,31 @@ export class AppHax extends LitElement {
           margin-top: 48px;
         }
         app-hax-label {
+          animation: .8s ease-in-out 0s scrollin;
+          -webkit-animation: .8s ease-in-out 0s scrollin;
           display: block;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          app-hax-label {
+            animation: none;
+            -webkit-animation: none;
+          }
         }
         app-hax-label h1 {
           font-weight: normal;
           font-size: 4vw;
           margin: 0;
           padding: 0;
+        }
+        @keyframes scrollin {
+          from {
+            margin-top: -240px;
+            margin-bottom: 240px;
+          }
+          to {
+            margin-top: 0;
+            margin-bottom: 0;
+          }
         }
         .haxLogo {
           height: 40px;
@@ -287,6 +299,29 @@ export class AppHax extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    import('@lrnwebcomponents/rpg-character/rpg-character.js');
+    import('wired-elements/lib/wired-button.js');
+    import('./app-hax-site-details.js');
+    import('./rpg-character-toast.js');
+    import('./app-hax-site-login.js');
+    import('./app-hax-wired-toggle.js');
+    import('./app-hax-search-bar.js');
+    import('./app-hax-search-results.js');
+    this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
+    store.appReady = true;
+    autorun(() => {
+      if (toJS(store.appReady)) {
+        document.body.classList.add('app-loaded');
+      } else {
+        document.body.classList.remove('app-loaded');
+      }
+    });
+    // play sound when we animate the banner in
+    this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
+      if (e.animationName == "scrollin") {
+        store.appEl.playSound('coin2');
+      }
+    });
     store.appEl = this;
     autorun(() => {
       this.activeItem = toJS(store.activeItem);

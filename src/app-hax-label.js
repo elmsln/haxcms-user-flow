@@ -59,16 +59,6 @@ export class AppHaxLabel extends LitElement {
           var(--accent-color)
         );
       }
-
-      /* .title ::slotted(*),
-      .title .titleContent {
-        
-      }
-
-      .subtitle ::slotted(*),
-      .subtitle .subtitleContent {
-        
-      } */
     `;
   }
 

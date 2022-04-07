@@ -18,6 +18,7 @@ class Store {
     this.location = null;
     this.isNewUser = true;
     this.appEl = null;
+    this.appReady = false;
     this.soundStatus = localStorageGet('app-hax-soundStatus', true);
     // If user is new, make sure they are on step 1
 
@@ -52,6 +53,7 @@ class Store {
       darkMode: observable,
       soundStatus: observable,
       user: observable,
+      appReady: observable,
     });
   }
 
