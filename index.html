@@ -50,6 +50,12 @@
         background-position: center center, top left, top right;
         background-size: auto, 20% auto, 20% auto;
       }
+      div[slot="externalproviders"] {
+        display: none;
+      }
+      body.app-loaded div[slot="externalproviders"] {
+        display: unset;
+      }
       body.app-loaded.dark-mode {
         background-image: url('lib/assets/images/DMGridBox.svg'), url('lib/assets/images/DesignDarkModeLeft.svg'), url('lib/assets/images/DesignDarkModeRight.svg');
       }
@@ -132,11 +138,13 @@
       </div>
       <div class="subtitle">HAX is loading</div>
     </div>
-      <app-hax></app-hax>
-      <!-- <app-hax-search-bar></app-hax-search-bar>
-      <app-hax-search-results></app-hax-search-results> -->
-
-      <!-- <app-hax-site-login></app-hax-site-login> -->
+      <app-hax>
+        <div slot="externalproviders">
+          <a href="https://login.microsoftonline.com/">
+            <button style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
+          </a>
+        </div>
+      </app-hax>
       <div id="demo">
         <style>
           #resetbtn {
@@ -149,7 +157,7 @@
             color: text;
             cursor: pointer;
           }
-          #togglebtn {
+          #loginbtn {
             bottom: 0;
             left: 0;
             position: absolute;
@@ -159,24 +167,13 @@
             color: text;
             cursor: pointer;
           }
-          #loginbtn {
-            bottom: 0;
-            left: 50vw;
-            position: absolute;
-            font-size: 50px;
-            border: 0;
-            background-color: orange;
-            color: text;
-            cursor: pointer;
-          }
         </style>
-        <button id="togglebtn">toggle user</button>
         <button id="loginbtn">Login</button>
         <button id="resetbtn">reset app</button>
         <script>
           // reduce FOUC for dark mode so it starts in dark rapidly if selected
-          if (window.localStorage && window.localStorage.getItem('darkMode')) {
-            if (window.localStorage.getItem('darkMode') == 'true') {
+          if (window.localStorage && window.localStorage.getItem('app-hax-darkMode')) {
+            if (window.localStorage.getItem('app-hax-darkMode') == 'true') {
               document.body.classList.add('dark-mode');
             }
             else {
@@ -190,9 +187,6 @@
           function dqs(sel) { return document.querySelector(sel)}
           dqs("#resetbtn").addEventListener("click", (e) => {
             dqs("app-hax").reset();
-          });
-          dqs("#togglebtn").addEventListener("click", (e) => {
-            dqs("app-hax").toggleUser();
           });
           dqs("#loginbtn").addEventListener("click", (e) => {
             dqs("app-hax").login();

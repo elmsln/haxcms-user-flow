@@ -29,66 +29,54 @@ export class AppHaxSteps extends SimpleColors {
     super();
     import('./app-hax-hat-progress.js');
     import('./app-hax-portfolio-button.js');
-
+    this.stepRoutes = [];
     this._progressReady = false;
-    this.step = 1;
-    this.isNewUser = true;
+    this.step = null;
     this.loaded = false;
-    this.callList = [
-      () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
-      () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
-      () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),
-      () => import('@lrnwebcomponents/utils/utils.js'),
-      () => import('@lrnwebcomponents/grid-plate/grid-plate.js'),
-      () => import('mobx/dist/mobx.esm.js'),
-      () => import('@lrnwebcomponents/simple-fields/simple-fields.js'),
-      () => import('@lrnwebcomponents/h-a-x/h-a-x.js'),
-    ];
-    // move to app-hax.js
-    this.routes = [
-      {
-        path: 'step-1',
-        component: 'fake',
-        step: 1,
-        id: 'step-1',
-        label: 'Welcome',
-        statement: "Let's start a new journey!",
-      },
-      {
-        path: 'step-2',
-        component: 'fake',
-        step: 2,
-        id: 'step-2',
-        label: 'Pick type',
-        statement: 'What are we making?',
-      },
-      {
-        path: 'step-3',
-        component: 'fake',
-        step: 3,
-        id: 'step-3',
-        label: 'Style Select',
-        statement: "What's it feel like?",
-      },
-      {
-        path: 'step-4',
-        component: 'fake',
-        step: 4,
-        id: 'step-4',
-        label: 'Loading',
-        statement: "Let's get writing!",
-      },
-    ];
     this.phrases = {
       new: ["What's ya name?", 'Dogecoin to the moon', 'Welcome to the Jungle'],
       return: ['Welcome back, take 2?', "That wasn't very long", 'Sup man'],
     };
 
     autorun(() => {
-      this.step = toJS(store.step);
+      if (toJS(store.step) != this.step) {
+        this.step = toJS(store.step);
+      }
     });
     autorun(() => {
-      this.isNewUser = toJS(store.isNewUser);
+      if (toJS(store.createSiteSteps)) {
+        const location = toJS(store.location);
+        const siteCopy = toJS(store.site);
+        store.createSiteSteps = true;
+        siteCopy.step = location.route.step;
+        if (siteCopy.structure === null && siteCopy.step !== 1) {
+          this.step = 1;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type === null &&
+          siteCopy.step !== 2
+        ) {
+          this.step = 2;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme === null &&
+          siteCopy.step !== 3
+        ) {
+          this.step = 3;
+        } else if (
+          siteCopy.structure !== null &&
+          siteCopy.type !== null &&
+          siteCopy.theme !== null
+        ) {
+          this.step = 4;
+        }
+      }
+    });
+    // routes, but only the ones that have a step property
+    autorun(() => {
+      const routes = toJS(store.routes);
+      this.stepRoutes = routes.filter((item => item.step));
     });
   }
 
@@ -96,10 +84,8 @@ export class AppHaxSteps extends SimpleColors {
     return {
       ...super.properties,
       step: { type: Number, reflect: true },
-      routes: { type: Array },
-      isNewUser: { type: Boolean, reflect: true },
+      stepRoutes: { type: Array },
       phrases: { type: Object },
-      callList: { type: Array },
       loaded: { type: Boolean, reflect: true },
     };
   }
@@ -151,8 +137,8 @@ export class AppHaxSteps extends SimpleColors {
           this.shadowRoot.querySelector('app-hax-hat-progress').process();
         }, 600);
       }
-      // update the store
-      if (['step', 'routes'].includes(propName)) {
+      // update the store for step when it changes internal to our step flow
+      if (propName === 'step') {
         store[propName] = this[propName];
       }
     });
@@ -190,32 +176,39 @@ export class AppHaxSteps extends SimpleColors {
     }, 0);
 
     autorun(() => {
-      if (store.location && store.location.route && store.location.route.id) {
-        // account for an animated window drag... stupid.
-        setTimeout(() => {
-          this.scrollToThing('#'.concat(toJS(store.location.route.id)), {
-            block: 'nearest',
-            inline: 'nearest',
-            behavior: 'smooth',
-          });
-        }, 300); // this delay helps w/ initial paint timing but also user perception
-        // there's a desire to have a delay especialy when tapping things of
-        // about 300ms
+      // verify we are in the site creation process
+      if (toJS(store.createSiteSteps)) {
+        const location = toJS(store.location);
+        if (location.route && location.route.step && location.route.id) {
+          // account for an animated window drag... stupid.
+          setTimeout(() => {
+            this.scrollToThing('#'.concat(location.route.id), {
+              block: 'nearest',
+              inline: 'nearest',
+              behavior: 'smooth',
+            });
+          }, 300); // this delay helps w/ initial paint timing but also user perception
+          // there's a desire to have a delay especialy when tapping things of
+          // about 300ms
+        }
       }
     });
     autorun(() => {
-      const activeItem = toJS(store.activeItem);
-      if (activeItem && activeItem.id) {
-        if (activeItem.step !== this.step) {
-          this.step = activeItem.step;
+      if (toJS(store.createSiteSteps)) {
+        const activeItem = toJS(store.activeItem);
+        console.log(activeItem);
+        if (activeItem && activeItem.id) {
+          if (activeItem.step !== this.step) {
+            this.step = activeItem.step;
+          }
+          setTimeout(() => {
+            this.shadowRoot
+              .querySelector('#link-'.concat(activeItem.id))
+              .click();
+          }, 0);
+        } else {
+          this.shadowRoot.querySelector('#link-step-1').click();
         }
-        setTimeout(() => {
-          this.shadowRoot
-            .querySelector('#link-'.concat(toJS(activeItem.id)))
-            .click();
-        }, 0);
-      } else {
-        this.shadowRoot.querySelector('#link-step-1').click();
       }
     });
   }
@@ -344,7 +337,6 @@ export class AppHaxSteps extends SimpleColors {
 
   render() {
     return html`
-      <app-hax-router></app-hax-router>
       <random-word
         key="new"
         .phrases="${this.phrases}"
@@ -352,15 +344,14 @@ export class AppHaxSteps extends SimpleColors {
       ></random-word>
       <div id="container">
         <ul id="step-links">
-          ${this.routes.map(
+          ${this.stepRoutes.map(
             item =>
               html`<li>
                 <a
                   href="${item.path}"
                   id="link-${item.id}"
                   class="${this.step === item.step ? 'active-step' : ''}"
-                  >${item.label}</a
-                >
+                  >${item.label}</a>
               </li>`
           )}
         </ul>
@@ -440,7 +431,6 @@ export class AppHaxSteps extends SimpleColors {
               <app-hax-hat-progress
                 @progress-ready="${this.progressReady}"
                 @promise-progress-finished="${this.progressFinished}"
-                .promises="${this.callList}"
                 tabindex="${this.step !== 4 ? '-1' : ''}"
               ></app-hax-hat-progress>
             </div>

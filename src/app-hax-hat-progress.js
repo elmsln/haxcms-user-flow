@@ -1,5 +1,7 @@
 import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
+import { store } from "./AppHaxStore.js";
+import { autorun, toJS } from 'mobx';
 import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
 export class AppHaxHatProgress extends SimpleColors {
@@ -11,6 +13,9 @@ export class AppHaxHatProgress extends SimpleColors {
     super();
     this.promises = [];
     this.max = 100;
+    autorun(() => {
+      this.promises = toJS(store.newSitePromiseList);
+    });
   }
 
   static get properties() {
@@ -61,15 +66,7 @@ export class AppHaxHatProgress extends SimpleColors {
               .querySelector('#progress2')
               .parentNode.appendChild(text);
             // show you saying you got this!
-            window.dispatchEvent(new CustomEvent("rpg-character-toast-show", {
-              bubbles: true,
-              cancelable: true,
-              composed: true,
-              detail: {
-                text: `W00t!`,
-                duration: 3000,
-              },
-            }));
+            store.toast('W00t!');
           }
         });
     }, 0);

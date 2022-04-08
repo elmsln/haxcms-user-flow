@@ -2,10 +2,13 @@ import { LitElement, css, html } from 'lit';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
+import "./AppHaxRouter.js";
 import './AppHaxRouter.js';
 import './app-hax-steps.js';
 import './app-hax-label.js';
 import './app-hax-top-bar.js';
+import './app-hax-site-button.js';
+
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 // toggle store darkmode
@@ -72,9 +75,64 @@ export class AppHax extends LitElement {
   constructor() {
     super();
     this.courses = [];
-    this.activeItem = {
-      label: 'Welcome',
-    };
+    this.activeItem = {};
+    this.isNewUser = true;
+    this.routes = [
+      {
+        path: 'createSite-step-1',
+        component: 'fake',
+        step: 1,
+        id: 'step-1',
+        label: 'Welcome',
+        statement: "Let's start a new journey!",
+      },
+      {
+        path: 'createSite-step-2',
+        component: 'fake',
+        step: 2,
+        id: 'step-2',
+        label: 'Pick type',
+        statement: 'What are we making?',
+      },
+      {
+        path: 'createSite-step-3',
+        component: 'fake',
+        step: 3,
+        id: 'step-3',
+        label: 'Style Select',
+        statement: "What's it feel like?",
+      },
+      {
+        path: 'createSite-step-4',
+        component: 'fake',
+        step: 4,
+        id: 'step-4',
+        label: 'Loading',
+        statement: "Let's get writing!",
+      },
+      {
+        path: '/',
+        component: 'fake', 
+        name: 'home', 
+        label: 'Welcome',
+        statement: "Let's get building!",
+      },
+      {
+        path: '/search',
+        component: 'fake-search-e', 
+        name: 'search', 
+        label: 'Search',
+        statement: "Find a past adventure",
+      },
+      { 
+        path: '/(.*)', 
+        component: 'fake', 
+        name: '404', 
+        label: '404 :[',
+        statement: "it's not you.. it's me",
+      },
+    ];
+    this.appRoutine = 'home';
     this.soundIcon = '';
     // full on store that does the heavy lifting
     this.store = store;
@@ -82,43 +140,43 @@ export class AppHax extends LitElement {
     this.source = '';
     // centralized sound source to not flood sounds when playing
     this.sound = new Audio();
-    this.source = new URL('../demo/site.json', import.meta.url).href;
+    this.source = new URL('../demo/sites.json', import.meta.url).href;
     // @todo need this from app deploy itself
     this.sitesBase = 'https://iam.hax.psu.edu';
     import('@lrnwebcomponents/simple-modal/simple-modal.js');
     autorun(() => {
+      this.isNewUser = toJS(store.isNewUser);
+    });
+    autorun(() => {
       this.userName = toJS(store.user.name);
     });
     /**
-     * When location changes update activeItem
+     * When location changes update activeItem / mode of app
      */
     autorun(() => {
       if (store.location && store.location.route) {
         // get the id from the router
-        const siteCopy = toJS(store.site);
-        siteCopy.step = toJS(store.location.route.step);
-        store.step = siteCopy.step;
-        if (siteCopy.structure === null && siteCopy.step !== 1) {
-          store.step = 1;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type === null &&
-          siteCopy.step !== 2
-        ) {
-          store.step = 2;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type !== null &&
-          siteCopy.theme === null &&
-          siteCopy.step !== 3
-        ) {
-          store.step = 3;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type !== null &&
-          siteCopy.theme !== null
-        ) {
-          store.step = 4;
+        const location = toJS(store.location);
+        // verify this is a step vs other operations
+        if (!location.route.step) {
+          if (location.route.name == "404") {
+            store.createSiteSteps = false;
+            this.appRoutine = "404"
+            setTimeout(() => {
+              store.toast('the page miss.. it burns!!!', 3000, {fire: true, walking: true});              
+            }, 500);
+          }
+          else if (location.route.name == "home" || location.route.name == "search") {
+            store.AppHaxAPI.getSites();
+            this.appRoutine = "home"
+          }
+          else {
+            console.warn(location.route);
+          }
+        }
+        else {
+          this.appRoutine = "create";
+          store.createSiteSteps = true;
         }
       }
     });
@@ -156,6 +214,8 @@ export class AppHax extends LitElement {
       userName: { type: String },
       activeItem: { type: Object },
       soundIcon: { type: String },
+      routes: { type: Array },
+      appRoutine: { type: String } // minor context of what we're doing in the app for rendering
     };
   }
 
@@ -187,7 +247,7 @@ export class AppHax extends LitElement {
       window.localStorage.removeItem('app-hax-darkMode');
       window.localStorage.removeItem('app-hax-soundStatus');
       window.localStorage.removeItem('app-hax-site');
-      window.location.reload();
+      window.location = '/';
     }
     catch(e) {
       console.warn(e);
@@ -195,24 +255,34 @@ export class AppHax extends LitElement {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  toggleUser() {
-    store.isNewUser = !store.isNewUser;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
   login() {
-    const p = document.createElement('app-hax-site-login');
-    const evt = new CustomEvent('simple-modal-show', {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        title: 'Login to start your quest',
-        elements: { content: p },
-        invokedBy: this,
-      },
-    });
+    import('./app-hax-site-login.js').then(() => {
+      const p = document.createElement('app-hax-site-login');
+      if (this.querySelector('[slot="externalproviders"]')) {
+        const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
+        p.appendChild(cloneSlot);
+      }
+      const evt = new CustomEvent('simple-modal-show', {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          title: 'Character select',
+          elements: { content: p },
+          invokedBy: this,
+          styles: {
+            "--simple-modal-titlebar-background": "orange",
+            "--simple-modal-titlebar-color": "black",
+            "--simple-modal-width": "25vw",
+            "--simple-modal-min-width": "300px",
+            "--simple-modal-z-index": "100000000",
+            "--simple-modal-height": "40vh",
+            "--simple-modal-min-height": "400px",
+          },
+        },
+      });
 
-    this.dispatchEvent(evt);
+      this.dispatchEvent(evt);
+    });
   }
 
   static get styles() {
@@ -221,7 +291,7 @@ export class AppHax extends LitElement {
         :host {
           display: block;
         }
-        rpg-character {
+        .topbar-character {
           transform: scale(0.4, 0.4);
           margin: -36px -35px 0px 0px;
           vertical-align: text-top;
@@ -230,6 +300,18 @@ export class AppHax extends LitElement {
           right: 0px;
           overflow: hidden;
           height: 120px;
+        }
+        .content {
+          text-align: center;
+          margin-top: 50px;
+        }
+        .four04-character {
+          margin-top: 100px;
+          transform: scale(2);
+        }
+        .start-journey {
+          display: flex;
+          justify-content: center;
         }
         app-hax-top-bar {
           top: 0;
@@ -294,6 +376,17 @@ export class AppHax extends LitElement {
       `,
     ];
   }
+  updated(changedProperties) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
+    // update the store for step when it changes internal to our step flow
+    changedProperties.forEach((oldValue, propName) => {
+      if (['routes'].includes(propName)) {
+        store[propName] = this[propName];
+      }
+    });
+  }
 
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
@@ -301,9 +394,7 @@ export class AppHax extends LitElement {
     }
     import('@lrnwebcomponents/rpg-character/rpg-character.js');
     import('wired-elements/lib/wired-button.js');
-    import('./app-hax-site-details.js');
     import('./rpg-character-toast.js');
-    import('./app-hax-site-login.js');
     import('./app-hax-wired-toggle.js');
     import('./app-hax-search-bar.js');
     import('./app-hax-search-results.js');
@@ -337,7 +428,7 @@ export class AppHax extends LitElement {
   }
 
   render() {
-    return html`
+    return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
         <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
@@ -353,6 +444,7 @@ export class AppHax extends LitElement {
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
         <div class="space-hack" slot="right"></div>
         <rpg-character
+          class="topbar-character"
           seed="${this.userName}"
           circle
           slot="right"
@@ -360,16 +452,64 @@ export class AppHax extends LitElement {
       </app-hax-top-bar>
     </header>
     <main>
-    <div class="label">
-      <app-hax-label
-        ><h1>${this.activeItem.label}</h1>
-        <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
-      >
-    </div>
-    <section>
-      <app-hax-steps></app-hax-steps>
-    </section>
+      <div class="label">
+        <app-hax-label
+          ><h1>${this.activeItem.label}</h1>
+          <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
+        >
+      </div>
+      <section class="content">
+        ${this.appBody(this.appRoutine)}
+      </section>
     </main>`;
+  }
+
+  appBody(routine) {
+    switch(routine) {
+      case 'home':
+      case 'search':
+          return this.templateHome();
+      break;
+      case 'create':
+        return this.templateCreate();
+      break;
+      case '404':
+      default:
+        return this.template404();
+      break;
+    }
+  }
+
+  templateHome() {
+    return html`
+      <a href="createSite-step-1" class="start-journey" @click="${this.startJourney}" tabindex="-1">
+      <app-hax-site-button
+        label="> Start another journey"
+      ></app-hax-site-button>
+      </a>
+      <app-hax-search-results></app-hax-search-results>`;
+  }
+  templateCreate() {
+    return html`<app-hax-steps></app-hax-steps>`;
+  }
+  template404() {
+    return html`
+    <div class="four04">
+      <a href="createSite-step-1" class="start-journey" @click="${this.startJourney}" tabindex="-1">
+      <app-hax-site-button
+        label="> Start a new journey"
+      ></app-hax-site-button>
+      </a>
+      <rpg-character
+          class="four04-character"
+          fire
+          walking
+          seed="${this.userName}"
+        ></rpg-character>
+    </div>`;
+  }
+  startJourney(e) {
+    this.appRoutine = "create"; 
   }
 }
 customElements.define(AppHax.tag, AppHax);

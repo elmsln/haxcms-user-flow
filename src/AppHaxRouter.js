@@ -59,9 +59,7 @@ export class AppHaxRouter extends HTMLElement {
    */
   _updateRouter(routerItems) {
     this.router.setRoutes([
-      ...routerItems,
-      { path: '/', component: 'fake-home-e', name: 'home' },
-      { path: '/(.*)', component: 'fake-404-e', name: '404' },
+      ...routerItems
     ]);
   }
   /**

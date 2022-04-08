@@ -3,7 +3,9 @@ import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { html, css } from 'lit';
 import { autorun, toJS } from 'mobx';
 import { store } from './AppHaxStore.js';
+import { varGet } from '@lrnwebcomponents/utils/utils.js';
 import './app-hax-site-bars.js';
+import './app-hax-site-details.js';
 
 export class AppHaxSearchResults extends SimpleColors {
   // a convention I enjoy so you can change the tag name in 1 place
@@ -20,7 +22,7 @@ export class AppHaxSearchResults extends SimpleColors {
 
     this.searchItems = [];
     this.displayItems = [];
-    this.jsonLoc = '../demo/site.json';
+    this.jsonLoc = '../demo/sites.json';
   }
 
   // Site.json is coming from
@@ -85,10 +87,15 @@ export class AppHaxSearchResults extends SimpleColors {
         ${this.displayItems.map(
           item =>
             html`<li>
-              <app-hax-site-bar accent-color="green">
+              <app-hax-site-bar
+                accent-color="${varGet(item,'metadata.theme.variables.cssVariable', 'orange').replace('--simple-colors-default-theme-','').replace('-7','')}"
+                icon="${varGet(item,'metadata.theme.variables.icon', 'icons:home')}"
+                icon-link="${'https://iam.hax.psu.edu' + item.slug}"
+                >
                 <p slot="heading">${item.title}</p>
-                <p slot="sub-heading">${item.author}</p>
+                <p slot="subHeading">${item.author}</p>
                 <p slot="band">${item.description}</p>
+                <app-hax-site-details slot="band"></app-hax-site-details>
               </app-hax-site-bar>
             </li>`
         )}

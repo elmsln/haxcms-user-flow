@@ -2,7 +2,7 @@
 // dependencies / things imported
 import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
-import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-button-lite';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { animate } from '@lit-labs/motion';
 
@@ -28,9 +28,9 @@ export class AppHaxSiteBars extends SimpleColors {
     return {
       ...super.properties,
       opened: { type: Boolean, reflect: true },
-      icon: { type: String, reflect: true },
+      icon: { type: String },
       inprogress: { type: Boolean, reflect: true },
-      iconLink: { type: String, reflect: true },
+      iconLink: { type: String, attribute: 'icon-link' },
     };
   }
 
@@ -97,22 +97,13 @@ export class AppHaxSiteBars extends SimpleColors {
           width: var(--main-banner-width);
           height: var(--band-banner-height);
         }
-
-        button {
-          background-color: transparent;
-          border: none;
-        }
-        simple-icon-lite {
-          color: black;
-          pointer-events: none;
-        }
         a {
           flex: 1;
         }
         #labels {
           flex: 6;
         }
-        #plus {
+        #icon {
           --simple-icon-width: 49px;
           --simple-icon-height: 49px;
           color: var(--simple-colors-default-theme-accent-1);
@@ -138,16 +129,14 @@ export class AppHaxSiteBars extends SimpleColors {
   render() {
     return html`
       <div id="mainCard">
-        <a href="${this.iconLink}">
-          <simple-icon-lite icon=${this.icon} id="plus"></simple-icon-lite
+        <a href="${this.iconLink}" tabindex="-1">
+          <simple-icon-button-lite icon=${this.icon} id="icon"></simple-icon-button-lite
         ></a>
         <div id="labels">
           <slot name="heading"></slot>
           <slot name="subHeading"></slot>
         </div>
-        <button @click=${this.__clickButton}>
-          <simple-icon-lite icon="more-vert" id="dots"></simple-icon-lite>
-        </button>
+        <simple-icon-button-lite icon="more-vert" id="dots" @click=${this.__clickButton}></simple-icon-button-lite>
       </div>
       <div id="band" ${animate()}>
         <slot name="band"></slot>

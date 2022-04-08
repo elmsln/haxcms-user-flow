@@ -17,6 +17,8 @@ export class RPGCharacterToast extends SimpleToastEl {
     this.setDefaultToast();
     this.key = null;
     this.phrases = {};
+    this.fire = false;
+    this.walking = false;
     this.word = null;
     this.addEventListener('click', () => {this.opened = false;});
     autorun(() => {
@@ -53,7 +55,7 @@ export class RPGCharacterToast extends SimpleToastEl {
         z-index: var(--simple-toast-z-index, 10000000);
         font-size: var(--simple-toast-font-size, 40px);
         font-family: 'Press Start 2P', sans-serif;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
         text-align: center;
         vertical-align: middle;
@@ -91,6 +93,8 @@ export class RPGCharacterToast extends SimpleToastEl {
         reflect: true,
         attribute: 'dark-mode',
       },
+      fire: { type: Boolean,},
+      walking: { type: Boolean,},
       /**
        * Opened state of the toast, use event to change
        */
@@ -134,7 +138,7 @@ export class RPGCharacterToast extends SimpleToastEl {
       <span class="bubble mid">${this.text}</span>
       <slot></slot>
       <span class="bubble rightedge"></span>
-      <rpg-character seed="${this.userName}"></rpg-character>
+      <rpg-character seed="${this.userName}" ?fire="${this.fire}" ?walking="${this.walking}"></rpg-character>
     </div>`;
   }
   connectedCallback() {
@@ -193,6 +197,12 @@ export class RPGCharacterToast extends SimpleToastEl {
     if (e.detail.duration) {
       this.duration = e.detail.duration;
     }
+    if (e.detail.fire) {
+      this.fire = e.detail.fire;
+    }
+    if (e.detail.walking) {
+      this.walking = e.detail.walking;
+    }
     if (e.detail.text) {
       this.text = e.detail.text;
     }
@@ -217,6 +227,8 @@ export class RPGCharacterToast extends SimpleToastEl {
     this.opened = true;
   }
   hide(e) {
+    this.fire = false;
+    this.walking = false;
     if (this.eventCallback) {
       const evt = new CustomEvent(this.eventCallback, {
         bubbles: true,

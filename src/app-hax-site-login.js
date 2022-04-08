@@ -4,7 +4,7 @@ import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { store } from './AppHaxStore.js';
-import { toJS, autorun } from "mobx";
+import { autorun } from "mobx";
 export class AppHaxSiteLogin extends SimpleColors {
     // a convention I enjoy so you can change the tag name in 1 place
     static get tag() {
@@ -16,7 +16,7 @@ export class AppHaxSiteLogin extends SimpleColors {
       super();
         this.username='';
         this.password='';
-        this.errorMSG='Invalid Username'
+        this.errorMSG='Enter User name'
         this.hidePassword = true;
     }
   
@@ -51,7 +51,6 @@ export class AppHaxSiteLogin extends SimpleColors {
         ...super.styles,
         css`
         :host {
-            height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -78,6 +77,9 @@ export class AppHaxSiteLogin extends SimpleColors {
           display: block;
           margin: 50px;
         }
+        .external {
+          text-align: center;
+        }
         `,
     ];
   }
@@ -90,6 +92,9 @@ export class AppHaxSiteLogin extends SimpleColors {
             this.hidePassword = false;
             this.errorMSG = 'Invalid Password';
             this.username = value;
+            setTimeout(() => {
+              this.shadowRoot.querySelector('input').focus();        
+            }, 0);
         } else{
             // This does not work;
             this.shadowRoot.querySelector('#errorText').style.visibility = "show";
@@ -110,15 +115,7 @@ export class AppHaxSiteLogin extends SimpleColors {
             detail: {
             }
           }));
-          window.dispatchEvent(new CustomEvent("rpg-character-toast-show", {
-            bubbles: true,
-            cancelable: true,
-            composed: true,
-            detail: {
-              text: `Welcome ${this.username}!`,
-              duration: 5000,
-            },
-          }));
+          store.toast(`Welcome ${this.username}!`, 5000);
           // @todo need to set local storage from here
         } else {
             alert('invalid password');
@@ -128,7 +125,7 @@ export class AppHaxSiteLogin extends SimpleColors {
 
     // eslint-disable-next-line class-methods-use-this
     reset(){
-        this.errorMSG = 'Invalid Password'
+        this.errorMSG = ''
         this.username='';
         this.hidePassword = true;
     }
@@ -143,6 +140,9 @@ export class AppHaxSiteLogin extends SimpleColors {
             ? html `<input id="username" type="text" placeholder="abc123@psu.edu" @input="${this.nameChange}"/>  <button @click=${this.checkUsername}>next</button>`
             : html `<p> Hey ${this.username}! <a @click=${this.reset}>not you?</a></p><input id="password" type="text" placeholder="insert password here"/>   <button @click=${this.checkPassword}>Login</button>`
             }
+            <div class="external">
+              <slot name="externalproviders"></slot>
+            </div>
         </div>
         <p id="errorText">${this.errorMSG}</p>
         `;
