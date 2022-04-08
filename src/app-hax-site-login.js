@@ -55,12 +55,12 @@ export class AppHaxSiteLogin extends SimpleColors {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        };
-        #inputContainer{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        }
+        #inputcontainer{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
         a{
             color: red;
@@ -135,7 +135,7 @@ export class AppHaxSiteLogin extends SimpleColors {
     render() {
         return html`
         <rpg-character circle seed="${this.username}"></rpg-character> 
-        <div id="inputContainer">
+        <div id="inputcontainer">
             ${this.hidePassword
             ? html `<input id="username" type="text" placeholder="abc123@psu.edu" @input="${this.nameChange}"/>  <button @click=${this.checkUsername}>next</button>`
             : html `<p> Hey ${this.username}! <a @click=${this.reset}>not you?</a></p><input id="password" type="text" placeholder="insert password here"/>   <button @click=${this.checkPassword}>Login</button>`

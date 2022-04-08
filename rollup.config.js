@@ -28,23 +28,23 @@ export default {
     copy({
       targets: [
         {
-          src: 'node_modules/@lrnwebcomponents/rpg-character/lib/**',
+          src: 'node_modules/@lrnwebcomponents/rpg-character/lib',
           dest: 'dist/node_modules/@lrnwebcomponents/rpg-character/lib',
         },
         {
-          src: 'node_modules/@lrnwebcomponents/simple-icon/lib/svgs/**',
+          src: 'node_modules/@lrnwebcomponents/simple-icon/lib/svgs',
           dest: 'dist/node_modules/@lrnwebcomponents/simple-icon/lib/svgs',
         },
         {
-          src: 'node_modules/@lrnwebcomponents/hax-iconset/lib/svgs/**',
+          src: 'node_modules/@lrnwebcomponents/hax-iconset/lib/svgs',
           dest: 'dist/node_modules/@lrnwebcomponents/hax-iconset/lib/svgs',
         },
         {
-          src: 'lib/**',
+          src: 'lib',
           dest: 'dist/lib',
         },
         {
-          src: 'demo/**',
+          src: 'demo',
           dest: 'dist/demo',
         },
       ],
