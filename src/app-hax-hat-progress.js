@@ -16,6 +16,9 @@ export class AppHaxHatProgress extends SimpleColors {
     autorun(() => {
       this.promises = toJS(store.newSitePromiseList);
     });
+    autorun(() => {
+      this.dark = toJS(store.darkMode);
+    });
   }
 
   static get properties() {
@@ -155,6 +158,7 @@ export class AppHaxHatProgress extends SimpleColors {
       <promise-progress
         id="progress2"
         accent-color="red"
+        ?dark="${this.dark}"
         class="progress"
         .list=${this.promises}
       ></promise-progress>

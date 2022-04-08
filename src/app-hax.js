@@ -132,6 +132,7 @@ export class AppHax extends LitElement {
         statement: "it's not you.. it's me",
       },
     ];
+    this.searchTerm = '';
     this.appRoutine = 'home';
     this.soundIcon = '';
     // full on store that does the heavy lifting
@@ -149,6 +150,9 @@ export class AppHax extends LitElement {
     });
     autorun(() => {
       this.userName = toJS(store.user.name);
+    });
+    autorun(() => {
+      this.searchTerm = toJS(store.searchTerm);
     });
     /**
      * When location changes update activeItem / mode of app
@@ -215,6 +219,7 @@ export class AppHax extends LitElement {
       activeItem: { type: Object },
       soundIcon: { type: String },
       routes: { type: Array },
+      searchTerm: { type: String },
       appRoutine: { type: String } // minor context of what we're doing in the app for rendering
     };
   }
@@ -315,7 +320,10 @@ export class AppHax extends LitElement {
         }
         app-hax-top-bar {
           top: 0;
-          position: sticky;
+          z-index: 1000;
+          right: 0;
+          left: 0;
+          position: fixed;
         }
         .label {
           text-align: center;
@@ -372,6 +380,9 @@ export class AppHax extends LitElement {
         app-hax-search-bar {
           vertical-align: middle;
           display: inline-flex;
+        }
+        main {
+          margin-top: 64px;
         }
       `,
     ];
@@ -482,11 +493,15 @@ export class AppHax extends LitElement {
 
   templateHome() {
     return html`
-      <a href="createSite-step-1" class="start-journey" @click="${this.startJourney}" tabindex="-1">
-      <app-hax-site-button
-        label="> Start another journey"
-      ></app-hax-site-button>
-      </a>
+      ${!this.searchTerm ? html`
+      <div class="start-journey">
+        <a href="createSite-step-1" @click="${this.startJourney}" tabindex="-1">
+        <app-hax-site-button
+          label="> Start new journey"
+        ></app-hax-site-button>
+        </a>
+      </div>`: ``}
+      
       <app-hax-search-results></app-hax-search-results>`;
   }
   templateCreate() {

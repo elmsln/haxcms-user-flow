@@ -37,16 +37,16 @@ export class AppHaxSiteBars extends SimpleColors {
   // updated fires every time a property defined above changes
   // this allows you to react to variables changing and use javascript to perform logic
   updated(changedProperties) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
     changedProperties.forEach((oldValue, propName) => {
-      if (
-        propName === 'opened' &&
-        this[propName] === false &&
-        oldValue !== undefined
-      ) {
-        this.style.animationName = `fadegradientclosed`;
-      }
-      if (propName === 'opened' && this[propName] === true) {
-        this.style.animationName = `fadegradientopen`;
+      if (propName === 'opened') {
+        this.dispatchEvent(new CustomEvent(`${propName}-changed`, {
+          detail: {
+            value: this[propName]
+          }
+        }))
       }
     });
   }
@@ -62,7 +62,7 @@ export class AppHaxSiteBars extends SimpleColors {
           --band-banner-height: 180px;
           display: inline-block;
           background-image: linear-gradient(
-            var(--simple-colors-default-theme-accent-10) 80%,
+            var(--simple-colors-default-theme-accent-9) 80%,
             var(--simple-colors-default-theme-accent-6)
           );
           color: var(--simple-colors-default-theme-accent-1);
@@ -70,8 +70,8 @@ export class AppHaxSiteBars extends SimpleColors {
 
         :host([opened]) {
           background-image: linear-gradient(
-            var(--simple-colors-default-theme-accent-10),
-            var(--simple-colors-default-theme-accent-6)
+            var(--simple-colors-default-theme-accent-12),
+            var(--simple-colors-default-theme-accent-8)
           );
         }
         #mainCard {
@@ -86,16 +86,15 @@ export class AppHaxSiteBars extends SimpleColors {
         #band {
           display: flex;
           flex-direction: column;
-          height: 0px;
+          height: 1px;
           width: var(--main-banner-width);
+          visibility: none;
           overflow: hidden;
         }
 
         :host([opened]) #band {
-          display: flex;
-          flex-direction: column;
-          width: var(--main-banner-width);
           height: var(--band-banner-height);
+          visibility: visible;
         }
         a {
           flex: 1;

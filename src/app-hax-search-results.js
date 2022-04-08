@@ -4,7 +4,7 @@ import { html, css } from 'lit';
 import { autorun, toJS } from 'mobx';
 import { store } from './AppHaxStore.js';
 import { varGet } from '@lrnwebcomponents/utils/utils.js';
-import './app-hax-site-bars.js';
+import './app-hax-site-bar.js';
 import './app-hax-site-details.js';
 
 export class AppHaxSearchResults extends SimpleColors {
@@ -19,7 +19,9 @@ export class AppHaxSearchResults extends SimpleColors {
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
-
+    autorun(() => {
+      this.dark = toJS(store.darkMode);
+    });
     this.searchItems = [];
     this.displayItems = [];
     this.jsonLoc = '../demo/sites.json';
@@ -38,6 +40,9 @@ export class AppHaxSearchResults extends SimpleColors {
   }
 
   firstUpdated(changedProperties) {
+    if (super.firstUpdated) {
+      super.firstUpdated(changedProperties);
+    }
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'searchItems') {
         fetch(this.jsonLoc)
@@ -48,6 +53,9 @@ export class AppHaxSearchResults extends SimpleColors {
   }
 
   updated(changedProperties) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'searchItems') {
         this.displayItems = [...this.searchItems];
@@ -77,6 +85,10 @@ export class AppHaxSearchResults extends SimpleColors {
         :host {
           overflow: hidden;
         }
+        ul {
+          margin: 0;
+          padding: 0;
+        }
       `,
     ];
   }
@@ -88,6 +100,8 @@ export class AppHaxSearchResults extends SimpleColors {
           item =>
             html`<li>
               <app-hax-site-bar
+                @opened-changed="${this.openedChanged}"
+                ?dark="${this.dark}"
                 accent-color="${varGet(item,'metadata.theme.variables.cssVariable', 'orange').replace('--simple-colors-default-theme-','').replace('-7','')}"
                 icon="${varGet(item,'metadata.theme.variables.icon', 'icons:home')}"
                 icon-link="${'https://iam.hax.psu.edu' + item.slug}"
@@ -101,6 +115,14 @@ export class AppHaxSearchResults extends SimpleColors {
         )}
       </ul>
     `;
+  }
+  openedChanged(e) {
+    if (!e.detail.value) {
+      this.shadowRoot.querySelector("app-hax-site-details").setAttribute("tabindex", "-1");
+    }
+    else {
+      this.shadowRoot.querySelector("app-hax-site-details").removeAttribute("tabindex");
+    }
   }
 }
 customElements.define(AppHaxSearchResults.tag, AppHaxSearchResults);

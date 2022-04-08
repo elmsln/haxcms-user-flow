@@ -1,7 +1,6 @@
 /* eslint-disable no-return-assign */
 import { LitElement, html, css } from 'lit';
 import { store } from './AppHaxStore.js';
-import './app-hax-site-bars.js';
 
 export class AppHaxSearchBar extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
