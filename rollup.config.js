@@ -5,8 +5,7 @@ import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import { terser } from 'rollup-plugin-terser';
 import { generateSW } from 'rollup-plugin-workbox';
 import path from 'path';
-import copy from 'rollup-plugin-copy'
-
+import copy from 'rollup-plugin-copy';
 
 export default {
   input: 'index.html',
@@ -23,13 +22,6 @@ export default {
     /** Enable using HTML as rollup entrypoint */
     html({
       minify: true,
-      transformHtml: [
-        htmlHackyThing =>
-          htmlHackyThing.replace(
-            '<base href="/">',
-            '<base href="/project-3/">'
-          ),
-      ],
       injectServiceWorker: true,
       serviceWorkerPath: 'dist/sw.js',
     }),
@@ -50,6 +42,10 @@ export default {
         {
           src: 'lib/**',
           dest: 'dist/lib',
+        },
+        {
+          src: 'demo/**',
+          dest: 'dist/demo',
         },
       ],
     }),
