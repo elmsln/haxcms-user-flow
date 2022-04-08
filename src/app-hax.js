@@ -219,8 +219,10 @@ export class AppHax extends LitElement {
       localStorageSet('app-hax-darkMode', toJS(store.darkMode));
       if (toJS(store.darkMode)) {
         document.body.classList.add('dark-mode');
+        store.toast("I'm ascared of the dark", 2000, { fire: true});
       } else {
         document.body.classList.remove('dark-mode');
+        store.toast("Just chillen in the sun", 2000);
       }
     });
     autorun(() => {
@@ -475,6 +477,12 @@ export class AppHax extends LitElement {
     });
     autorun(() => {
       this.soundIcon = toJS(store.soundStatus) ? new URL('../lib/assets/images/FullVolume.svg',import.meta.url).href : new URL('../lib/assets/images/Silence.svg',import.meta.url).href;
+      if (!toJS(store.soundStatus)) {
+        store.toast("Sound off.. hey.. HELLO!?!", 2000, { fire: true});
+      }
+      else {
+        store.toast("Sound on", 2000);
+      }
     });
   }
 
