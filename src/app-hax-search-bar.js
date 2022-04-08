@@ -11,6 +11,7 @@ export class AppHaxSearchBar extends LitElement {
   constructor() {
     super();
     this.searchTerm = '';
+    this.disabled = false;
     this.showSearch = false;
   }
 
@@ -19,7 +20,8 @@ export class AppHaxSearchBar extends LitElement {
   static get properties() {
     return {
       searchTerm: { type: String},
-      showSearch: { type: Boolean, reflect: true, attribute:'show-search'}
+      showSearch: { type: Boolean, reflect: true, attribute:'show-search'},
+      disabled: { type: Boolean, reflect: true},
     };
   }
 
@@ -32,7 +34,10 @@ export class AppHaxSearchBar extends LitElement {
         store.searchTerm = this.searchTerm;
       }
       else if (propName === 'showSearch' && oldValue !== undefined) {
-        this[propName] ? window.history.pushState({}, null, 'search') : history.back();
+        this[propName] ? window.history.pushState({}, null, 'search') : window.history.pushState(null, null, store.location.baseUrl);
+        if (this[propName] === false) {
+          this.searchTerm = '';
+        }
       }
     });
   }
@@ -67,6 +72,11 @@ export class AppHaxSearchBar extends LitElement {
           margin: 0;
           background-color: white;
         }
+        simple-icon-button-lite[disabled] {
+          background-color: #CCCCCC;
+          pointer-events: none;
+          cursor: help;
+        }
         simple-icon-button-lite:focus,
         simple-icon-button-lite:hover {
           background-color: #eeeeee;
@@ -82,15 +92,17 @@ export class AppHaxSearchBar extends LitElement {
 
   render() {
     return html`
-      <simple-icon-button-lite label="Search" icon="icons:search" @click="${this.toggleSearch}"></simple-icon-button-lite>
+      <simple-icon-button-lite ?disabled="${this.disabled}" label="Search" icon="icons:search" @click="${this.toggleSearch}"></simple-icon-button-lite>
       <input ?disabled="${!this.showSearch}" id="searchField" @input="${this.search}" type="text" placeholder="Search.." />
     `;
   }
   toggleSearch() {
-    this.showSearch = !this.showSearch;
-    setTimeout(() => {
-      this.shadowRoot.querySelector("#searchField").focus();      
-    }, 300);
+    if (!this.disabled) {
+      this.showSearch = !this.showSearch;
+      setTimeout(() => {
+        this.shadowRoot.querySelector("#searchField").focus();      
+      }, 300);
+    }
   }
 }
 customElements.define(AppHaxSearchBar.tag, AppHaxSearchBar);

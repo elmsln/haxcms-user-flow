@@ -76,7 +76,11 @@ export class AppHax extends LitElement {
     super();
     this.courses = [];
     this.activeItem = {};
-    this.isNewUser = true;
+    this.phrases = {
+      new: ["What's ya name?", 'HAX to the moon', 'Welcome to the Jungle', 'We like to party', 'Build something awesome', 'Everything is awesome!', 'Everything is cool when you\'re part of the team', 'When you\'re living our dream'],
+      return: ['Welcome back, take 2?', "That wasn't very long", 'Sup?', 'You again? Awesome!', 'Let\'s do this', 'There can only be one ring...', 'There is another', 'Fancy that, I love HAX and you show up'],
+    };
+    this.isNewUser = null;
     this.routes = [
       {
         path: 'createSite-step-1',
@@ -114,15 +118,15 @@ export class AppHax extends LitElement {
         path: '/',
         component: 'fake', 
         name: 'home', 
-        label: 'Welcome',
-        statement: "Let's get building!",
+        label: 'Welome back',
+        statement: "Let's explore HAX land",
       },
       {
         path: '/search',
         component: 'fake-search-e', 
         name: 'search', 
         label: 'Search',
-        statement: "Find a past adventure",
+        statement: "Discover active adventures",
       },
       { 
         path: '/(.*)', 
@@ -133,7 +137,7 @@ export class AppHax extends LitElement {
       },
     ];
     this.searchTerm = '';
-    this.appRoutine = 'home';
+    this.appMode = '';
     this.soundIcon = '';
     // full on store that does the heavy lifting
     this.store = store;
@@ -143,10 +147,15 @@ export class AppHax extends LitElement {
     this.sound = new Audio();
     this.source = new URL('../demo/sites.json', import.meta.url).href;
     // @todo need this from app deploy itself
-    this.sitesBase = 'https://iam.hax.psu.edu';
     import('@lrnwebcomponents/simple-modal/simple-modal.js');
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
+      if (this.isNewUser && this.appMode !== 'create') {
+        this.appMode = "create";
+        setTimeout(() => {
+          store.createSiteSteps = true;            
+        }, 0);
+      }
     });
     autorun(() => {
       this.userName = toJS(store.user.name);
@@ -154,47 +163,52 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
+    // if we get new data source, trigger a rebuild of the site list
+    autorun(() => {
+      const appEndpoints = toJS(store.appEndpoints);
+      setTimeout(async() => {
+        const results = await store.AppHaxAPI.makeCall('getSitesList');
+        store.manifest = results;
+        }, 0);
+    });
+    
     /**
      * When location changes update activeItem / mode of app
      */
-    autorun(() => {
+    autorun(async () => {
       if (store.location && store.location.route) {
         // get the id from the router
         const location = toJS(store.location);
         // verify this is a step vs other operations
         if (!location.route.step) {
-          if (location.route.name == "404") {
+          if (location.route.name === "404") {
             store.createSiteSteps = false;
-            this.appRoutine = "404"
+            this.appMode = "404"
             setTimeout(() => {
               store.toast('the page miss.. it burns!!!', 3000, {fire: true, walking: true});              
             }, 500);
           }
-          else if (location.route.name == "home" || location.route.name == "search") {
-            store.AppHaxAPI.getSites();
-            this.appRoutine = "home"
+          else if (location.route.name === "home" || location.route.name === "search") {
+            store.manifest = await store.AppHaxAPI.makeCall('getSitesList');
+            this.appMode = "home"
           }
           else {
             console.warn(location.route);
           }
         }
         else {
-          this.appRoutine = "create";
-          store.createSiteSteps = true;
+          this.appMode = "create";
+          setTimeout(() => {
+            store.createSiteSteps = true;            
+          }, 0);
         }
       }
     });
     // AutoRun block to detect to detect if site.structure is null but step == 3, set step to 2.
     autorun(() => {
-      if (store.routes.length > 0 && store.location == null) {
+      if (store.routes.length > 0 && store.location === null) {
         store.location = toJS(store.routes[0]);
       }
-    });
-    autorun(() => {
-      localStorageSet('app-hax-step', toJS(store.step));
-    });
-    autorun(() => {
-      localStorageSet('app-hax-site', toJS(store.site));
     });
     // manage dark mode
     // only set this initially if we don't have an app state of our own
@@ -209,6 +223,16 @@ export class AppHax extends LitElement {
         document.body.classList.remove('dark-mode');
       }
     });
+    autorun(() => {
+      const mode = toJS(store.appMode);
+      if (mode) {
+        document.body.classList.remove('app-hax-search');
+        document.body.classList.remove('app-hax-create');
+        document.body.classList.remove('app-hax-404');
+        document.body.classList.remove('app-hax-home');
+        document.body.classList.add(`app-hax-${mode}`);
+      }
+    });
   }
 
   static get properties() {
@@ -220,7 +244,9 @@ export class AppHax extends LitElement {
       soundIcon: { type: String },
       routes: { type: Array },
       searchTerm: { type: String },
-      appRoutine: { type: String } // minor context of what we're doing in the app for rendering
+      appMode: { type: String }, // minor context of what we're doing in the app for rendering
+      isNewUser: { type: Boolean },
+      phrases: { type: Object },
     };
   }
 
@@ -234,7 +260,7 @@ export class AppHax extends LitElement {
           const courseInfo = {
             title: item.title,
             description: item.description,
-            link: this.sitesBase.concat(item.slug),
+            link: toJS(store.sitesBase).concat(item.slug),
             icon: item.metadata.theme.variables
               ? item.metadata.theme.variables.icon
               : '',
@@ -308,7 +334,7 @@ export class AppHax extends LitElement {
         }
         .content {
           text-align: center;
-          margin-top: 50px;
+          margin-top: 32px;
         }
         .four04-character {
           margin-top: 100px;
@@ -384,6 +410,22 @@ export class AppHax extends LitElement {
         main {
           margin-top: 64px;
         }
+        random-word {
+          transform: rotate(25deg);
+          position: absolute;
+          right: 10px;
+          top: 100px;
+          padding: 10px;
+          font-size: 12px;
+          border: 4px solid black;
+          background-color: yellow;
+          color: black;
+          width: 100px;
+          word-wrap: break-word;
+          text-align: center;
+          cursor: pointer;
+          user-select: none;
+        }
       `,
     ];
   }
@@ -393,7 +435,7 @@ export class AppHax extends LitElement {
     }
     // update the store for step when it changes internal to our step flow
     changedProperties.forEach((oldValue, propName) => {
-      if (['routes'].includes(propName)) {
+      if (['routes', 'appMode'].includes(propName)) {
         store[propName] = this[propName];
       }
     });
@@ -403,12 +445,13 @@ export class AppHax extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
-    import('@lrnwebcomponents/rpg-character/rpg-character.js');
     import('wired-elements/lib/wired-button.js');
     import('./rpg-character-toast.js');
     import('./app-hax-wired-toggle.js');
     import('./app-hax-search-bar.js');
     import('./app-hax-search-results.js');
+    import('@lrnwebcomponents/rpg-character/rpg-character.js');
+    import('./random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
@@ -420,13 +463,15 @@ export class AppHax extends LitElement {
     });
     // play sound when we animate the banner in
     this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
-      if (e.animationName == "scrollin") {
+      if (e.animationName === "scrollin") {
         store.appEl.playSound('coin2');
       }
     });
     store.appEl = this;
     autorun(() => {
-      this.activeItem = toJS(store.activeItem);
+      if (store.activeItem) {
+        this.activeItem = toJS(store.activeItem);
+      }
     });
     autorun(() => {
       this.soundIcon = toJS(store.soundStatus) ? new URL('../lib/assets/images/FullVolume.svg',import.meta.url).href : new URL('../lib/assets/images/Silence.svg',import.meta.url).href;
@@ -443,7 +488,7 @@ export class AppHax extends LitElement {
     <header>
       <app-hax-top-bar>
         <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
-        <app-hax-search-bar slot="center"></app-hax-search-bar>
+        <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
           slot="right"
@@ -464,15 +509,27 @@ export class AppHax extends LitElement {
     </header>
     <main>
       <div class="label">
-        <app-hax-label
-          ><h1>${this.activeItem.label}</h1>
-          <div slot="subtitle">${this.activeItem.statement}</div></app-hax-label
-        >
+        <app-hax-label>
+        ${this.activeItem ? html`
+        <h1>${this.activeItem.label}</h1>
+          <div slot="subtitle">${this.activeItem.statement}</div>
+        ` : ``}
+          
+          </app-hax-label>
       </div>
+      <random-word
+        key="${this.isNewUser ? `new` : `return`}"
+        .phrases="${this.phrases}"
+        @click="${this.getNewWord}"
+      ></random-word>
       <section class="content">
-        ${this.appBody(this.appRoutine)}
+        ${this.appBody(this.appMode)}
       </section>
     </main>`;
+  }
+
+  getNewWord() {
+    this.shadowRoot.querySelector('random-word').getNewWord();
   }
 
   appBody(routine) {
@@ -524,7 +581,17 @@ export class AppHax extends LitElement {
     </div>`;
   }
   startJourney(e) {
-    this.appRoutine = "create"; 
+    store.step = 1;
+    this.appMode = "create"; 
   }
 }
 customElements.define(AppHax.tag, AppHax);
+
+window.AppHax = window.AppHax || {};
+
+window.AppHax.requestAvailability = () => {
+  if (!window.AppHax.instance) {
+    window.AppHax.instance = document.querySelector(AppHax.tag);
+  }
+  return window.AppHax.instance;
+};

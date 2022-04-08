@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import "@lrnwebcomponents/jwt-login/jwt-login.js";
 import { store } from "./AppHaxStore.js";
+import { toJS, autorun } from 'mobx';
 
 // this element will manage all connectivity to the backend
 // this way everything is forced to request through calls to this
@@ -12,34 +13,15 @@ export class AppHaxBackendAPI extends LitElement {
   constructor() {
     super();
     this.jwt = null;
-    this.baseCall = '';
-    this.createSiteEndpoint = '';
-    this.getSitesEndpoint = '';
-    this.loginEndpoint = '';
-    this.refreshUrl = '';
-    this.redirectUrl = '';
-    this.logoutUrl = '';
-    this.jwtUrl = '';
+    this.baseAddress = '/';
+    this.appEndpoints = {};
+    this.lastResponse = {};
   }
   static get properties() {
     return {
       jwt: { type: String },
-      baseCall: { type: String, attribute: 'base-call' },
-      createSiteEndpoint: { type: String },
-      getSitesEndpoint: { type: String },
-      loginEndpoint: { type: String },
-      refreshUrl: {
-        type: String,
-      },
-      redirectUrl: {
-        type: String,
-      },
-      logoutUrl: {
-        type: String,
-      },
-      jwtUrl: {
-        type: String,
-      }
+      baseAddress: { type: String, attribute: 'base-address' },
+      appEndpoints: { type: Object },
     }
   }
 
@@ -50,10 +32,10 @@ export class AppHaxBackendAPI extends LitElement {
     id="jwt"
     jwt="${this.jwt}"
     @jwt-changed="${this.jwtChanged}"
-    url="${this.jwtUrl}"
-    refresh-url="${this.refreshUrl}"
-    redirect-url="${this.redirectUrl}"
-    logout-url="${this.logoutUrl}"
+    url="${this.appEndpoints.jwtUrl}"
+    refresh-url="${this.appEndpoints.refreshUrl}"
+    redirect-url="${this.appEndpoints.redirectUrl}"
+    logout-url="${this.appEndpoints.logoutUrl}"
   ></jwt-login>`;
   }
   // event meaning we either got or removed the jwt
@@ -61,20 +43,22 @@ export class AppHaxBackendAPI extends LitElement {
     this.jwt = e.detail.value;
   }
 
-  async makeCall(base, url, data) {
-    return await fetch(`${base}/${url}`, data)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return {};
-      });
-  }
-  async getSites(name = store.user) {
-    return await this.makeCall(this.baseCall, this.getSitesEndpoint, { name: name});
-  }
-  async createSite(site) {
-    return await this.makeCall(this.baseCall, this.createSiteEndpoint, site);
+  async makeCall(call, data = {}, save = false) {
+    if (this.appEndpoints && this.appEndpoints[call]) {
+      const response = await fetch(`${this.baseAddress}${this.appEndpoints[call]}`, data)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return {};
+        });
+      // ability to save the output if this is being done as a bg task
+      // that way we can get access to the result later on
+      if (save) {
+        this.lastResponse[call] = response;
+      }
+      return response;
+    }
   }
   // set instance of API in store
   firstUpdated(changedProperties) {
@@ -83,6 +67,9 @@ export class AppHaxBackendAPI extends LitElement {
     }
     // set store refernece to this singleton
     store.AppHaxAPI = this;
+    autorun(() => {
+      this.appEndpoints = toJS(store.appEndpoints);
+    });
   }
   updated(changedProperties) {
     if (super.updated) {

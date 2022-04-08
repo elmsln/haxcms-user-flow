@@ -2,6 +2,7 @@ import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from "./AppHaxStore.js";
 import { autorun, toJS } from 'mobx';
+import { AppHaxAPI } from "./AppHaxBackendAPI.js";
 import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
 export class AppHaxHatProgress extends SimpleColors {
@@ -58,18 +59,26 @@ export class AppHaxHatProgress extends SimpleColors {
                 detail: true,
               })
             );
+            // this will seem like magic... but our createSite
+            // Promise has a special flag on the function that
+            // saves the result in an object relative to our API broker
+            // this way if we ask it for the last thing it created
+            // the response is there even though we kicked it off previously
+            // we more or less assume it completed bc the Promises all resolved
+            // and it was our 1st Promise we asked to issue!
+            const createResponse = AppHaxAPI.lastResponse.createSite;
             const text = document.createElement('button');
             this.shadowRoot.querySelector('#value').textContent = this.max;
             text.textContent = "Let's go!";
             text.classList.add('game');
             text.addEventListener('click', () => {
-              alert('go do something');
+              window.location = toJS(store.sitesBase).concat(createResponse.slug);
             });
             this.shadowRoot
               .querySelector('#progress2')
               .parentNode.appendChild(text);
             // show you saying you got this!
-            store.toast('W00t!');
+            store.toast(`${createResponse.title} looks awesome!`, 5000);
           }
         });
     }, 0);

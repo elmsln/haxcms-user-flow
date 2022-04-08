@@ -38,6 +38,9 @@
         --app-hax-accent-color: black;
         --app-hax-background-color: white;
       }
+      body.app-hax-create {
+        overflow: hidden;
+      }
       body.dark-mode {
         background-color: black;
         background-image: url('lib/assets/images/DMGridBox.svg');
@@ -147,29 +150,30 @@
       </app-hax>
       <div id="demo">
         <style>
-          #resetbtn {
-            bottom: 0;
-            right: 0;
-            position: absolute;
-            font-size: 50px;
-            border: 0;
-            background-color: orange;
-            color: text;
-            cursor: pointer;
-          }
-          #loginbtn {
+          #demobtns {
             bottom: 0;
             left: 0;
-            position: absolute;
-            font-size: 50px;
-            border: 0;
+            position: fixed;
+          }
+          #demobtns button {
+            font-size: 30px;
+            border: 2px solid black;
+            margin: 2px;
             background-color: orange;
-            color: text;
             cursor: pointer;
+            color: black;
+            display: block;
+          }
+          #demobtns button:hover {
+            background-color: red;
           }
         </style>
-        <button id="loginbtn">Login</button>
-        <button id="resetbtn">reset app</button>
+        <div id="demobtns">
+          <button id="loginbtn">Login</button>
+          <button id="test404">Test 404</button>
+          <button id="nosites">Test new user</button>
+          <button id="resetbtn">reset app</button>
+        </div>
         <script>
           // reduce FOUC for dark mode so it starts in dark rapidly if selected
           if (window.localStorage && window.localStorage.getItem('app-hax-darkMode')) {
@@ -191,7 +195,16 @@
           dqs("#loginbtn").addEventListener("click", (e) => {
             dqs("app-hax").login();
           });
-        
+          dqs("#test404").addEventListener("click", (e) => {
+            window.location = "nothin9383832";
+          });
+          dqs("#nosites").addEventListener("click", (e) => {
+            // fake injection of a new site listing location
+            window.AppHax.requestAvailability().store.appEndpoints = {
+              getSitesList: 'demo/sitesEmpty.json',
+              createSite: 'demo/createSite.json',
+            };
+          });
         </script>
       </div>
       <script type="module">

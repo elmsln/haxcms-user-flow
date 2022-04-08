@@ -120,10 +120,6 @@ export class AppHaxSiteBars extends SimpleColors {
     this.opened = !this.opened;
   }
 
-  _toggleDetails(e) {
-    console.log(`${this} , ${e}`);
-  }
-
   // HTML - specific to Lit
   render() {
     return html`

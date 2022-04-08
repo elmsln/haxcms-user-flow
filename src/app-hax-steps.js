@@ -8,9 +8,11 @@ import { autorun, toJS } from 'mobx';
 import './AppHaxRouter.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from './AppHaxStore.js';
+import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import 'scrollable-component/index.js';
 import './app-hax-site-button.js';
-
+import './app-hax-hat-progress.js';
+import './app-hax-portfolio-button.js';
 const blueStyle = new URL('../lib/assets/images/BlueStyle.svg', import.meta.url)
   .href;
 const greyStyle = new URL('../lib/assets/images/GreyStyle.svg', import.meta.url)
@@ -27,50 +29,21 @@ export class AppHaxSteps extends SimpleColors {
 
   constructor() {
     super();
-    import('./app-hax-hat-progress.js');
-    import('./app-hax-portfolio-button.js');
     this.stepRoutes = [];
     this._progressReady = false;
     this.step = null;
     this.loaded = false;
-    this.phrases = {
-      new: ["What's ya name?", 'Dogecoin to the moon', 'Welcome to the Jungle'],
-      return: ['Welcome back, take 2?', "That wasn't very long", 'Sup man'],
-    };
-
     autorun(() => {
-      if (toJS(store.step) != this.step) {
-        this.step = toJS(store.step);
-      }
+      localStorageSet('app-hax-step', toJS(store.step));
+    });
+    autorun(() => {
+      localStorageSet('app-hax-site', toJS(store.site));
+      this.step = store.stepTest(this.step);
     });
     autorun(() => {
       if (toJS(store.createSiteSteps)) {
         const location = toJS(store.location);
-        const siteCopy = toJS(store.site);
-        store.createSiteSteps = true;
-        siteCopy.step = location.route.step;
-        if (siteCopy.structure === null && siteCopy.step !== 1) {
-          this.step = 1;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type === null &&
-          siteCopy.step !== 2
-        ) {
-          this.step = 2;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type !== null &&
-          siteCopy.theme === null &&
-          siteCopy.step !== 3
-        ) {
-          this.step = 3;
-        } else if (
-          siteCopy.structure !== null &&
-          siteCopy.type !== null &&
-          siteCopy.theme !== null
-        ) {
-          this.step = 4;
-        }
+        this.step = store.stepTest(this.step);
       }
     });
     // routes, but only the ones that have a step property
@@ -85,28 +58,25 @@ export class AppHaxSteps extends SimpleColors {
       ...super.properties,
       step: { type: Number, reflect: true },
       stepRoutes: { type: Array },
-      phrases: { type: Object },
       loaded: { type: Boolean, reflect: true },
     };
   }
-
+  // step 1
   chooseStructure(e) {
     const { value } = e.target;
     store.site.structure = value;
     store.appEl.playSound('click2');
   }
-
+  // step 2
   chooseType(e) {
     const { value } = e.target;
     store.site.type = value;
-    this.step = 2;
     store.appEl.playSound('click2');
   }
-
+  // step 3
   chooseTheme(e) {
     const { value } = e.target;
     store.site.theme = value;
-    this.step = 3;
     store.appEl.playSound('click2');
   }
 
@@ -158,10 +128,12 @@ export class AppHaxSteps extends SimpleColors {
 
   maintainScroll() {
     if (this.shadowRoot && this.step) {
-      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
+      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant',               block: 'nearest',
+      inline: 'nearest',});
       // account for an animated window drag... stupid.
       setTimeout(() => {
-        this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
+        this.scrollToThing(`#step-${this.step}`, { behavior: 'instant',               block: 'nearest',
+        inline: 'nearest', });
       }, 100);
     }
   }
@@ -170,14 +142,18 @@ export class AppHaxSteps extends SimpleColors {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
-    import('./random-word.js');
     setTimeout(() => {
-      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant', block: 'center' });
-    }, 0);
+      // ensure paint issues not a factor for null step
+      if (this.step === null) {
+        this.step = 1;
+      }
+      this.scrollToThing(`#step-${this.step}`, { behavior: 'instant',               block: 'nearest',
+      inline: 'nearest',});
+    }, 100);
 
     autorun(() => {
       // verify we are in the site creation process
-      if (toJS(store.createSiteSteps)) {
+      if (toJS(store.createSiteSteps) && toJS(store.appReady)) {
         const location = toJS(store.location);
         if (location.route && location.route.step && location.route.id) {
           // account for an animated window drag... stupid.
@@ -194,20 +170,11 @@ export class AppHaxSteps extends SimpleColors {
       }
     });
     autorun(() => {
-      if (toJS(store.createSiteSteps)) {
+      if (this.shadowRoot && toJS(store.createSiteSteps) && toJS(store.appReady)) {
         const activeItem = toJS(store.activeItem);
-        console.log(activeItem);
-        if (activeItem && activeItem.id) {
-          if (activeItem.step !== this.step) {
-            this.step = activeItem.step;
-          }
-          setTimeout(() => {
-            this.shadowRoot
-              .querySelector('#link-'.concat(activeItem.id))
-              .click();
-          }, 0);
-        } else {
-          this.shadowRoot.querySelector('#link-step-1').click();
+        if (activeItem && activeItem.step && !this.__overrideProgression) {
+          this.shadowRoot
+          .querySelector('#link-'.concat(activeItem.id)).click();
         }
       }
     });
@@ -267,24 +234,33 @@ export class AppHaxSteps extends SimpleColors {
           overflow: hidden;
         }
         #step-links {
-          display: none;
+          padding: 0;
+          margin: 0;
         }
         li {
           display: inline-flex;
           margin: 4px;
         }
+        li {
+          border: 1px solid black;
+          border-radius: 50%;
+          background-color: black;
+        }
         li a {
-          text-decoration: none;
-          padding: 10px;
+          padding: 5px;
+          width: 5px;
+          height: 5px;
+          margin: 0;
+          display: block;
         }
-        li a:hover,
-        li a:focus {
-          background-color: blue;
-          color: white;
+        li a[disabled] {
+          pointer-events: none;
         }
-        li a.active-step {
+        li[disabled] {
+          background-color: grey
+        }
+        li.active-step {
           background-color: orange;
-          color: white;
         }
         app-hax-portfolio-button {
           padding: 10px 0px 10px 0px;
@@ -324,10 +300,6 @@ export class AppHaxSteps extends SimpleColors {
     ];
   }
 
-  getNewWord() {
-    this.shadowRoot.querySelector('random-word').getNewWord();
-  }
-
   progressFinished(e) {
     if (e.detail) {
       this.loaded = true;
@@ -335,23 +307,45 @@ export class AppHaxSteps extends SimpleColors {
     }
   }
 
+  stepLinkClick(e) {
+    const clickedStep = parseInt(e.target.getAttribute("data-step"));
+    if (this.step < clickedStep) {
+      e.preventDefault();
+    }
+    // means user went backwards
+    else if (this.step > clickedStep) {
+      if (clickedStep === 1) {
+        store.site.structure = null;
+        store.site.type = null;
+        store.site.theme = null;
+      }
+      else if (clickedStep === 2) {
+        store.site.type = null;
+        store.site.theme = null;
+      }
+      else if (clickedStep === 3) {
+        store.site.theme = null;
+      }
+      this.step = clickedStep;
+    }
+  }
+
   render() {
     return html`
-      <random-word
-        key="new"
-        .phrases="${this.phrases}"
-        @click="${this.getNewWord}"
-      ></random-word>
       <div id="container">
         <ul id="step-links">
           ${this.stepRoutes.map(
             item =>
-              html`<li>
-                <a
-                  href="${item.path}"
+              html`<li
+              ?disabled="${this.step < item.step ? true : false}"
+              class="${this.step === item.step ? 'active-step' : ''}">
+                <a href="${item.path}"
+                  ?disabled="${this.step < item.step ? true : false}"
+                  @click="${this.stepLinkClick}"
                   id="link-${item.id}"
-                  class="${this.step === item.step ? 'active-step' : ''}"
-                  >${item.label}</a>
+                  title="${item.label}"
+                  data-step="${item.step}"
+                  ></a>
               </li>`
           )}
         </ul>

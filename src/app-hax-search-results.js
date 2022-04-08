@@ -15,16 +15,23 @@ export class AppHaxSearchResults extends SimpleColors {
 
   constructor() {
     super();
-
+    this.searchItems = [];
+    this.displayItems = [];
+    this.searchTerm = '';
+    this.dark = false;
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
     autorun(() => {
       this.dark = toJS(store.darkMode);
     });
-    this.searchItems = [];
-    this.displayItems = [];
-    this.jsonLoc = '../demo/sites.json';
+    autorun(() => {
+      const manifest = toJS(store.manifest);
+      if (manifest && manifest.items) {
+        this.searchItems = toJS(store.manifest.items);
+        this.displayItems = [...this.searchItems];
+      }
+    });
   }
 
   // Site.json is coming from
@@ -37,19 +44,6 @@ export class AppHaxSearchResults extends SimpleColors {
       displayItems: { type: Array },
       jsonLoc: { type: String },
     };
-  }
-
-  firstUpdated(changedProperties) {
-    if (super.firstUpdated) {
-      super.firstUpdated(changedProperties);
-    }
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === 'searchItems') {
-        fetch(this.jsonLoc)
-          .then(res => res.json())
-          .then(data => (this.searchItems = data.items));
-      }
-    });
   }
 
   updated(changedProperties) {

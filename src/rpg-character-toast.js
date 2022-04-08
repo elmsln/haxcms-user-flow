@@ -41,14 +41,15 @@ export class RPGCharacterToast extends SimpleToastEl {
         display: none;
       }
       :host {
+        --simple-toast-bottom: 0px;
         height: 142px;
         display: none;
         width: var(--simple-toast-width, auto);
         color: var(--simple-toast-color, var(--simple-colors-default-theme-accent-12, black));
         background-color: transparent;
         top: var(--simple-toast-top);
-        margin: var(--simple-toast-margin, 8px);
-        padding: var(--simple-toast-padding, 16px);
+        margin: var(--simple-toast-margin, 4px);
+        padding: var(--simple-toast-padding, 4px);
         bottom: var(--simple-toast-bottom, 36px);
         right: var(--simple-toast-right, 0px);
         border: var(--simple-toast-border);
@@ -62,20 +63,23 @@ export class RPGCharacterToast extends SimpleToastEl {
       }
       .bubble {
         height: 142px;
-        display: inline-flex
+        display: inline-flex;
       }
       .mid {
         line-height: 142px;
+        background-color: white;
         background-repeat: repeat-x;
         background-image: url('${unsafeCSS(SpeechBubbleMiddle)}');
       }
       .leftedge {
         background-image: url('${unsafeCSS(SpeechBubbleL)}');
-        width: 40px;
+        width: 24px;
+        background-color: white;
       }
       .rightedge {
         background-image: url('${unsafeCSS(SpeechBubbleR)}');
-        width: 75px;
+        width: 54px;
+        background-color: white;
       }
       :host([dark-mode]) .mid,
       :host([dark-mode]) .leftedge,
@@ -169,7 +173,7 @@ export class RPGCharacterToast extends SimpleToastEl {
   /**
    * Hide callback
    */
-  hideSimpleToast(e) {
+  hideSimpleToast() {
     this.hide();
   }
   openedChanged(e) {
@@ -223,10 +227,10 @@ export class RPGCharacterToast extends SimpleToastEl {
     }
     this.show();
   }
-  show(e) {
+  show() {
     this.opened = true;
   }
-  hide(e) {
+  hide() {
     this.fire = false;
     this.walking = false;
     if (this.eventCallback) {
