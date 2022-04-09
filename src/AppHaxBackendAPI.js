@@ -16,6 +16,9 @@ export class AppHaxBackendAPI extends LitElement {
     this.baseAddress = '/';
     this.appEndpoints = {};
     this.lastResponse = {};
+    autorun(() => {
+      this.appEndpoints = toJS(store.appEndpoints);
+    });
   }
   static get properties() {
     return {
@@ -27,16 +30,16 @@ export class AppHaxBackendAPI extends LitElement {
 
   render() {
     html`
-    <jwt-login
-    auto
-    id="jwt"
-    jwt="${this.jwt}"
-    @jwt-changed="${this.jwtChanged}"
-    url="${this.appEndpoints.jwtUrl}"
-    refresh-url="${this.appEndpoints.refreshUrl}"
-    redirect-url="${this.appEndpoints.redirectUrl}"
-    logout-url="${this.appEndpoints.logoutUrl}"
-  ></jwt-login>`;
+      <jwt-login
+      auto
+      id="jwt"
+      jwt="${this.jwt}"
+      @jwt-changed="${this.jwtChanged}"
+      url="${this.appEndpoints.jwtUrl}"
+      refresh-url="${this.appEndpoints.refreshUrl}"
+      redirect-url="${this.appEndpoints.redirectUrl}"
+      logout-url="${this.appEndpoints.logoutUrl}"
+    ></jwt-login>`;
   }
   // event meaning we either got or removed the jwt
   jwtChanged(e) {
@@ -67,9 +70,9 @@ export class AppHaxBackendAPI extends LitElement {
     }
     // set store refernece to this singleton
     store.AppHaxAPI = this;
-    autorun(() => {
-      this.appEndpoints = toJS(store.appEndpoints);
-    });
+    store.newSitePromiseList = [
+      () => this.makeCall('createSite',store.site, true),
+      ...store.newSitePromiseList];
   }
   updated(changedProperties) {
     if (super.updated) {

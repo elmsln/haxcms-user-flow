@@ -8,7 +8,6 @@ import {
   computed,
   configure
 } from 'mobx';
-import { AppHaxAPI } from './AppHaxBackendAPI.js';
 
 configure({ enforceActions: false, useProxies: 'ifavailable' }); // strict mode off
 
@@ -22,10 +21,9 @@ class Store {
       createSite: 'demo/createSite.json',
     };
     this.sitesBase = 'https://iam.hax.psu.edu';
-    this.AppHaxAPI = AppHaxAPI;
-    this.AppHaxAPI.baseAddress = '/';
+    // placeholder for when the actual API Backend gets plugged in here
+    this.AppHaxAPI = {};
     this.newSitePromiseList = [
-      () => this.AppHaxAPI.makeCall('createSite',this.site, true),
       () => import('@lrnwebcomponents/i18n-manager/lib/I18NMixin.js'),
       () => import('@lrnwebcomponents/wc-autoload/wc-autoload.js'),
       () => import('@lrnwebcomponents/replace-tag/replace-tag.js'),

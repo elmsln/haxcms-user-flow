@@ -50,7 +50,17 @@ export class AppHaxTopBar extends LitElement {
         font-size: 2vw;
 
         display: grid;
-        grid-template-columns: 25% 50% 25%;
+        grid-template-columns: 30% 40% 30%;
+      }
+      @media (max-width: 780px) {
+        .topBar {
+          grid-template-columns: 20% 20% 60%;
+        }
+      }
+      @media (max-width: 600px) {
+        .topBar {
+          grid-template-columns: 10% 30% 60%;
+        }
       }
 
       /* .topBar > div {

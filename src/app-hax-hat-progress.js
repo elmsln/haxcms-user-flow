@@ -2,7 +2,6 @@ import { html, css } from 'lit';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import { store } from "./AppHaxStore.js";
 import { autorun, toJS } from 'mobx';
-import { AppHaxAPI } from "./AppHaxBackendAPI.js";
 import '@lrnwebcomponents/promise-progress/promise-progress.js';
 
 export class AppHaxHatProgress extends SimpleColors {
@@ -66,7 +65,7 @@ export class AppHaxHatProgress extends SimpleColors {
             // the response is there even though we kicked it off previously
             // we more or less assume it completed bc the Promises all resolved
             // and it was our 1st Promise we asked to issue!
-            const createResponse = AppHaxAPI.lastResponse.createSite;
+            const createResponse = store.AppHaxAPI.lastResponse.createSite;
             const text = document.createElement('button');
             this.shadowRoot.querySelector('#value').textContent = this.max;
             text.textContent = "Let's go!";
@@ -78,7 +77,7 @@ export class AppHaxHatProgress extends SimpleColors {
               .querySelector('#progress2')
               .parentNode.appendChild(text);
             // show you saying you got this!
-            store.toast(`${createResponse.title} looks awesome!`, 5000);
+            store.toast(`${createResponse.title} looks awesome, come see!`, 5000, { hat: 'random', walking: true});
           }
         });
     }, 0);

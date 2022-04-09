@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
+import { AppHaxAPI } from './AppHaxBackendAPI.js';
 import "./AppHaxRouter.js";
 import './AppHaxRouter.js';
 import './app-hax-steps.js';
@@ -167,7 +168,7 @@ export class AppHax extends LitElement {
     autorun(() => {
       const appEndpoints = toJS(store.appEndpoints);
       setTimeout(async() => {
-        const results = await store.AppHaxAPI.makeCall('getSitesList');
+        const results = await AppHaxAPI.makeCall('getSitesList');
         store.manifest = results;
         }, 0);
     });
@@ -189,7 +190,7 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            store.manifest = await store.AppHaxAPI.makeCall('getSitesList');
+            store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -222,7 +223,7 @@ export class AppHax extends LitElement {
         store.toast("I'm ascared of the dark", 2000, { fire: true});
       } else {
         document.body.classList.remove('dark-mode');
-        store.toast("Just chillen in the sun", 2000);
+        store.toast("Sunny day it is", 2000, { hat: 'random'});
       }
     });
     autorun(() => {
@@ -273,14 +274,16 @@ export class AppHax extends LitElement {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  reset() {
+  reset(reload = true) {
     // localStorage possible to be blocked by permission of system
     try {
       window.localStorage.removeItem('app-hax-step');
       window.localStorage.removeItem('app-hax-darkMode');
       window.localStorage.removeItem('app-hax-soundStatus');
       window.localStorage.removeItem('app-hax-site');
-      window.location = '/';
+      if (reload) {
+        window.location = '/';
+      }
     }
     catch(e) {
       console.warn(e);
@@ -416,8 +419,8 @@ export class AppHax extends LitElement {
           transform: rotate(25deg);
           position: absolute;
           right: 10px;
-          top: 100px;
-          padding: 10px;
+          top: 120px;
+          padding: 12px;
           font-size: 12px;
           border: 4px solid black;
           background-color: yellow;
@@ -427,6 +430,15 @@ export class AppHax extends LitElement {
           text-align: center;
           cursor: pointer;
           user-select: none;
+          opacity: 1;
+          visibility: visible;
+          transition: all .3s ease-in-out;
+        }
+        @media (max-width: 680px) {
+          random-word {
+            visibility: none;
+            opacity: 0;
+          }
         }
       `,
     ];
@@ -481,7 +493,7 @@ export class AppHax extends LitElement {
         store.toast("Sound off.. hey.. HELLO!?!", 2000, { fire: true});
       }
       else {
-        store.toast("Sound on", 2000);
+        store.toast("Can you hear me now? Good.", 2000,{ hat: 'random'});
       }
     });
   }

@@ -42,7 +42,6 @@ export class AppHaxSearchResults extends SimpleColors {
       searchTerm: { type: String, reflect: true },
       searchItems: { type: Array },
       displayItems: { type: Array },
-      jsonLoc: { type: String },
     };
   }
 
@@ -51,9 +50,6 @@ export class AppHaxSearchResults extends SimpleColors {
       super.updated(changedProperties);
     }
     changedProperties.forEach((oldValue, propName) => {
-      if (propName === 'searchItems') {
-        this.displayItems = [...this.searchItems];
-      }
       if (propName === 'searchTerm') {
         this.displayItems = this.searchItems.filter(word => {
           if (

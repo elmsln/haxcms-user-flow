@@ -18,6 +18,7 @@ export class RPGCharacterToast extends SimpleToastEl {
     this.key = null;
     this.phrases = {};
     this.fire = false;
+    this.hat = 'coffee';
     this.walking = false;
     this.word = null;
     this.addEventListener('click', () => {this.opened = false;});
@@ -97,8 +98,9 @@ export class RPGCharacterToast extends SimpleToastEl {
         reflect: true,
         attribute: 'dark-mode',
       },
-      fire: { type: Boolean,},
-      walking: { type: Boolean,},
+      fire: { type: Boolean},
+      hat: { type: String},
+      walking: { type: Boolean},
       /**
        * Opened state of the toast, use event to change
        */
@@ -142,7 +144,7 @@ export class RPGCharacterToast extends SimpleToastEl {
       <span class="bubble mid">${this.text}</span>
       <slot></slot>
       <span class="bubble rightedge"></span>
-      <rpg-character seed="${this.userName}" ?fire="${this.fire}" ?walking="${this.walking}"></rpg-character>
+      <rpg-character seed="${this.userName}" ?fire="${this.fire}" hat="${this.hat}" ?walking="${this.walking}"></rpg-character>
     </div>`;
   }
   connectedCallback() {
@@ -195,6 +197,7 @@ export class RPGCharacterToast extends SimpleToastEl {
    * Show / available callback
    */
   showSimpleToast(e) {
+    this.hideSimpleToast();
     // establish defaults and then let event change settings
     this.setDefaultToast();
     // add your code to run when the singleton is called for
@@ -203,6 +206,9 @@ export class RPGCharacterToast extends SimpleToastEl {
     }
     if (e.detail.fire) {
       this.fire = e.detail.fire;
+    }
+    if (e.detail.hat) {
+      this.hat = e.detail.hat;
     }
     if (e.detail.walking) {
       this.walking = e.detail.walking;
@@ -231,7 +237,9 @@ export class RPGCharacterToast extends SimpleToastEl {
     this.opened = true;
   }
   hide() {
+    this.duration = 0;
     this.fire = false;
+    this.hat = 'coffee';
     this.walking = false;
     if (this.eventCallback) {
       const evt = new CustomEvent(this.eventCallback, {

@@ -64,6 +64,18 @@ export class AppHaxSearchBar extends LitElement {
           width: 250px;
           max-width: 25vw;
         }
+        @media (max-width: 780px) {
+          :host([show-search]) input {
+            width: 250px;
+            max-width: 20vw;
+          }
+        }
+        @media (max-width: 600px) {
+          :host([show-search]) input {
+            width: 200px;
+            max-width: 20vw;
+          }
+        }
         simple-icon-button-lite {
           color: black;
           --simple-icon-width: 40px;

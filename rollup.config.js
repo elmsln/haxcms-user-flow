@@ -29,23 +29,23 @@ export default {
       targets: [
         {
           src: 'node_modules/@lrnwebcomponents/rpg-character/lib',
-          dest: 'dist/node_modules/@lrnwebcomponents/rpg-character/lib',
+          dest: 'dist/node_modules/@lrnwebcomponents/rpg-character',
         },
         {
           src: 'node_modules/@lrnwebcomponents/simple-icon/lib/svgs',
-          dest: 'dist/node_modules/@lrnwebcomponents/simple-icon/lib/svgs',
+          dest: 'dist/node_modules/@lrnwebcomponents/simple-icon/lib',
         },
         {
           src: 'node_modules/@lrnwebcomponents/hax-iconset/lib/svgs',
-          dest: 'dist/node_modules/@lrnwebcomponents/hax-iconset/lib/svgs',
+          dest: 'dist/node_modules/@lrnwebcomponents/hax-iconset/lib',
         },
         {
           src: 'lib',
-          dest: 'dist/lib',
+          dest: 'dist',
         },
         {
           src: 'demo',
-          dest: 'dist/demo',
+          dest: 'dist',
         },
       ],
     }),

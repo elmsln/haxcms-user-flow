@@ -38,11 +38,8 @@ export class AppHaxSiteDetails extends LitElement {
         color: white;
         padding: 15px 30px;
         cursor: pointer;
-        float: left;
-
+        width: 25%;
         display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
       .btn-group:after {
@@ -61,10 +58,7 @@ export class AppHaxSiteDetails extends LitElement {
 
       .flex-container > div {
         background-color: #f1f1f1;
-        width: 100px;
         margin: 10px;
-        text-align: center;
-        font-size: 30px;
         flex-direction: 'row';
         justify-content: 'space-around';
         align-items: 'center';

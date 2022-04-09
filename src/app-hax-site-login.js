@@ -75,7 +75,7 @@ export class AppHaxSiteLogin extends SimpleColors {
         }
         rpg-character {
           display: block;
-          margin: 50px;
+          margin: 10px;
         }
         .external {
           text-align: center;
@@ -115,7 +115,7 @@ export class AppHaxSiteLogin extends SimpleColors {
             detail: {
             }
           }));
-          store.toast(`Welcome ${this.username}!`, 5000);
+          store.toast(`Welcome ${this.username}! Let's build!`, 5000, { hat: 'construction'});
           // @todo need to set local storage from here
         } else {
             alert('invalid password');
