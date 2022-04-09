@@ -29,15 +29,15 @@ export default {
       targets: [
         {
           src: 'node_modules/@lrnwebcomponents/rpg-character/lib',
-          dest: 'dist/node_modules/@lrnwebcomponents/rpg-character',
+          dest: 'dist/lib',
         },
         {
           src: 'node_modules/@lrnwebcomponents/simple-icon/lib/svgs',
-          dest: 'dist/node_modules/@lrnwebcomponents/simple-icon/lib',
+          dest: 'dist/svgs',
         },
         {
           src: 'node_modules/@lrnwebcomponents/hax-iconset/lib/svgs',
-          dest: 'dist/node_modules/@lrnwebcomponents/hax-iconset/lib',
+          dest: 'dist/svgs',
         },
         {
           src: 'lib',
