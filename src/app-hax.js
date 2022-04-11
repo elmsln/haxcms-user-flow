@@ -304,6 +304,7 @@ export class AppHax extends LitElement {
         detail: {
           title: 'Character select',
           elements: { content: p },
+          modal: true,
           invokedBy: this,
           styles: {
             "--simple-modal-titlebar-background": "orange",
@@ -313,6 +314,7 @@ export class AppHax extends LitElement {
             "--simple-modal-z-index": "100000000",
             "--simple-modal-height": "40vh",
             "--simple-modal-min-height": "400px",
+            "--simple-modal-titlebar-height": "40px",
           },
         },
       });
@@ -522,7 +524,6 @@ export class AppHax extends LitElement {
         <rpg-character
           class="topbar-character"
           seed="${this.userName}"
-          circle
           slot="right"
         ></rpg-character>
       </app-hax-top-bar>

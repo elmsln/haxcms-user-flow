@@ -134,7 +134,7 @@ export class AppHaxSiteLogin extends SimpleColors {
     }
     render() {
         return html`
-        <rpg-character circle seed="${this.username}"></rpg-character> 
+        <rpg-character seed="${this.username}"></rpg-character> 
         <div id="inputcontainer">
             ${this.hidePassword
             ? html `<input id="username" type="text" placeholder="abc123@psu.edu" @input="${this.nameChange}"/>  <button @click=${this.checkUsername}>next</button>`
