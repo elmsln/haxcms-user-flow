@@ -135,6 +135,13 @@
   </head>
 
   <body>
+    <app-hax-site-bar>
+      <p slot="heading">ART 101</p>
+      <p slot="band">A really easy class from the 90's</p>
+      <app-hax-site-details slot="band"></app-hax-site-details>
+    </app-hax-site-bar>
+
+<!--     
     <div id="loading">
       <div class="title">
         <span class="bracket">&#60;</span>Loading..<span class="bracket">&#62;</span>
@@ -209,7 +216,9 @@
           });
         </script>
       </div>
+       -->
       <script type="module">
+        import './src/app-hax-search-results.js';
         import './src/app-hax.js';
       </script>
   </body>
