@@ -390,9 +390,10 @@ export class AppHax extends LitElement {
         .haxLogo {
           height: 40px;
           width: 40px;
-          background-color: white;
+          background-color: orange;
           margin: 4px;
         }
+
         .space-hack {
           display: inline-flex;
           width: 64px;
@@ -408,6 +409,7 @@ export class AppHax extends LitElement {
           width: 24px;
           height: 24px;
         }
+
         app-hax-search-bar {
           vertical-align: middle;
           display: inline-flex;
@@ -507,6 +509,7 @@ export class AppHax extends LitElement {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
+        <!-- <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async"></simple-icon-lite> -->
         <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
@@ -515,8 +518,8 @@ export class AppHax extends LitElement {
           class="soundToggle"
           @click="${this.soundToggle}"
         >
-        <img src="${this.soundIcon}" alt="" loading="lazy" decoding="async" />
-      </wired-button>
+          <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
+        </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
         <div class="space-hack" slot="right"></div>
         <rpg-character
