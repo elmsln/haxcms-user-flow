@@ -19,6 +19,7 @@ class Store {
     this.appEndpoints = {
       getSitesList: 'demo/sites.json',
       createSite: 'demo/createSite.json',
+      jwtUrl: 'demo/login.json',
     };
     this.sitesBase = 'https://iam.hax.psu.edu';
     // placeholder for when the actual API Backend gets plugged in here

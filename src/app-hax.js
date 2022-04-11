@@ -163,14 +163,7 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
-    // if we get new data source, trigger a rebuild of the site list
-    autorun(() => {
-      const appEndpoints = toJS(store.appEndpoints);
-      setTimeout(async() => {
-        const results = await AppHaxAPI.makeCall('getSitesList');
-        store.manifest = results;
-        }, 0);
-    });
+   
     
     /**
      * When location changes update activeItem / mode of app
@@ -235,6 +228,23 @@ export class AppHax extends LitElement {
         document.body.classList.add(`app-hax-${mode}`);
       }
     });
+
+    // App is ready and the user is Logged in
+    autorun(() => {
+      if (toJS(store.appReady) && toJS(store.isLoggedIn)){
+        const appEndpoints = toJS(store.appEndpoints);
+        setTimeout(async() => {
+           // if we get new data source, trigger a rebuild of the site list
+          const results = await AppHaxAPI.makeCall('getSitesList');
+          store.manifest = results;
+          }, 0);
+      } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
+        setTimeout(() => {
+          console.log("We in App-Hax - Running Log in")
+          this.login();
+        }, 0);
+      }
+    })
   }
 
   static get properties() {
@@ -291,6 +301,7 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   login() {
+    console.log("Login Function in App-HAX ran");
     import('./app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
@@ -475,6 +486,7 @@ export class AppHax extends LitElement {
         document.body.classList.remove('app-loaded');
       }
     });
+    
     // play sound when we animate the banner in
     this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
       if (e.animationName === "scrollin") {

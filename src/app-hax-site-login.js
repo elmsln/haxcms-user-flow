@@ -4,6 +4,7 @@ import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { store } from './AppHaxStore.js';
+import { AppHaxAPI } from './AppHaxBackendAPI.js';
 import { autorun } from "mobx";
 export class AppHaxSiteLogin extends SimpleColors {
     // a convention I enjoy so you can change the tag name in 1 place
@@ -88,38 +89,45 @@ export class AppHaxSiteLogin extends SimpleColors {
     checkUsername(){
         // eslint-disable-next-line prefer-destructuring
         const value = this.shadowRoot.querySelector("#username").value;
-        if(value.includes('@psu.edu')) {
-            this.hidePassword = false;
-            this.errorMSG = 'Invalid Password';
-            this.username = value;
-            setTimeout(() => {
-              this.shadowRoot.querySelector('input').focus();        
-            }, 0);
-        } else{
-            // This does not work;
-            this.shadowRoot.querySelector('#errorText').style.visibility = "show";
-        }
+        this.hidePassword = false;
+        this.errorMSG = '';
+        this.username = value;
+        setTimeout(() => {
+          this.shadowRoot.querySelector('input').focus();        
+        }, 0);
+
     }
 
     // eslint-disable-next-line class-methods-use-this
-    checkPassword() {
+    async checkPassword() {
+
+        console.log("Clicked Login Button")
         // eslint-disable-next-line prefer-destructuring
         const value = this.shadowRoot.querySelector("#password").value;
-        if(value === "1234"){
+        
+        const resp = await AppHaxAPI.makeCall('jwtUrl', {username: this.username, password: value})
+        console.log(resp)
+
+        if(resp.status_code !== 200){
+          this.hidePassword = true;
+          this.errorMSG = 'Invalid Username or Password';
+        } else {
+          console.log("Successful Response")
           autorun(() => { store.user = {
             name: this.username
           }});
+
+          store.jwt = resp.jwt;
+          
           this.dispatchEvent(new CustomEvent("simple-modal-hide", {
             bubbles: true,
             cancelable: true,
             detail: {
             }
           }));
+          // Call BackendAPI? 
           store.toast(`Welcome ${this.username}! Let's build!`, 5000, { hat: 'construction'});
           // @todo need to set local storage from here
-        } else {
-            alert('invalid password');
-            this.errorMSG = "Invalid Password";
         }
     }
 
@@ -133,7 +141,7 @@ export class AppHaxSiteLogin extends SimpleColors {
     nameChange(e) {
       this.username = this.shadowRoot.querySelector("#username").value;
     }
-
+    
     render() {
         return html`
         <rpg-character circle seed="${this.username}"></rpg-character> 
