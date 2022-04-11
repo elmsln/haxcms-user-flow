@@ -182,7 +182,7 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            store.manifest = await AppHaxAPI.makeCall('getSitesList');
+            // store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -232,11 +232,14 @@ export class AppHax extends LitElement {
     // App is ready and the user is Logged in
     autorun(() => {
       if (toJS(store.appReady) && toJS(store.isLoggedIn)){
-        const appEndpoints = toJS(store.appEndpoints);
+        console.log("I am ready to get sites list");
+        // Need this for the auto run when testing new user
+        const appEndpoints = toJS(store.appEndpoints);  
         setTimeout(async() => {
            // if we get new data source, trigger a rebuild of the site list
           const results = await AppHaxAPI.makeCall('getSitesList');
           store.manifest = results;
+          console.log(`Manifest Length: ${store.manifest.items.length}`);
           }, 0);
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
         setTimeout(() => {
@@ -313,6 +316,7 @@ export class AppHax extends LitElement {
         cancelable: true,
         detail: {
           title: 'Character select',
+          modal: true,
           elements: { content: p },
           invokedBy: this,
           styles: {

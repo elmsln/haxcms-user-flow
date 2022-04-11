@@ -2,6 +2,7 @@ import { html, css } from 'lit';
 import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
 import { SimpleColors } from '@lrnwebcomponents/simple-colors/simple-colors.js';
+import { localStorageSet} from '@lrnwebcomponents/utils/utils.js';
 import '@lrnwebcomponents/rpg-character/rpg-character.js';
 import { store } from './AppHaxStore.js';
 import { AppHaxAPI } from './AppHaxBackendAPI.js';
@@ -113,6 +114,7 @@ export class AppHaxSiteLogin extends SimpleColors {
           this.errorMSG = 'Invalid Username or Password';
         } else {
           console.log("Successful Response")
+          localStorageSet('jwt', resp.jwt);
           autorun(() => { store.user = {
             name: this.username
           }});
