@@ -78,6 +78,7 @@ class Store {
       isLoggedIn: computed, // basic bool for logged in
     });
   }
+
   // validate if they are on the right step via state
   // otherwise we need to force them to the correct step
   stepTest(current) {
@@ -133,6 +134,7 @@ class Store {
       }
     }
   }
+  
   // centralize toast messages
   toast(msg, duration = 3000, extras = {}) {
     window.dispatchEvent(new CustomEvent("rpg-character-toast-show", {

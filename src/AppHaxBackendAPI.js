@@ -10,6 +10,7 @@ export class AppHaxBackendAPI extends LitElement {
   static get tag() {
     return 'app-hax-backend-api';
   }
+
   constructor() {
     super();
     this.jwt = null;
@@ -20,6 +21,7 @@ export class AppHaxBackendAPI extends LitElement {
       this.appEndpoints = toJS(store.appEndpoints);
     });
   }
+  
   static get properties() {
     return {
       jwt: { type: String },
@@ -29,6 +31,7 @@ export class AppHaxBackendAPI extends LitElement {
   }
 
   render() {
+    // eslint-disable-next-line no-unused-expressions
     html`
       <jwt-login
       auto
@@ -41,6 +44,7 @@ export class AppHaxBackendAPI extends LitElement {
       logout-url="${this.appEndpoints.logoutUrl}"
     ></jwt-login>`;
   }
+
   // event meaning we either got or removed the jwt
   jwtChanged(e) {
     this.jwt = e.detail.value;
@@ -63,6 +67,7 @@ export class AppHaxBackendAPI extends LitElement {
       return response;
     }
   }
+
   // set instance of API in store
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
@@ -74,6 +79,7 @@ export class AppHaxBackendAPI extends LitElement {
       () => this.makeCall('createSite',store.site, true),
       ...store.newSitePromiseList];
   }
+  
   updated(changedProperties) {
     if (super.updated) {
       super.updated(changedProperties);

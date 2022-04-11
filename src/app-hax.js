@@ -4,7 +4,6 @@ import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
 import { AppHaxAPI } from './AppHaxBackendAPI.js';
 import "./AppHaxRouter.js";
-import './AppHaxRouter.js';
 import './app-hax-steps.js';
 import './app-hax-label.js';
 import './app-hax-top-bar.js';
@@ -443,6 +442,7 @@ export class AppHax extends LitElement {
       `,
     ];
   }
+
   updated(changedProperties) {
     if (super.updated) {
       super.updated(changedProperties);
@@ -581,9 +581,12 @@ export class AppHax extends LitElement {
       
       <app-hax-search-results></app-hax-search-results>`;
   }
+  
+  // eslint-disable-next-line class-methods-use-this
   templateCreate() {
     return html`<app-hax-steps></app-hax-steps>`;
   }
+
   template404() {
     return html`
     <div class="four04">
@@ -600,6 +603,7 @@ export class AppHax extends LitElement {
         ></rpg-character>
     </div>`;
   }
+
   startJourney(e) {
     store.step = 1;
     this.appMode = "create"; 

@@ -129,9 +129,11 @@ export class AppHaxSiteLogin extends SimpleColors {
         this.username='';
         this.hidePassword = true;
     }
+    
     nameChange(e) {
       this.username = this.shadowRoot.querySelector("#username").value;
     }
+
     render() {
         return html`
         <rpg-character circle seed="${this.username}"></rpg-character> 
