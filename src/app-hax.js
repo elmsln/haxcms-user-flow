@@ -585,7 +585,7 @@ export class AppHax extends LitElement {
           @click="${this.toggleMenu}"
         ></rpg-character>
         <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button @>Site settings</button>
+          <button>Site settings</button>
           <button>Site outline</button>
           <button>New Journey</button>
           <button>Account info</button>
