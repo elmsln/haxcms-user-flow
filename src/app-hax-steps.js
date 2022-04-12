@@ -61,18 +61,21 @@ export class AppHaxSteps extends SimpleColors {
       loaded: { type: Boolean, reflect: true },
     };
   }
+
   // step 1
   chooseStructure(e) {
     const { value } = e.target;
     store.site.structure = value;
     store.appEl.playSound('click2');
   }
+
   // step 2
   chooseType(e) {
     const { value } = e.target;
     store.site.type = value;
     store.appEl.playSound('click2');
   }
+  
   // step 3
   chooseTheme(e) {
     const { value } = e.target;

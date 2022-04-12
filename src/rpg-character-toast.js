@@ -147,6 +147,7 @@ export class RPGCharacterToast extends SimpleToastEl {
       <rpg-character seed="${this.userName}" ?fire="${this.fire}" hat="${this.hat}" ?walking="${this.walking}"></rpg-character>
     </div>`;
   }
+
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener(
@@ -158,6 +159,7 @@ export class RPGCharacterToast extends SimpleToastEl {
       this.showSimpleToast.bind(this)
     );
   }
+
   /**
    * life cycle, element is removed from the DOM
    */
@@ -172,15 +174,18 @@ export class RPGCharacterToast extends SimpleToastEl {
     );
     super.disconnectedCallback();
   }
+
   /**
    * Hide callback
    */
   hideSimpleToast() {
     this.hide();
   }
+
   openedChanged(e) {
     this.opened = e.detail.value;
   }
+
   setDefaultToast() {
     this.opened = false;
     this.text = "Saved";
@@ -193,6 +198,7 @@ export class RPGCharacterToast extends SimpleToastEl {
       this.removeChild(this.firstChild);
     }
   }
+
   /**
    * Show / available callback
    */
@@ -233,9 +239,11 @@ export class RPGCharacterToast extends SimpleToastEl {
     }
     this.show();
   }
+
   show() {
     this.opened = true;
   }
+  
   hide() {
     this.duration = 0;
     this.fire = false;

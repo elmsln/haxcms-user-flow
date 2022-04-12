@@ -108,6 +108,7 @@ export class AppHaxSearchBar extends LitElement {
       <input ?disabled="${!this.showSearch}" id="searchField" @input="${this.search}" type="text" placeholder="Search.." />
     `;
   }
+  
   toggleSearch() {
     if (!this.disabled) {
       this.showSearch = !this.showSearch;

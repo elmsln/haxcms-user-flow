@@ -4,7 +4,6 @@ import { toJS, autorun } from 'mobx';
 import { store } from './AppHaxStore.js';
 import { AppHaxAPI } from './AppHaxBackendAPI.js';
 import "./AppHaxRouter.js";
-import './AppHaxRouter.js';
 import './app-hax-steps.js';
 import './app-hax-label.js';
 import './app-hax-top-bar.js';
@@ -164,14 +163,7 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
-    // if we get new data source, trigger a rebuild of the site list
-    autorun(() => {
-      const appEndpoints = toJS(store.appEndpoints);
-      setTimeout(async() => {
-        const results = await AppHaxAPI.makeCall('getSitesList');
-        store.manifest = results;
-        }, 0);
-    });
+   
     
     /**
      * When location changes update activeItem / mode of app
@@ -190,7 +182,7 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            store.manifest = await AppHaxAPI.makeCall('getSitesList');
+            // store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -236,6 +228,26 @@ export class AppHax extends LitElement {
         document.body.classList.add(`app-hax-${mode}`);
       }
     });
+
+    // App is ready and the user is Logged in
+    autorun(() => {
+      if (toJS(store.appReady) && toJS(store.isLoggedIn)){
+        console.log("I am ready to get sites list");
+        // Need this for the auto run when testing new user
+        const appEndpoints = toJS(store.appEndpoints);  
+        setTimeout(async() => {
+           // if we get new data source, trigger a rebuild of the site list
+          const results = await AppHaxAPI.makeCall('getSitesList');
+          store.manifest = results;
+          console.log(`Manifest Length: ${store.manifest.items.length}`);
+          }, 0);
+      } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
+        setTimeout(() => {
+          console.log("We in App-Hax - Running Log in")
+          this.login();
+        }, 0);
+      }
+    })
   }
 
   static get properties() {
@@ -292,6 +304,7 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   login() {
+    console.log("Login Function in App-HAX ran");
     import('./app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
@@ -303,6 +316,7 @@ export class AppHax extends LitElement {
         cancelable: true,
         detail: {
           title: 'Character select',
+          modal: true,
           elements: { content: p },
           modal: true,
           invokedBy: this,
@@ -445,6 +459,7 @@ export class AppHax extends LitElement {
       `,
     ];
   }
+
   updated(changedProperties) {
     if (super.updated) {
       super.updated(changedProperties);
@@ -477,6 +492,7 @@ export class AppHax extends LitElement {
         document.body.classList.remove('app-loaded');
       }
     });
+    
     // play sound when we animate the banner in
     this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
       if (e.animationName === "scrollin") {
@@ -582,9 +598,12 @@ export class AppHax extends LitElement {
       
       <app-hax-search-results></app-hax-search-results>`;
   }
+  
+  // eslint-disable-next-line class-methods-use-this
   templateCreate() {
     return html`<app-hax-steps></app-hax-steps>`;
   }
+
   template404() {
     return html`
     <div class="four04">
@@ -601,6 +620,7 @@ export class AppHax extends LitElement {
         ></rpg-character>
     </div>`;
   }
+
   startJourney(e) {
     store.step = 1;
     this.appMode = "create"; 
