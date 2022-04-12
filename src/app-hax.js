@@ -96,29 +96,37 @@ export class AppHax extends LitElement {
         step: 2,
         id: 'step-2',
         label: 'Pick type',
-        statement: 'What are we making?',
+        statement: 'What type of journey is this?',
       },
       {
         path: 'createSite-step-3',
         component: 'fake',
         step: 3,
         id: 'step-3',
-        label: 'Style Select',
-        statement: "What's it feel like?",
+        label: 'Theme Select',
+        statement: "What's it look like?",
       },
       {
         path: 'createSite-step-4',
         component: 'fake',
         step: 4,
         id: 'step-4',
+        label: 'Name',
+        statement: "Name this journey",
+      },
+      {
+        path: 'createSite-step-5',
+        component: 'fake',
+        step: 5,
+        id: 'step-5',
         label: 'Loading',
-        statement: "Let's get writing!",
+        statement: "Get ready for your journey",
       },
       {
         path: '/',
         component: 'fake', 
         name: 'home', 
-        label: 'Welome back',
+        label: 'Welcome back',
         statement: "Let's explore HAX land",
       },
       {
@@ -234,7 +242,7 @@ export class AppHax extends LitElement {
       if (toJS(store.appReady) && toJS(store.isLoggedIn)){
         console.log("I am ready to get sites list");
         // Need this for the auto run when testing new user
-        const appEndpoints = toJS(store.appEndpoints);  
+        const appSettings = toJS(store.appSettings);  
         setTimeout(async() => {
            // if we get new data source, trigger a rebuild of the site list
           const results = await AppHaxAPI.makeCall('getSitesList');

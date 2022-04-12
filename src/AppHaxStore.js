@@ -16,11 +16,7 @@ class Store {
     this.location = null;
     this.jwt = null; // useful to know when we're logged in
     this.createSiteSteps = false;
-    this.appEndpoints = {
-      getSitesList: 'demo/sites.json',
-      createSite: 'demo/createSite.json',
-      jwtUrl: 'demo/login.json',
-    };
+    this.appSettings = window.appSettings || {};
     this.sitesBase = 'https://iam.hax.psu.edu';
     // placeholder for when the actual API Backend gets plugged in here
     this.AppHaxAPI = {};
@@ -46,7 +42,7 @@ class Store {
       name: '',
     };
     this.site = !localStorageGet('app-hax-site')
-      ? { structure: null, type: null, theme: null }
+      ? { structure: null, type: null, theme: null,name: null }
       : localStorageGet('app-hax-site');
     this.step = this.stepTest(null);
     this.darkMode = !localStorageGet('app-hax-darkMode')
@@ -59,7 +55,7 @@ class Store {
       routes: observable, // routes that are valid
       sitesBase: observable, // path of sites relative to here
       // internal state requirements
-      appEndpoints: observable, // endpoint connections to the backend app
+      appSettings: observable, // endpoint connections to the backend app
       appReady: observable, // all ready to paint
       appMode: observable, // mode the app is in. search, create, etc
       createSiteSteps: observable, // if we're making a site or in another part of app
@@ -101,9 +97,17 @@ class Store {
     } else if (
       this.site.structure !== null &&
       this.site.type !== null &&
-      this.site.theme !== null
+      this.site.theme !== null && 
+      this.site.name === null
     ) {
       return 4;
+    } else if (
+      this.site.structure !== null &&
+      this.site.type !== null &&
+      this.site.theme !== null &&
+      this.site.name !== null
+    ) {
+      return 5;
     }
     return current;
   }

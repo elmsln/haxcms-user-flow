@@ -106,7 +106,7 @@ export class AppHaxSiteLogin extends SimpleColors {
         // eslint-disable-next-line prefer-destructuring
         const value = this.shadowRoot.querySelector("#password").value;
         
-        const resp = await AppHaxAPI.makeCall('jwtUrl', {username: this.username, password: value})
+        const resp = await AppHaxAPI.makeCall('login', {username: this.username, password: value})
         console.log(resp)
 
         if(resp.status_code !== 200){
