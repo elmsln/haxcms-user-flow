@@ -74,6 +74,7 @@ export class AppHax extends LitElement {
 
   constructor() {
     super();
+    this.userMenuOpen = false;
     this.courses = [];
     this.activeItem = {};
     this.phrases = {
@@ -270,6 +271,7 @@ export class AppHax extends LitElement {
       appMode: { type: String }, // minor context of what we're doing in the app for rendering
       isNewUser: { type: Boolean },
       phrases: { type: Object },
+      userMenuOpen: { type: Boolean },
     };
   }
 
@@ -360,6 +362,7 @@ export class AppHax extends LitElement {
           right: 0px;
           overflow: hidden;
           height: 120px;
+          cursor: pointer;
         }
         .content {
           text-align: center;
@@ -438,6 +441,33 @@ export class AppHax extends LitElement {
         }
         main {
           margin-top: 64px;
+        }
+        .user-menu {
+          display:none;
+        }
+        .user-menu.open {
+          display: block;
+          top: 48px;
+          right: 0px;
+          position: absolute;
+          border: 1px solid black;
+          background-color: white;
+        }
+        .user-menu.open button {
+          display: block;
+          width: 100%;
+          margin: 0;
+          padding: 8px;
+          font-size: 20px;
+          font-family: 'Press Start 2P', sans-serif;
+          color: black;
+          background-color: white;
+        }
+        .user-menu.open button:hover,
+        .user-menu.open button:active,
+        .user-menu.open button:focus {
+          background-color: black;
+          color: white;
         }
         random-word {
           transform: rotate(25deg);
@@ -528,6 +558,9 @@ export class AppHax extends LitElement {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
   }
+  toggleMenu() {
+    this.userMenuOpen = !this.userMenuOpen;
+  }
 
   render() {
     return html`<app-hax-router></app-hax-router>
@@ -549,7 +582,15 @@ export class AppHax extends LitElement {
           class="topbar-character"
           seed="${this.userName}"
           slot="right"
+          @click="${this.toggleMenu}"
         ></rpg-character>
+        <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
+          <button @>Site settings</button>
+          <button>Site outline</button>
+          <button>New Journey</button>
+          <button>Account info</button>
+          <button>log out</button>
+        </div>
       </app-hax-top-bar>
     </header>
     <main>
