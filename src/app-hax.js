@@ -458,8 +458,8 @@ export class AppHax extends LitElement {
           top: 48px;
           right: 0px;
           position: absolute;
-          border: 1px solid black;
-          background-color: white;
+          border: 1px solid var(--app-hax-accent-color);
+          background-color: var(--app-hax-background-color);
         }
         .user-menu.open button {
           display: block;
@@ -468,14 +468,20 @@ export class AppHax extends LitElement {
           padding: 8px;
           font-size: 20px;
           font-family: 'Press Start 2P', sans-serif;
-          color: black;
-          background-color: white;
+          color: var(--app-hax-accent-color);
+          background-color: var(--app-hax-background-color);
         }
         .user-menu.open button:hover,
         .user-menu.open button:active,
         .user-menu.open button:focus {
-          background-color: black;
+          background-color: #2a2b2c;
           color: white;
+        }
+
+        .user-menu.open > .logout {
+          background-image: url('../lib/assets/images/Logout.svg');
+          background-repeat: no-repeat;
+          background-position: center;
         }
         random-word {
           transform: rotate(25deg);
@@ -606,7 +612,7 @@ export class AppHax extends LitElement {
           <button>Site outline</button>
           <button>New Journey</button>
           <button>Account info</button>
-          <button>log out</button>
+          <button class="logout">log out</button>
         </div>
       </app-hax-top-bar>
     </header>
