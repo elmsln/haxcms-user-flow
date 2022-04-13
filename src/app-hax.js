@@ -1,13 +1,13 @@
 import { LitElement, css, html } from 'lit';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
-import { store } from './AppHaxStore.js';
-import { AppHaxAPI } from './AppHaxBackendAPI.js';
-import "./AppHaxRouter.js";
-import './app-hax-steps.js';
-import './app-hax-label.js';
-import './app-hax-top-bar.js';
-import './app-hax-site-button.js';
+import { store } from '../lib/v1/AppHaxStore.js';
+import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
+import "../lib/v1/AppHaxRouter.js";
+import '../lib/v1/app-hax-steps.js';
+import '../lib/v1/app-hax-label.js';
+import '../lib/v1/app-hax-top-bar.js';
+import '../lib/v1/app-hax-site-button.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
@@ -74,6 +74,7 @@ export class AppHax extends LitElement {
 
   constructor() {
     super();
+    this.userMenuOpen = false;
     this.courses = [];
     this.activeItem = {};
     this.phrases = {
@@ -96,29 +97,37 @@ export class AppHax extends LitElement {
         step: 2,
         id: 'step-2',
         label: 'Pick type',
-        statement: 'What are we making?',
+        statement: 'What type of journey is this?',
       },
       {
         path: 'createSite-step-3',
         component: 'fake',
         step: 3,
         id: 'step-3',
-        label: 'Style Select',
-        statement: "What's it feel like?",
+        label: 'Theme Select',
+        statement: "What's it look like?",
       },
       {
         path: 'createSite-step-4',
         component: 'fake',
         step: 4,
         id: 'step-4',
+        label: 'Name',
+        statement: "Name this journey",
+      },
+      {
+        path: 'createSite-step-5',
+        component: 'fake',
+        step: 5,
+        id: 'step-5',
         label: 'Loading',
-        statement: "Let's get writing!",
+        statement: "Get ready for your journey",
       },
       {
         path: '/',
         component: 'fake', 
         name: 'home', 
-        label: 'Welome back',
+        label: 'Welcome back',
         statement: "Let's explore HAX land",
       },
       {
@@ -234,7 +243,7 @@ export class AppHax extends LitElement {
       if (toJS(store.appReady) && toJS(store.isLoggedIn)){
         console.log("I am ready to get sites list");
         // Need this for the auto run when testing new user
-        const appEndpoints = toJS(store.appEndpoints);  
+        const appSettings = toJS(store.appSettings);  
         setTimeout(async() => {
            // if we get new data source, trigger a rebuild of the site list
           const results = await AppHaxAPI.makeCall('getSitesList');
@@ -262,6 +271,7 @@ export class AppHax extends LitElement {
       appMode: { type: String }, // minor context of what we're doing in the app for rendering
       isNewUser: { type: Boolean },
       phrases: { type: Object },
+      userMenuOpen: { type: Boolean },
     };
   }
 
@@ -294,7 +304,13 @@ export class AppHax extends LitElement {
       window.localStorage.removeItem('app-hax-soundStatus');
       window.localStorage.removeItem('app-hax-site');
       if (reload) {
-        window.location = '/';
+        // should always be a base tag for a SPA but just checking
+        if (document.querySelector('base')) {
+          window.location = document.querySelector('base').href;
+        }
+        else {
+          window.location.reload();
+        }
       }
     }
     catch(e) {
@@ -305,7 +321,7 @@ export class AppHax extends LitElement {
   // eslint-disable-next-line class-methods-use-this
   login() {
     console.log("Login Function in App-HAX ran");
-    import('./app-hax-site-login.js').then(() => {
+    import('../lib/v1/app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
         const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
@@ -318,6 +334,7 @@ export class AppHax extends LitElement {
           title: 'Character select',
           modal: true,
           elements: { content: p },
+          modal: true,
           invokedBy: this,
           styles: {
             "--simple-modal-titlebar-background": "orange",
@@ -327,6 +344,7 @@ export class AppHax extends LitElement {
             "--simple-modal-z-index": "100000000",
             "--simple-modal-height": "40vh",
             "--simple-modal-min-height": "400px",
+            "--simple-modal-titlebar-height": "40px",
           },
         },
       });
@@ -350,6 +368,7 @@ export class AppHax extends LitElement {
           right: 0px;
           overflow: hidden;
           height: 120px;
+          cursor: pointer;
         }
         .content {
           text-align: center;
@@ -429,6 +448,33 @@ export class AppHax extends LitElement {
         main {
           margin-top: 64px;
         }
+        .user-menu {
+          display:none;
+        }
+        .user-menu.open {
+          display: block;
+          top: 48px;
+          right: 0px;
+          position: absolute;
+          border: 1px solid black;
+          background-color: white;
+        }
+        .user-menu.open button {
+          display: block;
+          width: 100%;
+          margin: 0;
+          padding: 8px;
+          font-size: 20px;
+          font-family: 'Press Start 2P', sans-serif;
+          color: black;
+          background-color: white;
+        }
+        .user-menu.open button:hover,
+        .user-menu.open button:active,
+        .user-menu.open button:focus {
+          background-color: black;
+          color: white;
+        }
         random-word {
           transform: rotate(25deg);
           position: absolute;
@@ -475,12 +521,12 @@ export class AppHax extends LitElement {
       super.firstUpdated(changedProperties);
     }
     import('wired-elements/lib/wired-button.js');
-    import('./rpg-character-toast.js');
-    import('./app-hax-wired-toggle.js');
-    import('./app-hax-search-bar.js');
-    import('./app-hax-search-results.js');
+    import('../lib/v1/app-hax-toast.js');
+    import('../lib/v1/app-hax-wired-toggle.js');
+    import('../lib/v1/app-hax-search-bar.js');
+    import('../lib/v1/app-hax-search-results.js');
     import('@lrnwebcomponents/rpg-character/rpg-character.js');
-    import('./random-word.js');
+    import('../lib/random-word/random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
@@ -518,6 +564,9 @@ export class AppHax extends LitElement {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
   }
+  toggleMenu() {
+    this.userMenuOpen = !this.userMenuOpen;
+  }
 
   render() {
     return html`<app-hax-router></app-hax-router>
@@ -538,9 +587,16 @@ export class AppHax extends LitElement {
         <rpg-character
           class="topbar-character"
           seed="${this.userName}"
-          circle
           slot="right"
+          @click="${this.toggleMenu}"
         ></rpg-character>
+        <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
+          <button>Site settings</button>
+          <button>Site outline</button>
+          <button>New Journey</button>
+          <button>Account info</button>
+          <button>log out</button>
+        </div>
       </app-hax-top-bar>
     </header>
     <main>

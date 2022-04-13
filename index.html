@@ -203,10 +203,7 @@
             // reset to clear internal state
             dqs("app-hax").reset(false);
             // fake injection of a new site listing location
-            window.AppHax.requestAvailability().store.appEndpoints = {
-              getSitesList: 'demo/sitesEmpty.json',
-              createSite: 'demo/createSite.json',
-            };
+            window.AppHax.requestAvailability().store.appSettings.getSitesList = 'demo/sitesEmpty.json';
           });
           dqs("#test404").addEventListener("click", (e) => {
             window.location = "nothin9383832";
@@ -221,5 +218,86 @@
         import './src/app-hax-search-results.js';
         import './src/app-hax.js';
       </script>
-  </body>
+      <script>
+        // this is how haxcms / haxiam operates w/ injecting the base settings
+        // think of it like localStorage but the backend is injecting at run time
+        // so that we can deploy this at different domains more headlessly
+        const blueStyle = './lib/assets/images/BlueStyle.svg';
+        const greyStyle = './lib/assets/images/GreyStyle.svg';
+        const partyStyle = './lib/assets/images/PartyStyle.svg';
+        window.appSettings = {
+          "demo": true,
+          "getSitesList": 'demo/sites.json',
+          "createSite": 'demo/createSite.json',
+          "login": 'demo/login.json',
+          "refreshUrl": "/bto108/system/api/refreshAccessToken",
+          "logout": "/bto108/system/api/logout",
+          "connectionSettings": "/bto108/system/api/connectionSettings",
+          "redirectUrl": "/login.php",
+          "themes": {
+              "clean-one": {
+                  "element": "clean-one",
+                  "path": "@lrnwebcomponents/clean-one/clean-one.js",
+                  "name": "Course theme",
+                  "thumbnail": partyStyle, 
+              },
+              "clean-two": {
+                  "element": "clean-two",
+                  "path": "@lrnwebcomponents/clean-two/clean-two.js",
+                  "name": "Course theme 2",
+                  "thumbnail": greyStyle, 
+              },
+              "learn-two-theme": {
+                  "element": "learn-two-theme",
+                  "path": "@lrnwebcomponents/learn-two-theme/learn-two-theme.js",
+                  "name": "Course theme 3",
+                  "thumbnail": blueStyle, 
+              },
+              "bootstrap-theme": {
+                  "element": "bootstrap-theme",
+                  "path": "@lrnwebcomponents/bootstrap-theme/bootstrap-theme.js",
+                  "name": "Bootstrap theme",
+                  "thumbnail": partyStyle, 
+              },
+              "haxor-slevin": {
+                  "element": "haxor-slevin",
+                  "path": "@lrnwebcomponents/haxor-slevin/haxor-slevin.js",
+                  "name": "Blog theme",
+                  "thumbnail": blueStyle, 
+              },
+              "outline-player": {
+                  "element": "outline-player",
+                  "path": "@lrnwebcomponents/outline-player/outline-player.js",
+                  "name": "Documentation theme",
+                  "thumbnail": blueStyle, 
+              }
+          },
+          "saveNodePath": "/bto108/system/api/saveNode",
+          "saveManifestPath": "/bto108/system/api/saveManifest",
+          "saveOutlinePath": "/bto108/system/api/saveOutline",
+          "publishSitePath": "/bto108/system/api/publishSite",
+          "syncSitePath": "/bto108/system/api/syncSite",
+          "setConfigPath": "/bto108/system/api/setConfig",
+          "getConfigPath": "/bto108/system/api/getConfig",
+          "getNodeFieldsPath": "/bto108/system/api/getNodeFields",
+          "getSiteFieldsPath": "/bto108/system/api/formLoad?haxcms_form_id=siteSettings",
+          "revertSitePath": "/bto108/system/api/revertCommit",
+          "getFormToken": "gdgdgdfgd4444",
+          "createNodePath": "/bto108/system/api/createNode",
+          "getUserDataPath": "/bto108/system/api/getUserData",
+          "setUserPhotoPath": "/bto108/system/api/setUserPhoto",
+          "deleteNodePath": "/bto108/system/api/deleteNode",
+          "gitImportSitePath": "/bto108/system/api/gitImportSite",
+          "downloadSitePath": "/bto108/system/api/downloadSite",
+          "archiveSitePath": "/bto108/system/api/archiveSite",
+          "cloneSitePath": "/bto108/system/api/cloneSite",
+          "deleteSitePath": "/bto108/system/api/deleteSite",
+          "appStore": {
+              "url": "/bto108/system/api/generateAppStore?app-store-token=fghjhgjjghjgg5555"
+          },
+          "jwt": "sdfsff34f4f33f3f3ggfgfgh.fghfghfgh.jkhjhkkhjjhkhjkjhkhjk",
+          "reloadOnError": true
+      };
+        </script>
+          </body>
 </html>
