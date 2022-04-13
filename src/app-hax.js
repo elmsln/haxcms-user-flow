@@ -421,9 +421,8 @@ export class AppHax extends LitElement {
           }
         }
         .haxLogo {
-          height: 40px;
-          width: 40px;
-          background-color: orange;
+          --simple-icon-height: 40px;
+          --simple-icon-width: 40px;
           margin: 4px;
         }
 
@@ -438,6 +437,7 @@ export class AppHax extends LitElement {
           display: inline-flex;
           vertical-align: top;
         }
+
         .soundToggle img {
           width: 24px;
           height: 24px;
@@ -562,20 +562,28 @@ export class AppHax extends LitElement {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   soundToggle(e) {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
   }
+  
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _haxLink(e){
+    e.preventDefault();
+    window.open('/', '_self', 'noopener noreferrer');
+    
   }
 
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <!-- <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async"></simple-icon-lite> -->
-        <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
+        <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
