@@ -1,0 +1,5 @@
+import{s as e}from"./2ae1595f.js";import{f as t}from"./a5c3ac8c.js";import"./92722af5.js";import"./3c262d28.js";import"./745aa4ed.js";import"./ad3c8620.js";import"./5c68dd7f.js";import"./cf769d61.js";import"./e45430bf.js";import"./120aa880.js";
+/**
+ * Copyright 2019 Penn State University
+ * @license Apache-2.0, see License.md for full text.
+ */class r extends(t(e)){static get tag(){return"rich-text-editor-underline"}render(){return super.render()}static get properties(){return{...super.properties}}constructor(){super(),this.fields=[{property:"confirm",title:"Underline (not recommended)",description:"Underlines can be confused with links. Use italics instead.",inputMethod:"boolean"}],this.tagsList="u",this.icon="editor:format-underlined",this.label="Underline (not recommended)",this.toggles=!0,this.command="underline",this.shortcutKeys="ctrl+u",this.value={confirm:!1}}get promptCommandVal(){this.commandVal=void 0}getValue(){return{confirm:!!this.toggled}}setToggled(){this.toggled=!!this.getPropValue("confirm")}}window.customElements.define(r.tag,r);export{r as RichTextEditorUnderline};
