@@ -358,7 +358,13 @@ export class AppHax extends LitElement {
       css`
         :host {
           display: block;
+          --app-hax-background-color-active: var(--app-hax-accent-color);
         }
+
+        body.dark-mode {
+          --app-hax-background-color-active: whitesmoke;
+        }
+
         .topbar-character {
           transform: scale(0.4, 0.4);
           margin: -36px -35px 0px 0px;
@@ -474,8 +480,8 @@ export class AppHax extends LitElement {
         .user-menu.open button:hover,
         .user-menu.open button:active,
         .user-menu.open button:focus {
-          background-color: #2a2b2c;
-          color: white;
+          background-color: var(--app-hax-background-color-active);
+          color: var(--app-hax-background-color);
         }
 
         .user-menu.open > .logout {
