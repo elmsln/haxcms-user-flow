@@ -415,11 +415,11 @@ export class AppHax extends LitElement {
           }
         }
         .haxLogo {
-          height: 40px;
-          width: 40px;
-          background-color: white;
+          --simple-icon-height: 40px;
+          --simple-icon-width: 40px;
           margin: 4px;
         }
+
         .space-hack {
           display: inline-flex;
           width: 64px;
@@ -431,10 +431,12 @@ export class AppHax extends LitElement {
           display: inline-flex;
           vertical-align: top;
         }
+
         .soundToggle img {
           width: 24px;
           height: 24px;
         }
+
         app-hax-search-bar {
           vertical-align: middle;
           display: inline-flex;
@@ -563,11 +565,18 @@ export class AppHax extends LitElement {
     this.userMenuOpen = !this.userMenuOpen;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  _haxLink(e){
+    e.preventDefault();
+    window.open('/', '_self', 'noopener noreferrer');
+    
+  }
+
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
+        <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
@@ -575,8 +584,8 @@ export class AppHax extends LitElement {
           class="soundToggle"
           @click="${this.soundToggle}"
         >
-        <img src="${this.soundIcon}" alt="" loading="lazy" decoding="async" />
-      </wired-button>
+          <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
+        </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
         <div class="space-hack" slot="right"></div>
         <rpg-character
