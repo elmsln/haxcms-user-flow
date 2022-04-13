@@ -1,13 +1,13 @@
 import { LitElement, css, html } from 'lit';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
-import { store } from './AppHaxStore.js';
-import { AppHaxAPI } from './AppHaxBackendAPI.js';
-import "./AppHaxRouter.js";
-import './app-hax-steps.js';
-import './app-hax-label.js';
-import './app-hax-top-bar.js';
-import './app-hax-site-button.js';
+import { store } from '../lib/v1/AppHaxStore.js';
+import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
+import "../lib/v1/AppHaxRouter.js";
+import '../lib/v1/app-hax-steps.js';
+import '../lib/v1/app-hax-label.js';
+import '../lib/v1/app-hax-top-bar.js';
+import '../lib/v1/app-hax-site-button.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
@@ -304,7 +304,13 @@ export class AppHax extends LitElement {
       window.localStorage.removeItem('app-hax-soundStatus');
       window.localStorage.removeItem('app-hax-site');
       if (reload) {
-        window.location = '/';
+        // should always be a base tag for a SPA but just checking
+        if (document.querySelector('base')) {
+          window.location = document.querySelector('base').href;
+        }
+        else {
+          window.location.reload();
+        }
       }
     }
     catch(e) {
@@ -315,7 +321,7 @@ export class AppHax extends LitElement {
   // eslint-disable-next-line class-methods-use-this
   login() {
     console.log("Login Function in App-HAX ran");
-    import('./app-hax-site-login.js').then(() => {
+    import('../lib/v1/app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
         const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
@@ -515,12 +521,12 @@ export class AppHax extends LitElement {
       super.firstUpdated(changedProperties);
     }
     import('wired-elements/lib/wired-button.js');
-    import('./rpg-character-toast.js');
-    import('./app-hax-wired-toggle.js');
-    import('./app-hax-search-bar.js');
-    import('./app-hax-search-results.js');
+    import('../lib/v1/app-hax-toast.js');
+    import('../lib/v1/app-hax-wired-toggle.js');
+    import('../lib/v1/app-hax-search-bar.js');
+    import('../lib/v1/app-hax-search-results.js');
     import('@lrnwebcomponents/rpg-character/rpg-character.js');
-    import('./random-word.js');
+    import('../lib/random-word/random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
