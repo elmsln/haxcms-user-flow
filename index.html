@@ -185,23 +185,23 @@
             }
           }
           // remove loading text
-        window.addEventListener('app-hax-loaded',(e) => {
+        window.addEventListener('app-hax-loaded',() => {
           dqs("#loading").remove();
         });
           function dqs(sel) { return document.querySelector(sel)}
-          dqs("#loginbtn").addEventListener("click", (e) => {
+          dqs("#loginbtn").addEventListener("click", () => {
             dqs("app-hax").login();
           });
-          dqs("#nosites").addEventListener("click", (e) => {
+          dqs("#nosites").addEventListener("click", () => {
             // reset to clear internal state
             dqs("app-hax").reset(false);
             // fake injection of a new site listing location
             window.AppHax.requestAvailability().store.appSettings.getSitesList = 'demo/sitesEmpty.json';
           });
-          dqs("#test404").addEventListener("click", (e) => {
+          dqs("#test404").addEventListener("click", () => {
             window.location = "nothin9383832";
           });
-          dqs("#resetbtn").addEventListener("click", (e) => {
+          dqs("#resetbtn").addEventListener("click", () => {
             dqs("app-hax").reset();
           });
         </script>

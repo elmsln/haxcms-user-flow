@@ -240,19 +240,15 @@ export class AppHax extends LitElement {
 
     // App is ready and the user is Logged in
     autorun(() => {
-      if (toJS(store.appReady) && toJS(store.isLoggedIn)){
-        console.log("I am ready to get sites list");
+      if (toJS(store.appReady) && toJS(store.isLoggedIn) && toJS(store.appSettings)){
         // Need this for the auto run when testing new user
-        const appSettings = toJS(store.appSettings);  
         setTimeout(async() => {
            // if we get new data source, trigger a rebuild of the site list
           const results = await AppHaxAPI.makeCall('getSitesList');
           store.manifest = results;
-          console.log(`Manifest Length: ${store.manifest.items.length}`);
           }, 0);
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
         setTimeout(() => {
-          console.log("We in App-Hax - Running Log in")
           this.login();
         }, 0);
       }
@@ -320,7 +316,6 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   login() {
-    console.log("Login Function in App-HAX ran");
     import('../lib/v1/app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
@@ -332,7 +327,6 @@ export class AppHax extends LitElement {
         cancelable: true,
         detail: {
           title: 'Character select',
-          modal: true,
           elements: { content: p },
           modal: true,
           invokedBy: this,
@@ -560,10 +554,11 @@ export class AppHax extends LitElement {
     });
   }
 
-  soundToggle(e) {
+  soundToggle() {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
   }
+
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
   }
@@ -625,19 +620,21 @@ export class AppHax extends LitElement {
   }
 
   appBody(routine) {
+    let template = html``;
     switch(routine) {
       case 'home':
       case 'search':
-          return this.templateHome();
+        template = this.templateHome();
       break;
       case 'create':
-        return this.templateCreate();
+        template = this.templateCreate();
       break;
       case '404':
       default:
-        return this.template404();
+        template = this.template404();
       break;
     }
+    return template;
   }
 
   templateHome() {
@@ -646,7 +643,7 @@ export class AppHax extends LitElement {
       <div class="start-journey">
         <a href="createSite-step-1" @click="${this.startJourney}" tabindex="-1">
         <app-hax-site-button
-          label="> Start new journey"
+          label="&gt; Start new journey"
         ></app-hax-site-button>
         </a>
       </div>`: ``}
@@ -664,7 +661,7 @@ export class AppHax extends LitElement {
     <div class="four04">
       <a href="createSite-step-1" class="start-journey" @click="${this.startJourney}" tabindex="-1">
       <app-hax-site-button
-        label="> Start a new journey"
+        label="&gt; Start a new journey"
       ></app-hax-site-button>
       </a>
       <rpg-character
@@ -676,7 +673,7 @@ export class AppHax extends LitElement {
     </div>`;
   }
 
-  startJourney(e) {
+  startJourney() {
     store.step = 1;
     this.appMode = "create"; 
   }
