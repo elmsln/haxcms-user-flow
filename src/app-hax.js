@@ -380,6 +380,7 @@ export class AppHax extends LitElement {
         }
         .start-journey {
           display: flex;
+          padding-top:100px;
           justify-content: center;
         }
         app-hax-top-bar {
@@ -391,7 +392,6 @@ export class AppHax extends LitElement {
         }
         .label {
           text-align: center;
-          margin-top: 48px;
         }
         app-hax-label {
           animation: .8s ease-in-out 0s scrollin;
@@ -448,7 +448,12 @@ export class AppHax extends LitElement {
           display: inline-flex;
         }
         main {
-          margin-top: 64px;
+          padding-top: 128px;
+        }
+        @media (max-width: 900px) {
+          main {
+            padding-top: 64px;
+          }
         }
         .user-menu {
           display:none;
@@ -467,6 +472,7 @@ export class AppHax extends LitElement {
           margin: 0;
           padding: 8px;
           font-size: 20px;
+          text-align: left;
           font-family: 'Press Start 2P', sans-serif;
           color: var(--app-hax-accent-color);
           background-color: var(--app-hax-background-color);
@@ -477,11 +483,17 @@ export class AppHax extends LitElement {
           background-color: var(--app-hax-background-color-active);
           color: var(--app-hax-background-color);
         }
-
+        .user-menu button {
+          cursor: pointer;
+        }
+        .user-menu button simple-icon-lite {
+          padding-right: 16px;
+        }
         .user-menu.open > .logout {
           background-image: url('../lib/assets/images/Logout.svg');
           background-repeat: no-repeat;
           background-position: center;
+          text-align: center;
         }
         random-word {
           transform: rotate(25deg);
@@ -607,10 +619,13 @@ export class AppHax extends LitElement {
           @click="${this.toggleMenu}"
         ></rpg-character>
         <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button>Site settings</button>
-          <button>Site outline</button>
-          <button>New Journey</button>
-          <button>Account info</button>
+          <button>
+            <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
+          <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
+          <button>
+          <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
+          <button>
+          <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
           <button class="logout">log out</button>
         </div>
       </app-hax-top-bar>
