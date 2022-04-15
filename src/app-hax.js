@@ -383,6 +383,10 @@ export class AppHax extends LitElement {
           padding-top:100px;
           justify-content: center;
         }
+        app-hax-site-button {
+          max-width: 60vw;
+          justify-content: center;
+        }
         app-hax-top-bar {
           top: 0;
           z-index: 1000;
@@ -397,12 +401,6 @@ export class AppHax extends LitElement {
           animation: .8s ease-in-out 0s scrollin;
           -webkit-animation: .8s ease-in-out 0s scrollin;
           display: block;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          app-hax-label {
-            animation: none;
-            -webkit-animation: none;
-          }
         }
         app-hax-label h1 {
           font-weight: normal;
@@ -514,12 +512,47 @@ export class AppHax extends LitElement {
           visibility: visible;
           transition: all .3s ease-in-out;
         }
+        @media (max-width: 800px) {
+          app-hax-site-button {
+            width: 320px;
+            max-width: 60vw;
+            --app-hax-site-button-font-size: 2.5vw;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          app-hax-label {
+            animation: none;
+            -webkit-animation: none;
+          }
+        }
         @media (max-width: 680px) {
           random-word {
             visibility: none;
             opacity: 0;
           }
         }
+        @media (max-height: 700px) {
+          .content { 
+            margin-top: 4px;
+          }
+          random-word {
+            visibility: none;
+            opacity: 0;
+          }
+          .start-journey {
+            padding-top: 0;
+          }
+        }
+        @media (max-height: 500px) {
+          app-hax-label h1 {
+            font-family: monospace;
+            font-weight: normal;
+            font-size: 4vw;
+            margin: 0;
+            padding: 0;
+          }
+        }
+        
       `,
     ];
   }
