@@ -47,6 +47,10 @@ export default {
           src: 'demo',
           dest: 'dist',
         },
+        {
+          src: 'lib/assets/images/HAXLogo.svg',
+          dest: 'dist/assets/lib/assets/images/HAXLogo.svg',
+        },
       ],
     }),
     /** Resolve bare module imports */
