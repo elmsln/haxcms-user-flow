@@ -348,23 +348,16 @@ export class AppHax extends LitElement {
           width: 1px;
         }
         .topbar-character {
-          transform: scale(0.4, 0.4);
-          margin: -36px -35px 0px 0px;
-          vertical-align: text-top;
-          position: fixed;
-          top: 0px;
-          right: 0px;
-          overflow: hidden;
-          height: 120px;
           cursor: pointer;
+          display: inline-block;
+          margin-left: 12px;
         }
         .content {
           text-align: center;
           margin-top: 32px;
         }
         .four04-character {
-          margin-top: 100px;
-          transform: scale(2);
+          margin-top: 10px;
         }
         .start-journey {
           display: flex;
@@ -410,12 +403,6 @@ export class AppHax extends LitElement {
           --simple-icon-height: 40px;
           --simple-icon-width: 40px;
           margin: 4px;
-        }
-
-        .space-hack {
-          display: inline-flex;
-          width: 64px;
-          height: 48px;
         }
         .soundToggle {
           margin-right: 16px;
@@ -626,11 +613,12 @@ export class AppHax extends LitElement {
           <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
         </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-        <div class="space-hack" slot="right"></div>
         <rpg-character
           class="topbar-character"
           seed="${this.userName}"
           slot="right"
+          width="60"
+          height="60"
           @click="${this.toggleMenu}"
         ></rpg-character>
         <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
@@ -719,6 +707,8 @@ export class AppHax extends LitElement {
           class="four04-character"
           fire
           walking
+          width="250"
+          height="250"
           seed="${this.userName}"
         ></rpg-character>
     </div>`;
