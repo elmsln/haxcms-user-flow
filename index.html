@@ -6,17 +6,50 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <link rel="icon" href="./lib/assets/images/HAXLogo.svg" type="image/png">
-    <meta name="Description" content="Put your description here." />
+    <title>HAX</title>
     <base href="/" />
-
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
+      disabled
+      id="haxfont"
     />
     <script src="./node_modules/@lrnwebcomponents/deduping-fix/deduping-fix.js"></script>
+    <meta name="generator" content="HAX">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="robots" content="index, follow">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="HAX">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HAX">
+    <link rel="apple-touch-icon" sizes="48x48" href="./lib/assets/images/HAXLogo.svg">
+    <link rel="apple-touch-icon" sizes="72x72" href="./lib/assets/images/HAXLogo.svg">
+    <link rel="apple-touch-icon" sizes="96x96" href="./lib/assets/images/HAXLogo.svg">
+    <link rel="apple-touch-icon" sizes="144x144" href="./lib/assets/images/HAXLogo.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="./lib/assets/images/HAXLogo.svg">
+    <meta name="msapplication-TileImage" content="./lib/assets/images/HAXLogo.svg">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="description" content="HAX website building and management app" />
+    <meta name="og:sitename" property="og:sitename" content="HAX" />
+    <meta name="og:title" property="og:title" content="HAX" />
+    <meta name="og:type" property="og:type" content="article" />
+    <meta name="og:url" property="og:url" content="" />
+    <meta name="og:description" property="og:description" content="HAX website building and management app" />
+    <meta name="og:image" property="og:image" content="" />
+    <meta name="twitter:card" property="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" property="twitter:site" content="" />
+    <meta name="twitter:title" property="twitter:title" content="HAXTheWeb" />
+    <meta name="twitter:description" property="twitter:description" content="HAX website building and management app" />
+    <meta name="twitter:image" property="twitter:image" content="" />
+    <meta rel="cc:license" href="https://creativecommons.org/licenses/by-sa/4.0/" content="License: Creative Commons: Attribution Share a like"/>
+    <link rel="icon" href="./lib/assets/images/HAXLogo.svg" type="image/png">
     <script>
       // local development and mobx
       window.process = window.process || {
@@ -86,7 +119,12 @@
         color: var(--app-hax-accent-color, var(--accent-color));
         font-weight: normal;
         margin-top: 2.5px;
-        font-size: 2vw;
+        font-size: 20px;
+      }
+      @media (max-width: 700px) {
+        #loading .subtitle {
+          font-size: 12px;
+        }
       }
 
       #loading .bracket {
@@ -144,7 +182,7 @@
       <app-hax>
         <div slot="externalproviders">
           <a href="https://login.microsoftonline.com/">
-            <button style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
+            <button aria-label="Microsoft Login" style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
           </a>
         </div>
       </app-hax>
@@ -169,10 +207,10 @@
           }
         </style>
         <div id="demobtns">
-          <button id="loginbtn">Login</button>
-          <button id="nosites">Test new user</button>
-          <button id="test404">Test 404</button>
-          <button id="resetbtn">reset app</button>
+          <button aria-label="Demo Login" id="loginbtn">Login</button>
+          <button aria-label="Demo new user" id="nosites">Test new user</button>
+          <button aria-label="Demo 404 page" id="test404">Test 404</button>
+          <button aria-label="Demo reset settings" id="resetbtn">reset app</button>
         </div>
         <script>
           // reduce FOUC for dark mode so it starts in dark rapidly if selected
@@ -187,6 +225,7 @@
           // remove loading text
         window.addEventListener('app-hax-loaded',() => {
           dqs("#loading").remove();
+          document.querySelector("#haxfont").removeAttribute('disabled');
         });
           function dqs(sel) { return document.querySelector(sel)}
           dqs("#loginbtn").addEventListener("click", () => {

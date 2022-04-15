@@ -29,32 +29,12 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   playSound(sound) {
-    if (store.soundStatus) {
-      try {
-        switch (sound) {
-          case 'click':
-          case 'click2':
-          case 'coin':
-          case 'coin2':
-          case 'hit':
-          case 'success':
-            this.audio = new Audio(
-              new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
-            );
-            this.audio.play();
-            break;
-          default:
-            this.audio = new Audio(
-              new URL(`../lib/assets/sounds/hit.mp3`, import.meta.url).href
-            );
-            this.audio.play();
-            console.warn(`${sound} is not a valid sound file yet`);
-            break;
-        }
-      }
-      catch(e) {
-        console.warn(e);
-      }
+    if (store.soundStatus && store.appReady) {
+      let playSound = ['click','click2','coin','coin2','hit','success'].includes(sound) ? sound : 'hit'; 
+      this.audio = new Audio(
+        new URL(`../lib/assets/sounds/${playSound}.mp3`, import.meta.url).href
+      );
+      this.audio.play();
     }
   }
 
@@ -358,7 +338,15 @@ export class AppHax extends LitElement {
         body.dark-mode {
           --app-hax-background-color-active: whitesmoke;
         }
-
+        .wired-button-label {
+          clip: rect(0 0 0 0); 
+          clip-path: inset(50%);
+          height: 1px;
+          overflow: hidden;
+          position: absolute;
+          white-space: nowrap; 
+          width: 1px;
+        }
         .topbar-character {
           transform: scale(0.4, 0.4);
           margin: -36px -35px 0px 0px;
@@ -469,7 +457,7 @@ export class AppHax extends LitElement {
           width: 100%;
           margin: 0;
           padding: 8px;
-          font-size: 20px;
+          font-size: 16px;
           text-align: left;
           font-family: 'Press Start 2P', sans-serif;
           color: var(--app-hax-accent-color);
@@ -516,7 +504,7 @@ export class AppHax extends LitElement {
           app-hax-site-button {
             width: 320px;
             max-width: 60vw;
-            --app-hax-site-button-font-size: 2.5vw;
+            --app-hax-site-button-font-size: 16px;
           }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -589,13 +577,6 @@ export class AppHax extends LitElement {
         document.body.classList.remove('app-loaded');
       }
     });
-    
-    // play sound when we animate the banner in
-    this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
-      if (e.animationName === "scrollin") {
-        store.appEl.playSound('coin2');
-      }
-    });
     store.appEl = this;
     autorun(() => {
       if (store.activeItem) {
@@ -641,6 +622,7 @@ export class AppHax extends LitElement {
           class="soundToggle"
           @click="${this.soundToggle}"
         >
+          <span class="wired-button-label">Toggle sound effects</span>
           <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
         </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
