@@ -11,13 +11,6 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-      disabled
-      id="haxfont"
-    />
     <script src="./node_modules/@lrnwebcomponents/deduping-fix/deduping-fix.js"></script>
     <meta name="generator" content="HAX">
     <link rel="manifest" href="manifest.json">
@@ -50,14 +43,6 @@
     <meta name="twitter:image" property="twitter:image" content="" />
     <meta rel="cc:license" href="https://creativecommons.org/licenses/by-sa/4.0/" content="License: Creative Commons: Attribution Share a like"/>
     <link rel="icon" href="./lib/assets/images/HAXLogo.svg" type="image/png">
-    <script>
-      // local development and mobx
-      window.process = window.process || {
-        env: {
-          NODE_ENV: "development"
-        }
-      };
-    </script>
     <style>
       body {
         margin: 0;
@@ -179,155 +164,168 @@
       </div>
       <div class="subtitle">HAX is loading</div>
     </div>
-      <app-hax>
-        <div slot="externalproviders">
-          <a href="https://login.microsoftonline.com/">
-            <button aria-label="Microsoft Login" style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
-          </a>
-        </div>
-      </app-hax>
-      <div id="demo">
-        <style>
-          #demobtns {
-            bottom: 0;
-            left: 0;
-            position: fixed;
-          }
-          #demobtns button {
-            font-size: 30px;
-            border: 2px solid black;
-            margin: 2px;
-            background-color: orange;
-            cursor: pointer;
-            color: black;
-            display: block;
-          }
-          #demobtns button:hover {
-            background-color: red;
-          }
-        </style>
-        <div id="demobtns">
-          <button aria-label="Demo Login" id="loginbtn">Login</button>
-          <button aria-label="Demo new user" id="nosites">Test new user</button>
-          <button aria-label="Demo 404 page" id="test404">Test 404</button>
-          <button aria-label="Demo reset settings" id="resetbtn">reset app</button>
-        </div>
-        <script>
-          // reduce FOUC for dark mode so it starts in dark rapidly if selected
-          if (window.localStorage && window.localStorage.getItem('app-hax-darkMode')) {
-            if (window.localStorage.getItem('app-hax-darkMode') == 'true') {
-              document.body.classList.add('dark-mode');
-            }
-            else {
-              document.body.classList.remove('dark-mode');
-            }
-          }
-          // remove loading text
-        window.addEventListener('app-hax-loaded',() => {
-          dqs("#loading").remove();
-          document.querySelector("#haxfont").removeAttribute('disabled');
-        });
-          function dqs(sel) { return document.querySelector(sel)}
-          dqs("#loginbtn").addEventListener("click", () => {
-            dqs("app-hax").login();
-          });
-          dqs("#nosites").addEventListener("click", () => {
-            // reset to clear internal state
-            dqs("app-hax").reset(false);
-            // fake injection of a new site listing location
-            window.AppHax.requestAvailability().store.appSettings.getSitesList = 'demo/sitesEmpty.json';
-          });
-          dqs("#test404").addEventListener("click", () => {
-            window.location = "nothin9383832";
-          });
-          dqs("#resetbtn").addEventListener("click", () => {
-            dqs("app-hax").reset();
-          });
-        </script>
+    <script>
+    // local development and mobx
+          window.process = window.process || {
+      env: {
+        NODE_ENV: "development"
+      }
+    };
+    // reduce FOUC for dark mode so it starts in dark rapidly if selected
+    if (window.localStorage && window.localStorage.getItem('app-hax-darkMode')) {
+      if (window.localStorage.getItem('app-hax-darkMode') == 'true') {
+        document.body.classList.add('dark-mode');
+      }
+      else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
+    // remove loading text
+    window.addEventListener('app-hax-loaded',() => {
+      dqs("#loading").remove();
+      document.querySelector("#haxfont").removeAttribute('disabled');
+    });
+    </script>
+    <app-hax>
+      <div slot="externalproviders">
+        <a href="https://login.microsoftonline.com/">
+          <button aria-label="Microsoft Login" style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
+        </a>
       </div>
-      <script type="module">
-        import './src/app-hax.js';
-      </script>
-      <script>
-        // this is how haxcms / haxiam operates w/ injecting the base settings
-        // think of it like localStorage but the backend is injecting at run time
-        // so that we can deploy this at different domains more headlessly
-        const blueStyle = './lib/assets/images/BlueStyle.svg';
-        const greyStyle = './lib/assets/images/GreyStyle.svg';
-        const partyStyle = './lib/assets/images/PartyStyle.svg';
-        window.appSettings = {
-          "demo": true,
-          "getSitesList": 'demo/sites.json',
-          "createSite": 'demo/createSite.json',
-          "login": 'demo/login.json',
-          "refreshUrl": "/bto108/system/api/refreshAccessToken",
-          "logout": "/bto108/system/api/logout",
-          "connectionSettings": "/bto108/system/api/connectionSettings",
-          "redirectUrl": "/login.php",
-          "themes": {
-              "clean-one": {
-                  "element": "clean-one",
-                  "path": "@lrnwebcomponents/clean-one/clean-one.js",
-                  "name": "Course theme",
-                  "thumbnail": partyStyle, 
-              },
-              "clean-two": {
-                  "element": "clean-two",
-                  "path": "@lrnwebcomponents/clean-two/clean-two.js",
-                  "name": "Course theme 2",
-                  "thumbnail": greyStyle, 
-              },
-              "learn-two-theme": {
-                  "element": "learn-two-theme",
-                  "path": "@lrnwebcomponents/learn-two-theme/learn-two-theme.js",
-                  "name": "Course theme 3",
-                  "thumbnail": blueStyle, 
-              },
-              "bootstrap-theme": {
-                  "element": "bootstrap-theme",
-                  "path": "@lrnwebcomponents/bootstrap-theme/bootstrap-theme.js",
-                  "name": "Bootstrap theme",
-                  "thumbnail": partyStyle, 
-              },
-              "haxor-slevin": {
-                  "element": "haxor-slevin",
-                  "path": "@lrnwebcomponents/haxor-slevin/haxor-slevin.js",
-                  "name": "Blog theme",
-                  "thumbnail": blueStyle, 
-              },
-              "outline-player": {
-                  "element": "outline-player",
-                  "path": "@lrnwebcomponents/outline-player/outline-player.js",
-                  "name": "Documentation theme",
-                  "thumbnail": blueStyle, 
-              }
-          },
-          "saveNodePath": "/bto108/system/api/saveNode",
-          "saveManifestPath": "/bto108/system/api/saveManifest",
-          "saveOutlinePath": "/bto108/system/api/saveOutline",
-          "publishSitePath": "/bto108/system/api/publishSite",
-          "syncSitePath": "/bto108/system/api/syncSite",
-          "setConfigPath": "/bto108/system/api/setConfig",
-          "getConfigPath": "/bto108/system/api/getConfig",
-          "getNodeFieldsPath": "/bto108/system/api/getNodeFields",
-          "getSiteFieldsPath": "/bto108/system/api/formLoad?haxcms_form_id=siteSettings",
-          "revertSitePath": "/bto108/system/api/revertCommit",
-          "getFormToken": "gdgdgdfgd4444",
-          "createNodePath": "/bto108/system/api/createNode",
-          "getUserDataPath": "/bto108/system/api/getUserData",
-          "setUserPhotoPath": "/bto108/system/api/setUserPhoto",
-          "deleteNodePath": "/bto108/system/api/deleteNode",
-          "gitImportSitePath": "/bto108/system/api/gitImportSite",
-          "downloadSitePath": "/bto108/system/api/downloadSite",
-          "archiveSitePath": "/bto108/system/api/archiveSite",
-          "cloneSitePath": "/bto108/system/api/cloneSite",
-          "deleteSitePath": "/bto108/system/api/deleteSite",
-          "appStore": {
-              "url": "/bto108/system/api/generateAppStore?app-store-token=fghjhgjjghjgg5555"
-          },
-          "jwt": "sdfsff34f4f33f3f3ggfgfgh.fghfghfgh.jkhjhkkhjjhkhjkjhkhjk",
-          "reloadOnError": true
-      };
-        </script>
-          </body>
+    </app-hax>
+    <script type="module" src="./src/app-hax.js"></script>
+    <script>
+      // this is how haxcms / haxiam operates w/ injecting the base settings
+      // think of it like localStorage but the backend is injecting at run time
+      // so that we can deploy this at different domains more headlessly
+      const blueStyle = './lib/assets/images/BlueStyle.svg';
+      const greyStyle = './lib/assets/images/GreyStyle.svg';
+      const partyStyle = './lib/assets/images/PartyStyle.svg';
+      window.appSettings = {
+        "demo": true,
+        "getSitesList": 'demo/sites.json',
+        "createSite": 'demo/createSite.json',
+        "login": 'demo/login.json',
+        "refreshUrl": "/bto108/system/api/refreshAccessToken",
+        "logout": "/bto108/system/api/logout",
+        "connectionSettings": "/bto108/system/api/connectionSettings",
+        "redirectUrl": "/login.php",
+        "themes": {
+            "clean-one": {
+                "element": "clean-one",
+                "path": "@lrnwebcomponents/clean-one/clean-one.js",
+                "name": "Course theme",
+                "thumbnail": partyStyle, 
+            },
+            "clean-two": {
+                "element": "clean-two",
+                "path": "@lrnwebcomponents/clean-two/clean-two.js",
+                "name": "Course theme 2",
+                "thumbnail": greyStyle, 
+            },
+            "learn-two-theme": {
+                "element": "learn-two-theme",
+                "path": "@lrnwebcomponents/learn-two-theme/learn-two-theme.js",
+                "name": "Course theme 3",
+                "thumbnail": blueStyle, 
+            },
+            "bootstrap-theme": {
+                "element": "bootstrap-theme",
+                "path": "@lrnwebcomponents/bootstrap-theme/bootstrap-theme.js",
+                "name": "Bootstrap theme",
+                "thumbnail": partyStyle, 
+            },
+            "haxor-slevin": {
+                "element": "haxor-slevin",
+                "path": "@lrnwebcomponents/haxor-slevin/haxor-slevin.js",
+                "name": "Blog theme",
+                "thumbnail": blueStyle, 
+            },
+            "outline-player": {
+                "element": "outline-player",
+                "path": "@lrnwebcomponents/outline-player/outline-player.js",
+                "name": "Documentation theme",
+                "thumbnail": blueStyle, 
+            }
+        },
+        "saveNodePath": "/bto108/system/api/saveNode",
+        "saveManifestPath": "/bto108/system/api/saveManifest",
+        "saveOutlinePath": "/bto108/system/api/saveOutline",
+        "publishSitePath": "/bto108/system/api/publishSite",
+        "syncSitePath": "/bto108/system/api/syncSite",
+        "setConfigPath": "/bto108/system/api/setConfig",
+        "getConfigPath": "/bto108/system/api/getConfig",
+        "getNodeFieldsPath": "/bto108/system/api/getNodeFields",
+        "getSiteFieldsPath": "/bto108/system/api/formLoad?haxcms_form_id=siteSettings",
+        "revertSitePath": "/bto108/system/api/revertCommit",
+        "getFormToken": "gdgdgdfgd4444",
+        "createNodePath": "/bto108/system/api/createNode",
+        "getUserDataPath": "/bto108/system/api/getUserData",
+        "setUserPhotoPath": "/bto108/system/api/setUserPhoto",
+        "deleteNodePath": "/bto108/system/api/deleteNode",
+        "gitImportSitePath": "/bto108/system/api/gitImportSite",
+        "downloadSitePath": "/bto108/system/api/downloadSite",
+        "archiveSitePath": "/bto108/system/api/archiveSite",
+        "cloneSitePath": "/bto108/system/api/cloneSite",
+        "deleteSitePath": "/bto108/system/api/deleteSite",
+        "appStore": {
+            "url": "/bto108/system/api/generateAppStore?app-store-token=fghjhgjjghjgg5555"
+        },
+        "jwt": "sdfsff34f4f33f3f3ggfgfgh.fghfghfgh.jkhjhkkhjjhkhjkjhkhjk",
+        "reloadOnError": true
+    };
+    </script>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+    disabled
+    id="haxfont"
+    fetchpriority="low"
+  />
+  <div id="demo">
+    <style>
+      #demobtns {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+      }
+      #demobtns button {
+        font-size: 30px;
+        border: 2px solid black;
+        margin: 2px;
+        background-color: orange;
+        cursor: pointer;
+        color: black;
+        display: block;
+      }
+      #demobtns button:hover {
+        background-color: red;
+      }
+    </style>
+    <div id="demobtns">
+      <button aria-label="Demo Login" id="loginbtn">Login</button>
+      <button aria-label="Demo new user" id="nosites">Test new user</button>
+      <button aria-label="Demo 404 page" id="test404">Test 404</button>
+      <button aria-label="Demo reset settings" id="resetbtn">reset app</button>
+    </div>
+    <script>
+      function dqs(sel) { return document.querySelector(sel)}
+      dqs("#loginbtn").addEventListener("click", () => {
+        dqs("app-hax").login();
+      });
+      dqs("#nosites").addEventListener("click", () => {
+        // reset to clear internal state
+        dqs("app-hax").reset(false);
+        // fake injection of a new site listing location
+        window.AppHax.requestAvailability().store.appSettings.getSitesList = 'demo/sitesEmpty.json';
+      });
+      dqs("#test404").addEventListener("click", () => {
+        window.location = "nothin9383832";
+      });
+      dqs("#resetbtn").addEventListener("click", () => {
+        dqs("app-hax").reset();
+      });
+    </script>
+  </div>
+  </body>
 </html>
