@@ -1,0 +1,56 @@
+
+{
+    "name": "HAXTheWeb",
+    "short_name": "hax",
+    "description": "HAX website building and management app",
+    "icons": [
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "36x36",
+            "type": "image\/png",
+            "density": "0.75"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "48x48",
+            "type": "image\/png",
+            "density": "1.0"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "72x72",
+            "type": "image\/png",
+            "density": "1.5"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "96x96",
+            "type": "image\/png",
+            "density": "2.0"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "144x144",
+            "type": "image\/png",
+            "density": "3.0"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "192x192",
+            "type": "image\/png",
+            "density": "4.0",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./lib/assets/images/HAXLogo.svg",
+            "sizes": "512x512",
+            "type": "image\/png",
+            "density": "4.0"
+        }
+    ],
+    "scope": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
