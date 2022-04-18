@@ -334,10 +334,6 @@ export class AppHax extends LitElement {
           display: block;
           --app-hax-background-color-active: var(--app-hax-accent-color);
         }
-
-        body.dark-mode {
-          --app-hax-background-color-active: whitesmoke;
-        }
         .wired-button-label {
           clip: rect(0 0 0 0); 
           clip-path: inset(50%);
@@ -374,6 +370,16 @@ export class AppHax extends LitElement {
           right: 0;
           left: 0;
           position: fixed;
+        }
+        @media (max-width: 780px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 20% 20% 60%;
+          }
+        }
+        @media (max-width: 600px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 10% 30% 60%;
+          }
         }
         .label {
           text-align: center;
