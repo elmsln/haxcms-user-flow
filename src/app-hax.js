@@ -350,7 +350,7 @@ export class AppHax extends LitElement {
         .topbar-character {
           cursor: pointer;
           display: inline-block;
-          margin-left: 12px;
+          margin: -4px -8px 0 2px;
         }
         .content {
           text-align: center;
@@ -589,12 +589,17 @@ export class AppHax extends LitElement {
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
   }
+  
+  closeMenu() {
+    if (this.userMenuOpen) {
+      this.userMenuOpen = !this.userMenuOpen;
+    }
+  }
 
   // eslint-disable-next-line class-methods-use-this
   _haxLink(e){
     e.preventDefault();
     window.open('/', '_self', 'noopener noreferrer');
-    
   }
 
   render() {
@@ -617,8 +622,11 @@ export class AppHax extends LitElement {
           class="topbar-character"
           seed="${this.userName}"
           slot="right"
-          width="60"
-          height="60"
+          width="68"
+          height="68"
+          aria-label="System menu"
+          title="System menu"
+          hat="${this.userMenuOpen ? 'edit' : 'none'}"
           @click="${this.toggleMenu}"
         ></rpg-character>
         <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
@@ -633,7 +641,7 @@ export class AppHax extends LitElement {
         </div>
       </app-hax-top-bar>
     </header>
-    <main>
+    <main @click="${this.closeMenu}">
       <div class="label">
         <app-hax-label>
         ${this.activeItem ? html`
