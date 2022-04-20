@@ -353,11 +353,11 @@ export class AppHax extends LitElement {
           margin-top: 32px;
         }
         .four04-character {
-          margin-top: 10px;
+          margin-top: 16px;
         }
         .start-journey {
           display: flex;
-          padding-top:100px;
+          padding-top: 60px;
           justify-content: center;
         }
         app-hax-site-button {
@@ -388,6 +388,7 @@ export class AppHax extends LitElement {
           animation: .8s ease-in-out 0s scrollin;
           -webkit-animation: .8s ease-in-out 0s scrollin;
           display: block;
+          overflow: hidden;
         }
         app-hax-label h1 {
           font-weight: normal;
@@ -427,7 +428,7 @@ export class AppHax extends LitElement {
           display: inline-flex;
         }
         main {
-          padding-top: 128px;
+          padding-top: 100px;
         }
         @media (max-width: 900px) {
           main {
@@ -579,10 +580,10 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.soundIcon = toJS(store.soundStatus) ? new URL('../lib/assets/images/FullVolume.svg',import.meta.url).href : new URL('../lib/assets/images/Silence.svg',import.meta.url).href;
       if (!toJS(store.soundStatus)) {
-        store.toast("Sound off.. hey.. HELLO!?!", 2000, { fire: true});
+        store.toast("Sound off.. hey! HELLO!?!", 2000, { fire: true});
       }
       else {
-        store.toast("Can you hear me now? Good.", 2000,{ hat: 'random'});
+        store.toast("You can hear me now? Good.", 2000,{ hat: 'random'});
       }
     });
   }
@@ -590,10 +591,12 @@ export class AppHax extends LitElement {
   soundToggle() {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
+    store.appEl.playSound('click');
   }
 
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
+    store.appEl.playSound('click');
   }
   
   closeMenu() {
@@ -670,6 +673,7 @@ export class AppHax extends LitElement {
 
   getNewWord() {
     this.shadowRoot.querySelector('random-word').getNewWord();
+    store.appEl.playSound('click');
   }
 
   appBody(routine) {
@@ -721,8 +725,8 @@ export class AppHax extends LitElement {
           class="four04-character"
           fire
           walking
-          width="250"
-          height="250"
+          width="200"
+          height="200"
           seed="${this.userName}"
         ></rpg-character>
     </div>`;
@@ -730,7 +734,8 @@ export class AppHax extends LitElement {
 
   startJourney() {
     store.step = 1;
-    this.appMode = "create"; 
+    this.appMode = "create";
+    store.appEl.playSound('click2');
   }
 }
 customElements.define(AppHax.tag, AppHax);
