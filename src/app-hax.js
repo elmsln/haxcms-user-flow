@@ -1,13 +1,11 @@
 import { LitElement, css, html } from 'lit';
-import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
+import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
 import "../lib/v1/AppHaxRouter.js";
-import '../lib/v1/app-hax-steps.js';
 import '../lib/v1/app-hax-label.js';
 import '../lib/v1/app-hax-top-bar.js';
-import '../lib/v1/app-hax-site-button.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
@@ -54,6 +52,16 @@ export class AppHax extends LitElement {
 
   constructor() {
     super();
+    autorun(() => {
+      const badDevice = toJS(store.badDevice);
+      if (badDevice === false) {
+        import('@lrnwebcomponents/rpg-character/rpg-character.js');
+        import('../lib/random-word/random-word.js');            
+      }
+      else if (badDevice === true) {
+        document.body.classList.add('bad-device');
+      }
+    });
     this.userMenuOpen = false;
     this.courses = [];
     this.activeItem = {};
@@ -475,6 +483,9 @@ export class AppHax extends LitElement {
           background-position: center;
           text-align: center;
         }
+        random-word:not(:defined) {
+          display: none;
+        }
         random-word {
           transform: rotate(25deg);
           position: absolute;
@@ -555,13 +566,13 @@ export class AppHax extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    import('../lib/v1/app-hax-steps.js');
+    import('../lib/v1/app-hax-site-button.js');
     import('wired-elements/lib/wired-button.js');
     import('../lib/v1/app-hax-toast.js');
     import('../lib/v1/app-hax-wired-toggle.js');
     import('../lib/v1/app-hax-search-bar.js');
     import('../lib/v1/app-hax-search-results.js');
-    import('@lrnwebcomponents/rpg-character/rpg-character.js');
-    import('../lib/random-word/random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
