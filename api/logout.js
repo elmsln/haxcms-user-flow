@@ -1,15 +1,7 @@
-import { HAXCMS } from "./HAXcmsHelpers.js";
-export default async function handler(req, res) {
-  // parse and split into u/p
-  const { username, password } = JSON.parse(req.body);
-  let jwt = null;
-  let status = 403;
-  if (HAXCMS.testLogin(username, password)) {
-    jwt = HAXCMS.getJWT(username);
-    status = 200;
-  }
+// just goes up and comes back to trigger logout on the end around
+export default function handler(req, res) {
   const data = {
-      jwt: jwt,
+      data: 'loggedout',
       status: status
   }
   res.setHeader("Access-Control-Allow-Credentials", "true");

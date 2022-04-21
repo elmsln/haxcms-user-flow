@@ -168,7 +168,9 @@
     // local development and mobx
     window.process = window.process || {
       env: {
-        NODE_ENV: "development"
+        NODE_ENV: "development",
+        // comment this out if doing local development
+        //VERCEL: true
       }
     };
     // reduce FOUC for dark mode so it starts in dark rapidly if selected
@@ -214,12 +216,12 @@
       const greyStyle = './lib/assets/images/GreyStyle.svg';
       const partyStyle = './lib/assets/images/PartyStyle.svg';
       window.appSettings = {
-        "demo": true,
-        "getSitesList": 'demo/sites.json',
-        "createSite": 'demo/createSite.json',
-        "login": 'demo/login.json',
+        "demo": window.process.env.VERCEL ? false : true,
+        "getSitesList": window.process.env.VERCEL ? 'api/getSitesList' : 'demo/sites.json',
+        "createSite": window.process.env.VERCEL ? 'api/createSite' : 'demo/createSite.json',
+        "login": window.process.env.VERCEL ? 'api/login' : 'demo/login.json',
+        "logout": window.process.env.VERCEL ? 'api/logout' : 'demo/logout.json',
         "refreshUrl": "/bto108/system/api/refreshAccessToken",
-        "logout": "/bto108/system/api/logout",
         "connectionSettings": "/bto108/system/api/connectionSettings",
         "redirectUrl": "/login.php",
         "themes": {

@@ -178,7 +178,6 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            // store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -231,7 +230,7 @@ export class AppHax extends LitElement {
         // Need this for the auto run when testing new user
         // if we get new data source, trigger a rebuild of the site list
         const results = await AppHaxAPI.makeCall('getSitesList');
-        store.manifest = results;
+        store.manifest = results.data;
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
         this.login();
       }

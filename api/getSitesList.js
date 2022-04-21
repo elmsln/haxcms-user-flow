@@ -1,17 +1,23 @@
+import fetch from 'node-fetch';
 import { HAXCMS } from "./HAXcmsHelpers.js";
+
 export default async function handler(req, res) {
-  // parse and split into u/p
-  const { username, password } = JSON.parse(req.body);
-  let jwt = null;
   let status = 403;
-  if (HAXCMS.testLogin(username, password)) {
-    jwt = HAXCMS.getJWT(username);
-    status = 200;
+  let siteListData = null;
+  const { jwt } = JSON.parse(req.body);
+  // verify JWT
+  if (HAXCMS.validateJWT(jwt)) {
+    // simulated response from herokuapp
+    const url = 'https://haxcms.herokuapp.com/system/api/listSites';
+    siteListData = await fetch(url).then(res => res.json());
+    if (siteListData) {
+      status = 200;
+    }
   }
   const data = {
-      jwt: jwt,
-      status: status
-  }
+      status: status,
+      data: siteListData
+  };
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");

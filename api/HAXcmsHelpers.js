@@ -1,26 +1,19 @@
-const crypto = require('crypto');
-const JWT = require('jsonwebtoken');
+import crypto from "crypto";
+import JWT from "jsonwebtoken";
 
 export const HAXCMS = new class HAXCMSClass {
   constructor() {
     this.sessionJwt = null;
     // @todo these need to be read in from a file
     this.privateKey = process.env.privateKey; // @todo need to set this
-    this.superUser = {
-      name: 'admin',
-      password: 'admin',
-    };
     this.user = {
-      name: 'admin',
-      password: 'admin',
+      name: process.env.user,
+      password: process.env.pass,
     };
     this.salt = process.env.saltValue;
   }
   validateRequestToken(token = null, value = '', query)
   {
-      if (this.isCLI()) {
-          return true;
-      }
       // default token is POST
       if (token == null && query['token']) {
         token = query['token'];
@@ -46,21 +39,10 @@ export const HAXCMS = new class HAXCMSClass {
   /**
    * Validate a JTW during POST
    */
-  validateJWT(req, res)
+  validateJWT(jwt)
   {
-    if (this.isCLI()) {
-      return true;
-    }
     var request = false;
-    if (this.sessionJwt && this.sessionJwt != null) {
-      request = this.decodeJWT(this.sessionJwt);
-    }
-    if (request == false && req.body && req.body['jwt'] && req.body['jwt'] != null) {
-      request = this.decodeJWT(req.body['jwt'])
-    }
-    if (request == false && res.query && res.query['jwt'] && res.query['jwt'] != null) {
-      request = this.decodeJWT(res.query['jwt'])
-    }
+    request = this.decodeJWT(jwt);
     // if we were able to find a valid JWT in that mess, try and validate it
     if (  
         request != false &&
@@ -165,56 +147,24 @@ export const HAXCMS = new class HAXCMSClass {
    */
   validateUser(name)
   {
-      if (
-          this.user.name === name
-      ) {
-          return true;
-      }
-      else if (
-          this.superUser.name === name
-      ) {
-          return true;
-      }
-      else {
-          usr = {};
-          usr.name = name;
-          usr.grantAccess = false;
-          // fire custom event for things to respond to as needed
-          // this is for SaaS providers to provide global validation
-          return usr.grantAccess;
-      }
-      return false;
+    if (
+      this.user.name === name
+    ) {
+        return true;
+    }
+    return false;
   }
   /**
    * test the active user login based on session.
    */
-  testLogin(name, pass, adminFallback = false)
+  testLogin(name, pass)
   {
-      if (
-          this.user.name === name &&
-          this.user.password === pass
-      ) {
-          return true;
-      }
-      // if fallback is allowed, meaning the super admin then let them in
-      // the default is to strictly test for the login in question
-      // the fallback being allowable is useful for managed environments
-      else if (
-          adminFallback &&
-          this.superUser.name === name &&
-          this.superUser.password === pass
-      ) {
-          return true;
-      }
-      else {
-          let usr = {};
-          usr.name = name;
-          usr.password = pass;
-          usr.adminFallback = adminFallback;
-          usr.grantAccess = false;
-          // fire custom event for things to respond to as needed
-          return usr.grantAccess;
-      }
-      return false;
+    if (
+      this.user.name === name &&
+      this.user.password === pass
+    ) {
+        return true;
+    }
+    return false;
   }
 }
