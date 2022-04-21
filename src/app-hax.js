@@ -144,7 +144,6 @@ export class AppHax extends LitElement {
     this.sound = new Audio();
     this.source = new URL('../demo/sites.json', import.meta.url).href;
     // @todo need this from app deploy itself
-    import('@lrnwebcomponents/simple-modal/simple-modal.js');
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
       if (this.isNewUser && this.appMode !== 'create') {
@@ -227,18 +226,14 @@ export class AppHax extends LitElement {
     });
 
     // App is ready and the user is Logged in
-    autorun(() => {
+    autorun(async () => {
       if (toJS(store.appReady) && toJS(store.isLoggedIn) && toJS(store.appSettings)){
         // Need this for the auto run when testing new user
-        setTimeout(async() => {
-           // if we get new data source, trigger a rebuild of the site list
-          const results = await AppHaxAPI.makeCall('getSitesList');
-          store.manifest = results;
-          }, 0);
+        // if we get new data source, trigger a rebuild of the site list
+        const results = await AppHaxAPI.makeCall('getSitesList');
+        store.manifest = results;
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
-        setTimeout(() => {
-          this.login();
-        }, 0);
+        this.login();
       }
     })
   }
@@ -310,28 +305,30 @@ export class AppHax extends LitElement {
         const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
         p.appendChild(cloneSlot);
       }
-      const evt = new CustomEvent('simple-modal-show', {
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          title: 'Character select',
-          elements: { content: p },
-          modal: true,
-          invokedBy: this,
-          styles: {
-            "--simple-modal-titlebar-background": "orange",
-            "--simple-modal-titlebar-color": "black",
-            "--simple-modal-width": "25vw",
-            "--simple-modal-min-width": "300px",
-            "--simple-modal-z-index": "100000000",
-            "--simple-modal-height": "40vh",
-            "--simple-modal-min-height": "400px",
-            "--simple-modal-titlebar-height": "40px",
-          },
-        },
+      import('@lrnwebcomponents/simple-modal/simple-modal.js').then(() => {
+        setTimeout(() => {
+          this.dispatchEvent(new CustomEvent('simple-modal-show', {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            detail: {
+              title: 'Character select',
+              elements: { content: p },
+              modal: true,
+              styles: {
+                "--simple-modal-titlebar-background": "orange",
+                "--simple-modal-titlebar-color": "black",
+                "--simple-modal-width": "25vw",
+                "--simple-modal-min-width": "300px",
+                "--simple-modal-z-index": "100000000",
+                "--simple-modal-height": "40vh",
+                "--simple-modal-min-height": "400px",
+                "--simple-modal-titlebar-height": "40px",
+              },
+            },
+          }));
+        }, 0);
       });
-
-      this.dispatchEvent(evt);
     });
   }
 
