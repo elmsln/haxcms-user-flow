@@ -642,10 +642,11 @@ export class AppHax extends LitElement {
           height="68"
           aria-label="System menu"
           title="System menu"
+          tabindex="0"
           hat="${this.userMenuOpen ? 'edit' : 'none'}"
           @click="${this.toggleMenu}"
         ></rpg-character>
-        <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
+        ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
           <button>
             <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
           <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
@@ -655,6 +656,7 @@ export class AppHax extends LitElement {
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
           <button class="logout">log out</button>
         </div>
+` : ``}
       </app-hax-top-bar>
     </header>
     <main @click="${this.closeMenu}">
