@@ -1,13 +1,11 @@
 import { LitElement, css, html } from 'lit';
-import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
+import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
 import "../lib/v1/AppHaxRouter.js";
-import '../lib/v1/app-hax-steps.js';
 import '../lib/v1/app-hax-label.js';
 import '../lib/v1/app-hax-top-bar.js';
-import '../lib/v1/app-hax-site-button.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
@@ -29,32 +27,12 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   playSound(sound) {
-    if (store.soundStatus) {
-      try {
-        switch (sound) {
-          case 'click':
-          case 'click2':
-          case 'coin':
-          case 'coin2':
-          case 'hit':
-          case 'success':
-            this.audio = new Audio(
-              new URL(`../lib/assets/sounds/${sound}.mp3`, import.meta.url).href
-            );
-            this.audio.play();
-            break;
-          default:
-            this.audio = new Audio(
-              new URL(`../lib/assets/sounds/hit.mp3`, import.meta.url).href
-            );
-            this.audio.play();
-            console.warn(`${sound} is not a valid sound file yet`);
-            break;
-        }
-      }
-      catch(e) {
-        console.warn(e);
-      }
+    if (store.soundStatus && store.appReady) {
+      let playSound = ['click','click2','coin','coin2','hit','success'].includes(sound) ? sound : 'hit'; 
+      this.audio = new Audio(
+        new URL(`../lib/assets/sounds/${playSound}.mp3`, import.meta.url).href
+      );
+      this.audio.play();
     }
   }
 
@@ -74,6 +52,16 @@ export class AppHax extends LitElement {
 
   constructor() {
     super();
+    autorun(() => {
+      const badDevice = toJS(store.badDevice);
+      if (badDevice === false) {
+        import('@lrnwebcomponents/rpg-character/rpg-character.js');
+        import('../lib/random-word/random-word.js');            
+      }
+      else if (badDevice === true) {
+        document.body.classList.add('bad-device');
+      }
+    });
     this.userMenuOpen = false;
     this.courses = [];
     this.activeItem = {};
@@ -156,7 +144,6 @@ export class AppHax extends LitElement {
     this.sound = new Audio();
     this.source = new URL('../demo/sites.json', import.meta.url).href;
     // @todo need this from app deploy itself
-    import('@lrnwebcomponents/simple-modal/simple-modal.js');
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
       if (this.isNewUser && this.appMode !== 'create') {
@@ -191,7 +178,6 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            // store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -239,22 +225,14 @@ export class AppHax extends LitElement {
     });
 
     // App is ready and the user is Logged in
-    autorun(() => {
-      if (toJS(store.appReady) && toJS(store.isLoggedIn)){
-        console.log("I am ready to get sites list");
+    autorun(async () => {
+      if (toJS(store.appReady) && toJS(store.isLoggedIn) && toJS(store.appSettings)){
         // Need this for the auto run when testing new user
-        const appSettings = toJS(store.appSettings);  
-        setTimeout(async() => {
-           // if we get new data source, trigger a rebuild of the site list
-          const results = await AppHaxAPI.makeCall('getSitesList');
-          store.manifest = results;
-          console.log(`Manifest Length: ${store.manifest.items.length}`);
-          }, 0);
+        // if we get new data source, trigger a rebuild of the site list
+        const results = await AppHaxAPI.makeCall('getSitesList');
+        store.manifest = results.data;
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
-        setTimeout(() => {
-          console.log("We in App-Hax - Running Log in")
-          this.login();
-        }, 0);
+        this.login();
       }
     })
   }
@@ -320,36 +298,36 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   login() {
-    console.log("Login Function in App-HAX ran");
     import('../lib/v1/app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
       if (this.querySelector('[slot="externalproviders"]')) {
         const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
         p.appendChild(cloneSlot);
       }
-      const evt = new CustomEvent('simple-modal-show', {
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          title: 'Character select',
-          modal: true,
-          elements: { content: p },
-          modal: true,
-          invokedBy: this,
-          styles: {
-            "--simple-modal-titlebar-background": "orange",
-            "--simple-modal-titlebar-color": "black",
-            "--simple-modal-width": "25vw",
-            "--simple-modal-min-width": "300px",
-            "--simple-modal-z-index": "100000000",
-            "--simple-modal-height": "40vh",
-            "--simple-modal-min-height": "400px",
-            "--simple-modal-titlebar-height": "40px",
-          },
-        },
+      import('@lrnwebcomponents/simple-modal/simple-modal.js').then(() => {
+        setTimeout(() => {
+          this.dispatchEvent(new CustomEvent('simple-modal-show', {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            detail: {
+              title: 'Character select',
+              elements: { content: p },
+              modal: true,
+              styles: {
+                "--simple-modal-titlebar-background": "orange",
+                "--simple-modal-titlebar-color": "black",
+                "--simple-modal-width": "25vw",
+                "--simple-modal-min-width": "300px",
+                "--simple-modal-z-index": "100000000",
+                "--simple-modal-height": "40vh",
+                "--simple-modal-min-height": "400px",
+                "--simple-modal-titlebar-height": "40px",
+              },
+            },
+          }));
+        }, 0);
       });
-
-      this.dispatchEvent(evt);
     });
   }
 
@@ -358,28 +336,36 @@ export class AppHax extends LitElement {
       css`
         :host {
           display: block;
+          --app-hax-background-color-active: var(--app-hax-accent-color);
+        }
+        .wired-button-label {
+          clip: rect(0 0 0 0); 
+          clip-path: inset(50%);
+          height: 1px;
+          overflow: hidden;
+          position: absolute;
+          white-space: nowrap; 
+          width: 1px;
         }
         .topbar-character {
-          transform: scale(0.4, 0.4);
-          margin: -36px -35px 0px 0px;
-          vertical-align: text-top;
-          position: fixed;
-          top: 0px;
-          right: 0px;
-          overflow: hidden;
-          height: 120px;
           cursor: pointer;
+          display: inline-block;
+          margin: -4px -8px 0 2px;
         }
         .content {
           text-align: center;
           margin-top: 32px;
         }
         .four04-character {
-          margin-top: 100px;
-          transform: scale(2);
+          margin-top: 16px;
         }
         .start-journey {
           display: flex;
+          padding-top: 60px;
+          justify-content: center;
+        }
+        app-hax-site-button {
+          max-width: 60vw;
           justify-content: center;
         }
         app-hax-top-bar {
@@ -389,20 +375,24 @@ export class AppHax extends LitElement {
           left: 0;
           position: fixed;
         }
+        @media (max-width: 780px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 20% 20% 60%;
+          }
+        }
+        @media (max-width: 600px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 10% 30% 60%;
+          }
+        }
         .label {
           text-align: center;
-          margin-top: 48px;
         }
         app-hax-label {
           animation: .8s ease-in-out 0s scrollin;
           -webkit-animation: .8s ease-in-out 0s scrollin;
           display: block;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          app-hax-label {
-            animation: none;
-            -webkit-animation: none;
-          }
+          overflow: hidden;
         }
         app-hax-label h1 {
           font-weight: normal;
@@ -421,15 +411,9 @@ export class AppHax extends LitElement {
           }
         }
         .haxLogo {
-          height: 40px;
-          width: 40px;
-          background-color: white;
+          --simple-icon-height: 40px;
+          --simple-icon-width: 40px;
           margin: 4px;
-        }
-        .space-hack {
-          display: inline-flex;
-          width: 64px;
-          height: 48px;
         }
         .soundToggle {
           margin-right: 16px;
@@ -437,16 +421,23 @@ export class AppHax extends LitElement {
           display: inline-flex;
           vertical-align: top;
         }
+
         .soundToggle img {
           width: 24px;
           height: 24px;
         }
+
         app-hax-search-bar {
           vertical-align: middle;
           display: inline-flex;
         }
         main {
-          margin-top: 64px;
+          padding-top: 100px;
+        }
+        @media (max-width: 900px) {
+          main {
+            padding-top: 64px;
+          }
         }
         .user-menu {
           display:none;
@@ -456,24 +447,40 @@ export class AppHax extends LitElement {
           top: 48px;
           right: 0px;
           position: absolute;
-          border: 1px solid black;
-          background-color: white;
+          border: 1px solid var(--app-hax-accent-color);
+          background-color: var(--app-hax-background-color);
         }
         .user-menu.open button {
           display: block;
           width: 100%;
           margin: 0;
           padding: 8px;
-          font-size: 20px;
+          font-size: 16px;
+          text-align: left;
           font-family: 'Press Start 2P', sans-serif;
-          color: black;
-          background-color: white;
+          color: var(--app-hax-accent-color);
+          background-color: var(--app-hax-background-color);
         }
         .user-menu.open button:hover,
         .user-menu.open button:active,
         .user-menu.open button:focus {
-          background-color: black;
-          color: white;
+          background-color: var(--app-hax-background-color-active);
+          color: var(--app-hax-background-color);
+        }
+        .user-menu button {
+          cursor: pointer;
+        }
+        .user-menu button simple-icon-lite {
+          padding-right: 16px;
+        }
+        .user-menu.open > .logout {
+          background-image: url('../lib/assets/images/Logout.svg');
+          background-repeat: no-repeat;
+          background-position: center;
+          text-align: center;
+        }
+        random-word:not(:defined) {
+          display: none;
         }
         random-word {
           transform: rotate(25deg);
@@ -494,12 +501,47 @@ export class AppHax extends LitElement {
           visibility: visible;
           transition: all .3s ease-in-out;
         }
+        @media (max-width: 800px) {
+          app-hax-site-button {
+            width: 320px;
+            max-width: 60vw;
+            --app-hax-site-button-font-size: 16px;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          app-hax-label {
+            animation: none;
+            -webkit-animation: none;
+          }
+        }
         @media (max-width: 680px) {
           random-word {
             visibility: none;
             opacity: 0;
           }
         }
+        @media (max-height: 700px) {
+          .content { 
+            margin-top: 4px;
+          }
+          random-word {
+            visibility: none;
+            opacity: 0;
+          }
+          .start-journey {
+            padding-top: 0;
+          }
+        }
+        @media (max-height: 500px) {
+          app-hax-label h1 {
+            font-family: monospace;
+            font-weight: normal;
+            font-size: 4vw;
+            margin: 0;
+            padding: 0;
+          }
+        }
+        
       `,
     ];
   }
@@ -520,13 +562,13 @@ export class AppHax extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    import('../lib/v1/app-hax-steps.js');
+    import('../lib/v1/app-hax-site-button.js');
     import('wired-elements/lib/wired-button.js');
     import('../lib/v1/app-hax-toast.js');
     import('../lib/v1/app-hax-wired-toggle.js');
     import('../lib/v1/app-hax-search-bar.js');
     import('../lib/v1/app-hax-search-results.js');
-    import('@lrnwebcomponents/rpg-character/rpg-character.js');
-    import('../lib/random-word/random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
@@ -534,13 +576,6 @@ export class AppHax extends LitElement {
         document.body.classList.add('app-loaded');
       } else {
         document.body.classList.remove('app-loaded');
-      }
-    });
-    
-    // play sound when we animate the banner in
-    this.shadowRoot.querySelector('app-hax-label').addEventListener("animationend", (e) => {
-      if (e.animationName === "scrollin") {
-        store.appEl.playSound('coin2');
       }
     });
     store.appEl = this;
@@ -552,27 +587,42 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.soundIcon = toJS(store.soundStatus) ? new URL('../lib/assets/images/FullVolume.svg',import.meta.url).href : new URL('../lib/assets/images/Silence.svg',import.meta.url).href;
       if (!toJS(store.soundStatus)) {
-        store.toast("Sound off.. hey.. HELLO!?!", 2000, { fire: true});
+        store.toast("Sound off.. hey! HELLO!?!", 2000, { fire: true});
       }
       else {
-        store.toast("Can you hear me now? Good.", 2000,{ hat: 'random'});
+        store.toast("You can hear me now? Good.", 2000,{ hat: 'random'});
       }
     });
   }
 
-  soundToggle(e) {
+  soundToggle() {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
+    store.appEl.playSound('click');
   }
+
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
+    store.appEl.playSound('click');
+  }
+  
+  closeMenu() {
+    if (this.userMenuOpen) {
+      this.userMenuOpen = !this.userMenuOpen;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _haxLink(e){
+    e.preventDefault();
+    window.open('/', '_self', 'noopener noreferrer');
   }
 
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <img class="haxLogo" src="${haxLogo}" slot="left"  alt="" loading="lazy" decoding="async" />
+        <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
@@ -580,26 +630,36 @@ export class AppHax extends LitElement {
           class="soundToggle"
           @click="${this.soundToggle}"
         >
-        <img src="${this.soundIcon}" alt="" loading="lazy" decoding="async" />
-      </wired-button>
+          <span class="wired-button-label">Toggle sound effects</span>
+          <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
+        </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-        <div class="space-hack" slot="right"></div>
         <rpg-character
           class="topbar-character"
           seed="${this.userName}"
           slot="right"
+          width="68"
+          height="68"
+          aria-label="System menu"
+          title="System menu"
+          tabindex="0"
+          hat="${this.userMenuOpen ? 'edit' : 'none'}"
           @click="${this.toggleMenu}"
         ></rpg-character>
-        <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button>Site settings</button>
-          <button>Site outline</button>
-          <button>New Journey</button>
-          <button>Account info</button>
-          <button>log out</button>
+        ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
+          <button>
+            <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
+          <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
+          <button>
+          <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
+          <button>
+          <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
+          <button class="logout">log out</button>
         </div>
+` : ``}
       </app-hax-top-bar>
     </header>
-    <main>
+    <main @click="${this.closeMenu}">
       <div class="label">
         <app-hax-label>
         ${this.activeItem ? html`
@@ -622,22 +682,25 @@ export class AppHax extends LitElement {
 
   getNewWord() {
     this.shadowRoot.querySelector('random-word').getNewWord();
+    store.appEl.playSound('click');
   }
 
   appBody(routine) {
+    let template = html``;
     switch(routine) {
       case 'home':
       case 'search':
-          return this.templateHome();
+        template = this.templateHome();
       break;
       case 'create':
-        return this.templateCreate();
+        template = this.templateCreate();
       break;
       case '404':
       default:
-        return this.template404();
+        template = this.template404();
       break;
     }
+    return template;
   }
 
   templateHome() {
@@ -646,7 +709,7 @@ export class AppHax extends LitElement {
       <div class="start-journey">
         <a href="createSite-step-1" @click="${this.startJourney}" tabindex="-1">
         <app-hax-site-button
-          label="> Start new journey"
+          label="&gt; Start new journey"
         ></app-hax-site-button>
         </a>
       </div>`: ``}
@@ -664,21 +727,24 @@ export class AppHax extends LitElement {
     <div class="four04">
       <a href="createSite-step-1" class="start-journey" @click="${this.startJourney}" tabindex="-1">
       <app-hax-site-button
-        label="> Start a new journey"
+        label="&gt; Start a new journey"
       ></app-hax-site-button>
       </a>
       <rpg-character
           class="four04-character"
           fire
           walking
+          width="200"
+          height="200"
           seed="${this.userName}"
         ></rpg-character>
     </div>`;
   }
 
-  startJourney(e) {
+  startJourney() {
     store.step = 1;
-    this.appMode = "create"; 
+    this.appMode = "create";
+    store.appEl.playSound('click2');
   }
 }
 customElements.define(AppHax.tag, AppHax);

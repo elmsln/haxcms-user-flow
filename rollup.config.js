@@ -22,6 +22,7 @@ export default {
     /** Enable using HTML as rollup entrypoint */
     html({
       minify: true,
+      transformHtml: [html => process.env.VERCEL ? html.replace('//VERCEL', 'VERCEL') : html],
       injectServiceWorker: true,
       serviceWorkerPath: 'dist/sw.js',
     }),
@@ -46,6 +47,10 @@ export default {
         {
           src: 'demo',
           dest: 'dist',
+        },
+        {
+          src: 'lib/assets/images/HAXLogo.svg',
+          dest: 'dist/assets/lib/assets/images/HAXLogo.svg',
         },
       ],
     }),
