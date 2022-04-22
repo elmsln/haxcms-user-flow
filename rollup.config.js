@@ -22,6 +22,7 @@ export default {
     /** Enable using HTML as rollup entrypoint */
     html({
       minify: true,
+      transformHtml: [html => process.env.VERCEL ? html.replace('//VERCEL', 'VERCEL') : html],
       injectServiceWorker: true,
       serviceWorkerPath: 'dist/sw.js',
     }),
