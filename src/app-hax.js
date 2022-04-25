@@ -428,6 +428,7 @@ export class AppHax extends LitElement {
             padding-top: 64px;
           }
         }
+        /* TODO: */
         .user-menu {
           display:none;
         }
@@ -468,6 +469,7 @@ export class AppHax extends LitElement {
           background-position: center;
           text-align: center;
         }
+        /* TODO: */
         random-word {
           transform: rotate(25deg);
           position: absolute;

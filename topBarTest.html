@@ -9,11 +9,26 @@
     <meta name="Description" content="Put your description here." />
     <base href="/" />
 
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+
     <style>
       body {
         margin: 0px;
         padding: 0px;
       }
+
+      app-hax-top-bar {
+          top: 0;
+          z-index: 1000;
+          right: 0;
+          left: 0;
+          position: fixed;
+      }
+
+      app-hax-user-menu-button {
+        padding: 0px;
+      }
+      
 
     </style>
     <script>
@@ -23,19 +38,47 @@
           NODE_ENV: "development"
         }
       };
+      
       </script>
     <title>Welcome to the show</title>
   </head>
 
   <body>
     <app-hax-top-bar>
-      <div slot="left">it's a </div>
-      <img src="lib/assets/images/HAXLogoWhite.svg" slot="center">
-      <div slot="right">start</div>
+      <app-hax-user-menu slot="right">
+        <rpg-character class="topbar-character" seed="hi" slot="button" width="60" height="60"></rpg-character>
+        
+        <app-hax-user-menu-button slot="pre-menu" icon="pregnant-woman" label="words"></app-hax-user-menu-button>
+        <app-hax-user-menu-button slot="post-menu"></app-hax-user-menu-button>
+
+        <button slot="main-menu">
+          <simple-icon-lite icon="settings"></simple-icon-lite>Site settings
+        </button>
+        <button slot="main-menu">
+          <simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline
+        </button>
+        <button slot="main-menu">
+          <simple-icon-lite icon="add"></simple-icon-lite>New Journey
+        </button>
+        <button slot="main-menu">
+          <simple-icon-lite icon="face"></simple-icon-lite>Account info
+        </button>
+        <button class="logout" part="logout" slot="main-menu">log out</button>
+      </app-hax-user-menu> 
     </app-hax-top-bar>
+    <br>
+    <br>
+
+    <app-hax-user-menu-button></app-hax-user-menu-button>
 
     <script type="module">
       import './lib/v1/app-hax-steps.js';
+
+      import './lib/v1/app-hax-user-menu.js';
+      import './lib/v1/app-hax-user-menu-button.js';
+      import './lib/v1/app-hax-top-bar.js';
+
+      import('@lrnwebcomponents/rpg-character/rpg-character.js');
     </script>
   </body>
   
