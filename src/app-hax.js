@@ -224,6 +224,13 @@ export class AppHax extends LitElement {
       }
     });
 
+    autorun(() => {
+      if(localStorageGet('jwt') !== "" && localStorageGet('jwt') !== "null" && localStorageGet('jwt') !== null){
+        console.log("You're Logged in already");
+        store.jwt= localStorageGet('jwt');
+      }
+    })
+
     // App is ready and the user is Logged in
     autorun(async () => {
       if (toJS(store.appReady) && toJS(store.isLoggedIn) && toJS(store.appSettings)){
@@ -294,6 +301,13 @@ export class AppHax extends LitElement {
     catch(e) {
       console.warn(e);
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  logout(){
+    localStorage.removeItem('jwt');
+    store.jwt = "";
+    window.location.reload();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -654,7 +668,7 @@ export class AppHax extends LitElement {
           <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
           <button>
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
-          <button class="logout">log out</button>
+          <button @click=${this.logout} class="logout">log out</button>
         </div>
 ` : ``}
       </app-hax-top-bar>
