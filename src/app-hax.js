@@ -1,13 +1,11 @@
 import { LitElement, css, html } from 'lit';
-import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { toJS, autorun } from 'mobx';
+import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
 import "../lib/v1/AppHaxRouter.js";
-import '../lib/v1/app-hax-steps.js';
 import '../lib/v1/app-hax-label.js';
 import '../lib/v1/app-hax-top-bar.js';
-import '../lib/v1/app-hax-site-button.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
@@ -54,6 +52,16 @@ export class AppHax extends LitElement {
 
   constructor() {
     super();
+    autorun(() => {
+      const badDevice = toJS(store.badDevice);
+      if (badDevice === false) {
+        import('@lrnwebcomponents/rpg-character/rpg-character.js');
+        import('../lib/random-word/random-word.js');            
+      }
+      else if (badDevice === true) {
+        document.body.classList.add('bad-device');
+      }
+    });
     this.userMenuOpen = false;
     this.courses = [];
     this.activeItem = {};
@@ -136,7 +144,6 @@ export class AppHax extends LitElement {
     this.sound = new Audio();
     this.source = new URL('../demo/sites.json', import.meta.url).href;
     // @todo need this from app deploy itself
-    import('@lrnwebcomponents/simple-modal/simple-modal.js');
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
       if (this.isNewUser && this.appMode !== 'create') {
@@ -171,7 +178,6 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            // store.manifest = await AppHaxAPI.makeCall('getSitesList');
             this.appMode = "home"
           }
           else {
@@ -218,19 +224,22 @@ export class AppHax extends LitElement {
       }
     });
 
-    // App is ready and the user is Logged in
     autorun(() => {
+      if(localStorageGet('jwt') !== "" && localStorageGet('jwt') !== "null" && localStorageGet('jwt') !== null){
+        console.log("You're Logged in already");
+        store.jwt= localStorageGet('jwt');
+      }
+    })
+
+    // App is ready and the user is Logged in
+    autorun(async () => {
       if (toJS(store.appReady) && toJS(store.isLoggedIn) && toJS(store.appSettings)){
         // Need this for the auto run when testing new user
-        setTimeout(async() => {
-           // if we get new data source, trigger a rebuild of the site list
-          const results = await AppHaxAPI.makeCall('getSitesList');
-          store.manifest = results;
-          }, 0);
+        // if we get new data source, trigger a rebuild of the site list
+        const results = await AppHaxAPI.makeCall('getSitesList');
+        store.manifest = results.data;
       } else if (toJS(store.appReady) && !toJS(store.isLoggedIn)){
-        setTimeout(() => {
-          this.login();
-        }, 0);
+        this.login();
       }
     })
   }
@@ -295,6 +304,13 @@ export class AppHax extends LitElement {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  logout(){
+    localStorage.removeItem('jwt');
+    store.jwt = "";
+    window.location.reload();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   login() {
     import('../lib/v1/app-hax-site-login.js').then(() => {
       const p = document.createElement('app-hax-site-login');
@@ -302,28 +318,30 @@ export class AppHax extends LitElement {
         const cloneSlot = this.querySelector('[slot="externalproviders"]').cloneNode(true);
         p.appendChild(cloneSlot);
       }
-      const evt = new CustomEvent('simple-modal-show', {
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          title: 'Character select',
-          elements: { content: p },
-          modal: true,
-          invokedBy: this,
-          styles: {
-            "--simple-modal-titlebar-background": "orange",
-            "--simple-modal-titlebar-color": "black",
-            "--simple-modal-width": "25vw",
-            "--simple-modal-min-width": "300px",
-            "--simple-modal-z-index": "100000000",
-            "--simple-modal-height": "40vh",
-            "--simple-modal-min-height": "400px",
-            "--simple-modal-titlebar-height": "40px",
-          },
-        },
+      import('@lrnwebcomponents/simple-modal/simple-modal.js').then(() => {
+        setTimeout(() => {
+          this.dispatchEvent(new CustomEvent('simple-modal-show', {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            detail: {
+              title: 'Character select',
+              elements: { content: p },
+              modal: true,
+              styles: {
+                "--simple-modal-titlebar-background": "orange",
+                "--simple-modal-titlebar-color": "black",
+                "--simple-modal-width": "25vw",
+                "--simple-modal-min-width": "300px",
+                "--simple-modal-z-index": "100000000",
+                "--simple-modal-height": "40vh",
+                "--simple-modal-min-height": "400px",
+                "--simple-modal-titlebar-height": "40px",
+              },
+            },
+          }));
+        }, 0);
       });
-
-      this.dispatchEvent(evt);
     });
   }
 
@@ -333,10 +351,6 @@ export class AppHax extends LitElement {
         :host {
           display: block;
           --app-hax-background-color-active: var(--app-hax-accent-color);
-        }
-
-        body.dark-mode {
-          --app-hax-background-color-active: whitesmoke;
         }
         .wired-button-label {
           clip: rect(0 0 0 0); 
@@ -350,18 +364,18 @@ export class AppHax extends LitElement {
         .topbar-character {
           cursor: pointer;
           display: inline-block;
-          margin-left: 12px;
+          margin: -4px -8px 0 2px;
         }
         .content {
           text-align: center;
           margin-top: 32px;
         }
         .four04-character {
-          margin-top: 10px;
+          margin-top: 16px;
         }
         .start-journey {
           display: flex;
-          padding-top:100px;
+          padding-top: 60px;
           justify-content: center;
         }
         app-hax-site-button {
@@ -375,6 +389,16 @@ export class AppHax extends LitElement {
           left: 0;
           position: fixed;
         }
+        @media (max-width: 780px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 20% 20% 60%;
+          }
+        }
+        @media (max-width: 600px) {
+          app-hax-top-bar::part(top-bar) {
+            grid-template-columns: 10% 30% 60%;
+          }
+        }
         .label {
           text-align: center;
         }
@@ -382,6 +406,7 @@ export class AppHax extends LitElement {
           animation: .8s ease-in-out 0s scrollin;
           -webkit-animation: .8s ease-in-out 0s scrollin;
           display: block;
+          overflow: hidden;
         }
         app-hax-label h1 {
           font-weight: normal;
@@ -421,7 +446,7 @@ export class AppHax extends LitElement {
           display: inline-flex;
         }
         main {
-          padding-top: 128px;
+          padding-top: 100px;
         }
         @media (max-width: 900px) {
           main {
@@ -470,6 +495,9 @@ export class AppHax extends LitElement {
           text-align: center;
         }
         /* TODO: */
+        random-word:not(:defined) {
+          display: none;
+        }
         random-word {
           transform: rotate(25deg);
           position: absolute;
@@ -550,13 +578,13 @@ export class AppHax extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    import('../lib/v1/app-hax-steps.js');
+    import('../lib/v1/app-hax-site-button.js');
     import('wired-elements/lib/wired-button.js');
     import('../lib/v1/app-hax-toast.js');
     import('../lib/v1/app-hax-wired-toggle.js');
     import('../lib/v1/app-hax-search-bar.js');
     import('../lib/v1/app-hax-search-results.js');
-    import('@lrnwebcomponents/rpg-character/rpg-character.js');
-    import('../lib/random-word/random-word.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
@@ -575,10 +603,10 @@ export class AppHax extends LitElement {
     autorun(() => {
       this.soundIcon = toJS(store.soundStatus) ? new URL('../lib/assets/images/FullVolume.svg',import.meta.url).href : new URL('../lib/assets/images/Silence.svg',import.meta.url).href;
       if (!toJS(store.soundStatus)) {
-        store.toast("Sound off.. hey.. HELLO!?!", 2000, { fire: true});
+        store.toast("Sound off.. hey! HELLO!?!", 2000, { fire: true});
       }
       else {
-        store.toast("Can you hear me now? Good.", 2000,{ hat: 'random'});
+        store.toast("You can hear me now? Good.", 2000,{ hat: 'random'});
       }
     });
   }
@@ -586,17 +614,24 @@ export class AppHax extends LitElement {
   soundToggle() {
     store.soundStatus = !toJS(store.soundStatus);
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
+    store.appEl.playSound('click');
   }
-
+  
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
+    store.appEl.playSound('click');
+  }
+  
+  closeMenu() {
+    if (this.userMenuOpen) {
+      this.userMenuOpen = !this.userMenuOpen;
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
   _haxLink(e){
     e.preventDefault();
     window.open('/', '_self', 'noopener noreferrer');
-    
   }
 
   render() {
@@ -619,11 +654,15 @@ export class AppHax extends LitElement {
           class="topbar-character"
           seed="${this.userName}"
           slot="right"
-          width="60"
-          height="60"
+          width="68"
+          height="68"
+          aria-label="System menu"
+          title="System menu"
+          tabindex="0"
+          hat="${this.userMenuOpen ? 'edit' : 'none'}"
           @click="${this.toggleMenu}"
         ></rpg-character>
-        <div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
+        ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
           <button>
             <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
           <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
@@ -631,11 +670,12 @@ export class AppHax extends LitElement {
           <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
           <button>
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
-          <button class="logout">log out</button>
+          <button @click=${this.logout} class="logout">log out</button>
         </div>
+` : ``}
       </app-hax-top-bar>
     </header>
-    <main>
+    <main @click="${this.closeMenu}">
       <div class="label">
         <app-hax-label>
         ${this.activeItem ? html`
@@ -658,6 +698,7 @@ export class AppHax extends LitElement {
 
   getNewWord() {
     this.shadowRoot.querySelector('random-word').getNewWord();
+    store.appEl.playSound('click');
   }
 
   appBody(routine) {
@@ -709,8 +750,8 @@ export class AppHax extends LitElement {
           class="four04-character"
           fire
           walking
-          width="250"
-          height="250"
+          width="200"
+          height="200"
           seed="${this.userName}"
         ></rpg-character>
     </div>`;
@@ -718,7 +759,8 @@ export class AppHax extends LitElement {
 
   startJourney() {
     store.step = 1;
-    this.appMode = "create"; 
+    this.appMode = "create";
+    store.appEl.playSound('click2');
   }
 }
 customElements.define(AppHax.tag, AppHax);
