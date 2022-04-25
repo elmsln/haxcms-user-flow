@@ -18,7 +18,7 @@
     "build": "rimraf dist && rollup -c rollup.config.js && npm run analyze -- --exclude dist",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
     "analyze": "cem analyze --litelement",
-    "start": "NODE_ENV=localdev web-dev-server"
+    "start": "web-dev-server"
   },
   "dependencies": {
     "@lit-labs/motion": "^1.0.2",
