@@ -600,7 +600,7 @@ export class AppHax extends LitElement {
     localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
     store.appEl.playSound('click');
   }
-
+  
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
     store.appEl.playSound('click');
