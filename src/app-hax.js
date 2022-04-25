@@ -59,6 +59,9 @@ export class AppHax extends LitElement {
   constructor() {
     super();
     autorun(() => {
+      this.siteReady = toJS(store.siteReady);
+    });
+    autorun(() => {
       const badDevice = toJS(store.badDevice);
       if (badDevice === false) {
         import('@lrnwebcomponents/rpg-character/rpg-character.js');
@@ -82,43 +85,50 @@ export class AppHax extends LitElement {
         component: 'fake',
         step: 1,
         id: 'step-1',
-        label: 'Welcome',
-        statement: "Let's start a new journey!",
+        label: 'New Journey',
+        statement: "What sort of journey is it?",
       },
       {
         path: 'createSite-step-2',
         component: 'fake',
         step: 2,
         id: 'step-2',
-        label: 'Pick type',
-        statement: 'What type of journey is this?',
+        label: 'Structure',
+        statement: 'How is this organized?',
       },
       {
         path: 'createSite-step-3',
         component: 'fake',
         step: 3,
         id: 'step-3',
-        label: 'Theme Select',
-        statement: "What's it look like?",
+        label: 'Theme select',
+        statement: "What your journey feels like?",
       },
       {
         path: 'createSite-step-4',
         component: 'fake',
         step: 4,
         id: 'step-4',
-        label: 'Name',
-        statement: "Name this journey",
+        label: 'Journey Name',
+        statement: "What do you want to call your journey?",
       },
       {
         path: 'createSite-step-5',
         component: 'fake',
         step: 5,
         id: 'step-5',
-        label: 'Loading',
-        statement: "Get ready for your journey",
+        label: 'Building..',
+        statement: "Getting your journey ready to launch",
       },
       {
         path: '/',
+        component: 'fake', 
+        name: 'home', 
+        label: 'Welcome back',
+        statement: "Let's explore HAX land",
+      },
+      {
+        path: '/home',
         component: 'fake', 
         name: 'home', 
         label: 'Welcome back',
@@ -163,6 +173,9 @@ export class AppHax extends LitElement {
       this.userName = toJS(store.user.name);
     });
     autorun(() => {
+      this.appMode = toJS(store.appMode);
+    });
+    autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
     });
    
@@ -184,7 +197,7 @@ export class AppHax extends LitElement {
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            this.appMode = "home"
+            this.appMode = "home";
           }
           else {
             //console.warn(location.route);
@@ -262,6 +275,7 @@ export class AppHax extends LitElement {
       isNewUser: { type: Boolean },
       phrases: { type: Object },
       userMenuOpen: { type: Boolean },
+      siteReady: { type: Boolean },
     };
   }
 
@@ -643,8 +657,8 @@ export class AppHax extends LitElement {
 
   // eslint-disable-next-line class-methods-use-this
   _haxLink(e){
-    e.preventDefault();
-    window.open('/', '_self', 'noopener noreferrer');
+    this.appMode = 'home';
+    window.history.pushState({}, null, '');
   }
 
   render() {
@@ -680,15 +694,18 @@ export class AppHax extends LitElement {
         </div>
 ` : ``}
       </app-hax-top-bar>
-    </header>
+    </header>lbh
     <main @click="${this.closeMenu}">
       <div class="label">
         <app-hax-label>
-        ${this.activeItem ? html`
+        ${this.activeItem && !this.siteReady ? html`
         <h1>${this.activeItem.label}</h1>
           <div slot="subtitle">${this.activeItem.statement}</div>
         ` : ``}
-          
+        ${this.activeItem && this.siteReady ? html`
+        <h1>${toJS(store.site.name)}</h1>
+          <div slot="subtitle">Is all ready, are you ready to build?</div>
+        ` : ``}
           </app-hax-label>
       </div>
       <random-word
@@ -741,7 +758,13 @@ export class AppHax extends LitElement {
   
   // eslint-disable-next-line class-methods-use-this
   templateCreate() {
-    return html`<app-hax-steps></app-hax-steps>`;
+    return html`<app-hax-steps @promise-progress-finished="${this.siteReadyToGo}"></app-hax-steps>`;
+  }
+
+  siteReadyToGo(e) {
+    if (e.detail) {
+      store.siteReady = true;
+    }
   }
 
   template404() {
@@ -762,8 +785,9 @@ export class AppHax extends LitElement {
         ></rpg-character>
     </div>`;
   }
-
-  startJourney() {
+  // ensure internal data is unset for store
+  startJourney(e) {
+    store.site = { structure: null, type: null, theme: null,name: null };
     store.step = 1;
     this.appMode = "create";
     store.appEl.playSound('click2');
