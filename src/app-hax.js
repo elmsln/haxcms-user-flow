@@ -226,7 +226,6 @@ export class AppHax extends LitElement {
 
     autorun(() => {
       if(localStorageGet('jwt') !== "" && localStorageGet('jwt') !== "null" && localStorageGet('jwt') !== null){
-        console.log("You're Logged in already");
         store.jwt= localStorageGet('jwt');
       }
     })
@@ -661,11 +660,6 @@ export class AppHax extends LitElement {
           @click="${this.toggleMenu}"
         ></rpg-character>
         ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button>
-            <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
-          <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
-          <button>
-          <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
           <button>
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
           <button @click=${this.logout} class="logout">log out</button>
