@@ -20,6 +20,12 @@ function darkToggle(e) {
   }
 }
 
+function soundToggle() {
+  store.soundStatus = !toJS(store.soundStatus);
+  localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
+  store.appEl.playSound('click');
+}
+
 export class AppHax extends LitElement {
   static get tag() {
     return 'app-hax';
@@ -181,7 +187,7 @@ export class AppHax extends LitElement {
             this.appMode = "home"
           }
           else {
-            console.warn(location.route);
+            //console.warn(location.route);
           }
         }
         else {
@@ -298,7 +304,7 @@ export class AppHax extends LitElement {
       }
     }
     catch(e) {
-      console.warn(e);
+      //console.warn(e);
     }
   }
 
@@ -363,7 +369,22 @@ export class AppHax extends LitElement {
         .topbar-character {
           cursor: pointer;
           display: inline-block;
-          margin: -4px -8px 0 2px;
+          border: none;
+          border-radius: 0px;
+          background-color: transparent;
+        }
+        .topbar-character:hover,
+        .topbar-character:focus {
+          background-color: var(--simple-colors-default-theme-light-blue-4);
+          outline: var(--haxcms-color) solid 3px;
+          outline-offset: -3px;
+          height: 48px;
+        }
+        .topbar-character rpg-character {
+          margin: -4px -14px 0px -10px;
+          height: 52px;
+          width: 64px;      
+          display: inline-block;
         }
         .content {
           text-align: center;
@@ -427,6 +448,7 @@ export class AppHax extends LitElement {
           --simple-icon-height: 40px;
           --simple-icon-width: 40px;
           margin: 4px;
+          cursor: pointer;
         }
         .soundToggle {
           margin-right: 16px;
@@ -607,12 +629,6 @@ export class AppHax extends LitElement {
       }
     });
   }
-
-  soundToggle() {
-    store.soundStatus = !toJS(store.soundStatus);
-    localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
-    store.appEl.playSound('click');
-  }
   
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
@@ -635,30 +651,28 @@ export class AppHax extends LitElement {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
+        <simple-icon-lite src="${haxLogo}" tabindex="0" class="haxLogo" slot="left" title="Home" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
           slot="right"
           class="soundToggle"
-          @click="${this.soundToggle}"
+          @click="${soundToggle}"
         >
           <span class="wired-button-label">Toggle sound effects</span>
           <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
         </wired-button>
         <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-        <rpg-character
-          class="topbar-character"
-          seed="${this.userName}"
-          slot="right"
-          width="68"
-          height="68"
-          aria-label="System menu"
-          title="System menu"
-          tabindex="0"
-          hat="${this.userMenuOpen ? 'edit' : 'none'}"
-          @click="${this.toggleMenu}"
-        ></rpg-character>
+        <button class="topbar-character" @click="${this.toggleMenu}" slot="right">
+          <rpg-character
+            seed="${this.userName}"
+            width="68"
+            height="68"
+            aria-label="System menu"
+            title="System menu"
+            hat="${this.userMenuOpen ? 'edit' : 'none'}"
+          ></rpg-character>
+        </button>
         ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
           <button>
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
