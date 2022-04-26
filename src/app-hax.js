@@ -126,16 +126,16 @@ export class AppHax extends SimpleColors {
       {
         path: '/',
         component: 'fake', 
-        name: 'home', 
-        label: 'Welcome back',
-        statement: "Let's explore HAX land",
+        name: 'welcome', 
+        label: 'Welcome',
+        statement: "Let's build something awesome together!",
       },
       {
         path: '/home',
         component: 'fake', 
         name: 'home', 
         label: 'Welcome back',
-        statement: "Let's explore HAX land",
+        statement: "Let's go on a HAX Journey",
       },
       {
         path: '/search',
@@ -165,8 +165,8 @@ export class AppHax extends SimpleColors {
     // @todo need this from app deploy itself
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
-      if (this.isNewUser && this.appMode !== 'create') {
-        this.appMode = "create";
+      if (this.isNewUser && toJS(store.appMode) !== 'create') {
+        store.appMode = "create";
         setTimeout(() => {
           store.createSiteSteps = true;            
         }, 0);
@@ -194,27 +194,28 @@ export class AppHax extends SimpleColors {
         if (!location.route.step) {
           if (location.route.name === "404") {
             store.createSiteSteps = false;
-            this.appMode = "404"
+            store.appMode = "404"
             setTimeout(() => {
               store.toast('the page miss.. it burns!!!', 3000, {fire: true, walking: true});              
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            this.appMode = "home";
+            store.appMode = "home";
+            store.createSiteSteps = false;
           }
           else {
             //console.warn(location.route);
           }
         }
         else {
-          this.appMode = "create";
+          store.appMode = "create";
           setTimeout(() => {
             store.createSiteSteps = true;            
           }, 0);
         }
       }
     });
-    // AutoRun block to detect to detect if site.structure is null but step == 3, set step to 2.
+
     autorun(() => {
       if (store.routes.length > 0 && store.location === null) {
         store.location = toJS(store.routes[0]);
@@ -333,7 +334,7 @@ export class AppHax extends SimpleColors {
     const results = await AppHaxAPI.makeCall('logout');
     localStorage.removeItem('jwt');
     store.jwt = "";
-    //window.location.reload();
+    window.location.reload();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -416,7 +417,7 @@ export class AppHax extends SimpleColors {
         }
         .start-journey {
           display: flex;
-          padding-top: 60px;
+          padding-top: 40px;
           justify-content: center;
         }
         app-hax-site-button {
@@ -469,6 +470,7 @@ export class AppHax extends SimpleColors {
           --simple-icon-height: 40px;
           --simple-icon-width: 40px;
           margin: 4px;
+          color: var(--simple-colors-default-theme-grey-12);
           cursor: pointer;
         }
         .soundToggle {
@@ -608,7 +610,7 @@ export class AppHax extends SimpleColors {
     }
     // update the store for step when it changes internal to our step flow
     changedProperties.forEach((oldValue, propName) => {
-      if (['routes', 'appMode'].includes(propName)) {
+      if (propName === 'routes') {
         store[propName] = this[propName];
       }
     });
@@ -662,17 +664,14 @@ export class AppHax extends SimpleColors {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  _haxLink(e){
-    this.appMode = 'home';
-    window.history.pushState({}, null, '');
-  }
-
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <simple-icon-lite src="${haxLogo}" tabindex="0" class="haxLogo" slot="left" title="Home" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
+        <a href="home" tabindex="-1" slot="left">
+          <simple-icon-lite id="hlogo" src="${haxLogo}" tabindex="0" class="haxLogo" title="Home"></simple-icon-lite>     
+        </a>
+        <simple-tooltip for="hlogo" position="bottom" slot="left">Home</simple-tooltip>
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
@@ -798,9 +797,13 @@ export class AppHax extends SimpleColors {
   }
   // ensure internal data is unset for store
   startJourney(e) {
-    store.site = { structure: null, type: null, theme: null,name: null };
-    store.step = 1;
-    this.appMode = "create";
+    store.createSiteSteps = false;
+    store.siteReady = false;
+    store.site.structure = null;
+    store.site.type = null;
+    store.site.theme = null;            
+    store.site.name = null;
+    store.appMode = "create";
     store.appEl.playSound('click2');
   }
 }
