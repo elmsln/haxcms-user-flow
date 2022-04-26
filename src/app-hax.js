@@ -332,9 +332,15 @@ export class AppHax extends SimpleColors {
   // eslint-disable-next-line class-methods-use-this
   async logout(){
     const results = await AppHaxAPI.makeCall('logout');
-    localStorage.removeItem('jwt');
+    // localStorage possible to be blocked by permission of system
+    try {
+      window.localStorage.removeItem('jwt');
+    }
+    catch(e) {
+      // do nothing, this is a framed in / secure context
+    }
     store.jwt = "";
-    window.location.reload();
+    this.reset();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -352,7 +358,7 @@ export class AppHax extends SimpleColors {
             cancelable: true,
             composed: true,
             detail: {
-              title: 'Character select',
+              title: 'User login',
               elements: { content: p },
               modal: true,
               styles: {
@@ -790,9 +796,13 @@ export class AppHax extends SimpleColors {
           fire
           walking
           width="200"
+          id="char404"
           height="200"
           seed="${this.userName}"
         ></rpg-character>
+        <simple-tooltip for="char404" position="left">This</simple-tooltip>
+        <simple-tooltip for="char404" position="right">fine</simple-tooltip>
+        <simple-tooltip for="char404" position="bottom">is</simple-tooltip>
     </div>`;
   }
   // ensure internal data is unset for store
