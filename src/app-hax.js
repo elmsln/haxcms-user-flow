@@ -1,6 +1,8 @@
-import { LitElement, css, html } from 'lit';
+import { css, html, unsafeCSS } from 'lit';
 import { toJS, autorun } from 'mobx';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
+import "@lrnwebcomponents/simple-tooltip/simple-tooltip.js";
+import { SimpleColors } from "@lrnwebcomponents/simple-colors/simple-colors.js";
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
 import "../lib/v1/AppHaxRouter.js";
@@ -9,6 +11,7 @@ import '../lib/v1/app-hax-top-bar.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
+const logoutBtn = new URL('../lib/assets/images/Logout.svg', import.meta.url).href;
 // toggle store darkmode
 function darkToggle(e) {
   if (e.matches) {
@@ -26,7 +29,7 @@ function soundToggle() {
   store.appEl.playSound('click');
 }
 
-export class AppHax extends LitElement {
+export class AppHax extends SimpleColors {
   static get tag() {
     return 'app-hax';
   }
@@ -227,9 +230,11 @@ export class AppHax extends LitElement {
       if (toJS(store.darkMode)) {
         document.body.classList.add('dark-mode');
         store.toast("I'm ascared of the dark", 2000, { fire: true});
+        this.dark = true;
       } else {
         document.body.classList.remove('dark-mode');
         store.toast("Sunny day it is", 2000, { hat: 'random'});
+        this.dark = false;
       }
     });
     autorun(() => {
@@ -264,6 +269,7 @@ export class AppHax extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       courses: { type: Array },
       source: { type: String },
       userName: { type: String },
@@ -323,10 +329,11 @@ export class AppHax extends LitElement {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  logout(){
+  async logout(){
+    const results = await AppHaxAPI.makeCall('logout');
     localStorage.removeItem('jwt');
     store.jwt = "";
-    window.location.reload();
+    //window.location.reload();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -365,7 +372,7 @@ export class AppHax extends LitElement {
   }
 
   static get styles() {
-    return [
+    return [...super.styles,
       css`
         :host {
           display: block;
@@ -523,7 +530,7 @@ export class AppHax extends LitElement {
           padding-right: 16px;
         }
         .user-menu.open > .logout {
-          background-image: url('../lib/assets/images/Logout.svg');
+          background-image: url('${unsafeCSS(logoutBtn)}');
           background-repeat: no-repeat;
           background-position: center;
           text-align: center;
@@ -538,9 +545,9 @@ export class AppHax extends LitElement {
           top: 120px;
           padding: 12px;
           font-size: 12px;
-          border: 4px solid black;
-          background-color: yellow;
-          color: black;
+          border: 4px solid var(--simple-colors-default-theme-grey-12);
+          background-color: var(--simple-colors-default-theme-yellow-5);
+          color: var(--simple-colors-default-theme-grey-12);
           width: 100px;
           word-wrap: break-word;
           text-align: center;
@@ -671,13 +678,16 @@ export class AppHax extends LitElement {
           elevation="1"
           slot="right"
           class="soundToggle"
+          id="soundtb"
           @click="${soundToggle}"
         >
           <span class="wired-button-label">Toggle sound effects</span>
           <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
         </wired-button>
-        <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-        <button class="topbar-character" @click="${this.toggleMenu}" slot="right">
+        <simple-tooltip for="soundtb" position="bottom" slot="right">Toggle sound</simple-tooltip>
+        <app-hax-wired-toggle id="wt" slot="right"></app-hax-wired-toggle>
+        <simple-tooltip for="wt" position="bottom" slot="right">Toggle dark mode</simple-tooltip>
+        <button class="topbar-character" @click="${this.toggleMenu}" slot="right" id="tbchar">
           <rpg-character
             seed="${this.userName}"
             width="68"
@@ -692,7 +702,8 @@ export class AppHax extends LitElement {
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
           <button @click=${this.logout} class="logout">log out</button>
         </div>
-` : ``}
+` : html`        <simple-tooltip for="tbchar" position="bottom" slot="right">System menu</simple-tooltip>
+`}
       </app-hax-top-bar>
     </header>lbh
     <main @click="${this.closeMenu}">

@@ -44,6 +44,9 @@
     <meta name="twitter:image" property="twitter:image" content="" />
     <meta rel="cc:license" href="https://creativecommons.org/licenses/by-sa/4.0/" content="License: Creative Commons: Attribution Share a like"/>
     <style>
+      :root {
+ 
+      }
       body {
         margin: 0;
         padding: 0;
@@ -55,6 +58,14 @@
         background-size: auto, 20% auto, 20% auto;
         --app-hax-accent-color: black;
         --app-hax-background-color: white;
+        --simple-tooltip-background: #000000;
+        --simple-tooltip-opacity: 1;
+        --simple-tooltip-text-color: #ffffff;
+        --simple-tooltip-delay-in: 0;
+        --simple-tooltip-duration-in: 200ms;
+        --simple-tooltip-duration-out: 0;
+        --simple-tooltip-border-radius: 0;
+        --simple-tooltip-font-size: 14px;
       }
       body.app-hax-create {
         overflow: hidden;
@@ -64,6 +75,8 @@
         background-image: url('lib/assets/images/DMGridBox.svg');
         --app-hax-accent-color: white;
         --app-hax-background-color: black;
+        --simple-tooltip-background: #ffffff;
+        --simple-tooltip-text-color: #000000;
       }
       body.app-loaded:not(.bad-device) {
         background-image: url('lib/assets/images/LMGridBox.svg'), url('lib/assets/images/DesignLightModeLeft.svg'), url('lib/assets/images/DesignLightModeRight.svg');
@@ -202,9 +215,7 @@
     </script>
     <app-hax>
       <div slot="externalproviders">
-        <a href="https://login.microsoftonline.com/">
-          <button aria-label="Microsoft Login" style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
-        </a>
+        Demo login: admin / admin
       </div>
     </app-hax>
     <script type="module" src="./src/app-hax.js"></script>
