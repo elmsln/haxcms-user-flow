@@ -416,7 +416,7 @@ export class AppHax extends SimpleColors {
         }
         .content {
           text-align: center;
-          margin-top: 32px;
+          margin-top: 24px;
         }
         .four04-character {
           margin-top: 16px;
@@ -496,7 +496,7 @@ export class AppHax extends SimpleColors {
           display: inline-flex;
         }
         main {
-          padding-top: 100px;
+          padding-top: 80px;
         }
         @media (max-width: 900px) {
           main {
