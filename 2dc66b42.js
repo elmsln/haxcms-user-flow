@@ -1,0 +1,5 @@
+import{s as t}from"./477b72a2.js";import{e}from"./738d39b0.js";import"./92722af5.js";import"./c37097da.js";import"./4f0ded3c.js";import"./915d5b3c.js";import"./020b781d.js";import"./5c68dd7f.js";import"./ab3992b4.js";import"./065b6c65.js";import"./afcd1277.js";import"./e81c8aad.js";
+/**
+ * Copyright 2019 Penn State University
+ * @license Apache-2.0, see License.md for full text.
+ */class o extends(e(t)){static get tag(){return"rich-text-editor-source-code"}render(){return super.render()}constructor(){super(),this.icon="code",this.toggled=!1,this.label="Source Code",this.labelToggled="Rich Text",this.command="viewSource",this.toggledCommand="viewSource",this.commandVal=!0,this.toggledCommandVal=!1,this.shortcutKeys="cmd+<",this.initViewSource()}static get properties(){return{...super.properties,toggled:{attribute:"toggled",type:Boolean,reflect:!0}}}get isToggled(){return this.toggled}commandCallback(t,e,o){this.toggled||this.__highlight.unwrap(this.range),this.toggled=this.__toolbar&&this.__source&&this.__source.__toolbar==this.__toolbar}}window.customElements.define(o.tag,o);export{o as RichTextEditorSourceCode};
