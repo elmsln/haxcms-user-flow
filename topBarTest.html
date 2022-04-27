@@ -9,34 +9,143 @@
     <meta name="Description" content="Put your description here." />
     <base href="/" />
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
       body {
         margin: 0px;
         padding: 0px;
+        --app-hax-accent-color: black;
+        --app-hax-background-color: white;
       }
 
+      ::part(.menuToggle) {
+        background-color: orange;
+      }
+
+      app-hax-top-bar {
+        top: 0;
+        z-index: 1000;
+        right: 0;
+        left: 0;
+        position: fixed;
+      }
+
+      app-hax-top-bar {
+        top: 0;
+        z-index: 1000;
+        right: 0;
+        left: 0;
+        position: fixed;
+      }
+
+      .soundToggle {
+        margin-right: 16px;
+        position: relative;
+        display: inline-flex;
+        vertical-align: top;
+      }
+
+      .topbar-character {
+        cursor: pointer;
+        display: inline-block;
+        border: none;
+        border-radius: 0px;
+        background-color: transparent;
+      }
+      .topbar-character:hover,
+      .topbar-character:focus {
+        background-color: var(--simple-colors-default-theme-light-blue-4);
+        outline: var(--haxcms-color) solid 3px;
+        outline-offset: -3px;
+        height: 48px;
+      }
+      .topbar-character rpg-character {
+        margin: -4px -14px 0px -10px;
+        height: 52px;
+        width: 64px;
+        display: inline-block;
+      }
+
+      .logout::part(menu-button) {
+        background-image: url('../lib/assets/images/Logout.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        background-size: cover;
+        border-top: 0px;
+        border-bottom: 0px;
+        padding: 10px;
+      }
     </style>
     <script>
       // local development and mobx
       window.process = window.process || {
         env: {
-          NODE_ENV: "development"
-        }
+          NODE_ENV: 'development',
+        },
       };
-      </script>
+    </script>
     <title>Welcome to the show</title>
   </head>
 
   <body>
     <app-hax-top-bar>
-      <div slot="left">it's a </div>
-      <img src="lib/assets/images/HAXLogoWhite.svg" slot="center">
-      <div slot="right">start</div>
+      <div slot="left">test</div>
+      <div slot="center">test</div>
+
+      <button class="topbar-character" slot="right">
+        <rpg-character seed="one" width="68" height="68"></rpg-character>
+      </button>
+      <button class="topbar-character" slot="right">
+        <rpg-character seed="two" width="68" height="68"></rpg-character>
+      </button>
+
+      <app-hax-user-menu slot="right">
+        <button class="topbar-character" slot="menuButton">
+          <rpg-character seed="inside" width="68" height="68"></rpg-character>
+        </button>
+
+        <app-hax-user-menu-button
+          slot="pre-menu"
+          icon="pregnant-woman"
+          label="words"
+        ></app-hax-user-menu-button>
+        <app-hax-user-menu-button
+          slot="main-menu"
+          icon="face"
+          label="account info"
+        ></app-hax-user-menu-button>
+        <app-hax-user-menu-button
+          slot="main-menu"
+          icon="face"
+          label="account info"
+        ></app-hax-user-menu-button>
+        <app-hax-user-menu-button
+          slot="post-menu"
+          class="logout"
+        ></app-hax-user-menu-button>
+      </app-hax-user-menu>
     </app-hax-top-bar>
+    <br />
+    <br />
 
     <script type="module">
       import './lib/v1/app-hax-steps.js';
+
+      import './lib/v1/app-hax-user-menu.js';
+      import './lib/v1/app-hax-user-menu-button.js';
+      import './lib/v1/app-hax-top-bar.js';
+
+      import('@lrnwebcomponents/rpg-character/rpg-character.js');
+    </script>
+
+    <script>
+      const link = document.querySelector('#user-menu').getAttribute('isOpen');
+      console.log('isOpen:', link);
     </script>
   </body>
-  
 </html>
