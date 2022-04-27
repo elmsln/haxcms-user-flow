@@ -9,7 +9,10 @@
     <meta name="Description" content="Put your description here." />
     <base href="/" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       body {
@@ -17,38 +20,83 @@
         padding: 0px;
       }
 
+      ::part(.menuToggle) {
+        background-color: orange;
+      }
+
       app-hax-top-bar {
-          top: 0;
-          z-index: 1000;
-          right: 0;
-          left: 0;
-          position: fixed;
+        top: 0;
+        z-index: 1000;
+        right: 0;
+        left: 0;
+        position: fixed;
       }
 
       app-hax-user-menu-button {
         padding: 0px;
       }
-      
 
+      app-hax-top-bar {
+        top: 0;
+        z-index: 1000;
+        right: 0;
+        left: 0;
+        position: fixed;
+      }
+
+      .soundToggle {
+        margin-right: 16px;
+        position: relative;
+        display: inline-flex;
+        vertical-align: top;
+      }
     </style>
     <script>
       // local development and mobx
       window.process = window.process || {
         env: {
-          NODE_ENV: "development"
-        }
+          NODE_ENV: 'development',
+        },
       };
-      
-      </script>
+    </script>
     <title>Welcome to the show</title>
   </head>
 
   <body>
     <app-hax-top-bar>
-      <app-hax-user-menu slot="right">
-        <rpg-character class="topbar-character" seed="hi" slot="button" width="60" height="60"></rpg-character>
-        
-        <app-hax-user-menu-button slot="pre-menu" icon="pregnant-woman" label="words"></app-hax-user-menu-button>
+      <!-- <simple-icon-lite
+      src="../lib/assets/images/HAXLogo.svg"
+      class="haxLogo"
+      slot="left"
+      alt=""
+      loading="lazy"
+      decoding="async"
+    ></simple-icon-lite>
+    <wired-button
+      elevation="1"
+      slot="right"
+      class="soundToggle"
+    >
+      <simple-icon-lite
+        src='../lib/assets/images/FullVolume.svg'
+        loading="lazy"
+        decoding="async"
+      ></simple-icon-lite>
+    </wired-button> -->
+      <app-hax-user-menu slot="right" id="user-menu" isOpen="true">
+        <rpg-character
+          class="topbar-character"
+          seed="hi"
+          slot="menuButton"
+          width="60"
+          height="60"
+          ></rpg-character>
+
+        <app-hax-user-menu-button
+          slot="pre-menu"
+          icon="pregnant-woman"
+          label="words"
+        ></app-hax-user-menu-button>
         <app-hax-user-menu-button slot="post-menu"></app-hax-user-menu-button>
 
         <button slot="main-menu">
@@ -64,12 +112,10 @@
           <simple-icon-lite icon="face"></simple-icon-lite>Account info
         </button>
         <button class="logout" part="logout" slot="main-menu">log out</button>
-      </app-hax-user-menu> 
+      </app-hax-user-menu>
     </app-hax-top-bar>
-    <br>
-    <br>
-
-    <app-hax-user-menu-button></app-hax-user-menu-button>
+    <br />
+    <br />
 
     <script type="module">
       import './lib/v1/app-hax-steps.js';
@@ -80,6 +126,10 @@
 
       import('@lrnwebcomponents/rpg-character/rpg-character.js');
     </script>
+
+    <script>
+      const link = document.querySelector('#user-menu').getAttribute('isOpen');
+      console.log('isOpen:', link);
+    </script>
   </body>
-  
 </html>
