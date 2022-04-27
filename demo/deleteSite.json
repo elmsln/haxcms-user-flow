@@ -1,6 +1,6 @@
 {
     "status": 200,
-    "detail": {
+    "data": {
         "detail": "Site deleted",
         "name": "ist342"
     }
