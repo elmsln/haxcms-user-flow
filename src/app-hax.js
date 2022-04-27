@@ -12,6 +12,7 @@ import '../lib/v1/app-hax-top-bar.js';
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 const logoutBtn = new URL('../lib/assets/images/Logout.svg', import.meta.url).href;
+const helpBtn = new URL('../lib/assets/images/Help.svg', import.meta.url).href;
 // toggle store darkmode
 function darkToggle(e) {
   if (e.matches) {
@@ -491,6 +492,7 @@ export class AppHax extends SimpleColors {
           height: 24px;
         }
 
+
         app-hax-search-bar {
           vertical-align: middle;
           display: inline-flex;
@@ -565,11 +567,32 @@ export class AppHax extends SimpleColors {
           visibility: visible;
           transition: all .3s ease-in-out;
         }
+        .helpbtn {
+          --simple-icon-height: 50px;
+          --simple-icon-width: 50px;
+          right: 200px;
+          top: 100px;
+          padding: 4px;
+          background-color: var(--simple-colors-default-theme-grey-1);
+          border-radius: 50%;
+          position: absolute;
+          color: var(--simple-colors-default-theme-grey-12);
+          border: var(--simple-colors-default-theme-grey-12) 4px solid;
+          cursor: pointer;
+        }
         @media (max-width: 800px) {
           app-hax-site-button {
             width: 320px;
             max-width: 60vw;
             --app-hax-site-button-font-size: 16px;
+          }
+          .helpbtn {
+            --simple-icon-height: 40px;
+            --simple-icon-width: 40px;
+            right: 8px;
+            top: 64px;
+            padding: 2px;
+            border: var(--simple-colors-default-theme-grey-12) 2px solid;
           }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -608,6 +631,10 @@ export class AppHax extends SimpleColors {
         
       `,
     ];
+  }
+  helpClick() {
+    // start the tour
+    console.log('tour here');
   }
 
   updated(changedProperties) {
@@ -729,6 +756,11 @@ export class AppHax extends SimpleColors {
         .phrases="${this.phrases}"
         @click="${this.getNewWord}"
       ></random-word>
+      <simple-icon-lite
+        class="helpbtn"
+        @click="${this.helpClick}"
+        src="${helpBtn}">
+      </simple-icon-lite>
       <section class="content">
         ${this.appBody(this.appMode)}
       </section>
