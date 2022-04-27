@@ -232,6 +232,10 @@
         "createSite": window.process.env.VERCEL ? 'api/createSite' : 'demo/createSite.json',
         "login": window.process.env.VERCEL ? 'api/login' : 'demo/login.json',
         "logout": window.process.env.VERCEL ? 'api/logout' : 'demo/logout.json',
+        "downloadSite": window.process.env.VERCEL ?  "api/downloadSite" : 'demo/downloadSite.json',
+        "archiveSite": window.process.env.VERCEL ?  "api/archiveSite" : 'demo/archiveSite.json',
+        "cloneSite": window.process.env.VERCEL ? "api/cloneSite" : 'demo/cloneSite.json',
+        "deleteSite": window.process.env.VERCEL ? "api/deleteSite" : 'demo/deleteSite.json',
         "refreshUrl": "/bto108/system/api/refreshAccessToken",
         "connectionSettings": "/bto108/system/api/connectionSettings",
         "redirectUrl": "/login.php",
@@ -276,7 +280,6 @@
         "saveNodePath": "/bto108/system/api/saveNode",
         "saveManifestPath": "/bto108/system/api/saveManifest",
         "saveOutlinePath": "/bto108/system/api/saveOutline",
-        "publishSitePath": "/bto108/system/api/publishSite",
         "syncSitePath": "/bto108/system/api/syncSite",
         "setConfigPath": "/bto108/system/api/setConfig",
         "getConfigPath": "/bto108/system/api/getConfig",
@@ -288,11 +291,7 @@
         "getUserDataPath": "/bto108/system/api/getUserData",
         "setUserPhotoPath": "/bto108/system/api/setUserPhoto",
         "deleteNodePath": "/bto108/system/api/deleteNode",
-        "gitImportSitePath": "/bto108/system/api/gitImportSite",
-        "downloadSitePath": "/bto108/system/api/downloadSite",
-        "archiveSitePath": "/bto108/system/api/archiveSite",
-        "cloneSitePath": "/bto108/system/api/cloneSite",
-        "deleteSitePath": "/bto108/system/api/deleteSite",
+
         "appStore": {
             "url": "/bto108/system/api/generateAppStore?app-store-token=fghjhgjjghjgg5555"
         },
