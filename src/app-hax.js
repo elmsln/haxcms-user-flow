@@ -1,6 +1,8 @@
 import { css, html, unsafeCSS } from 'lit';
 import { toJS, autorun } from 'mobx';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
+import { SimpleTourManager } from "@lrnwebcomponents/simple-popover/lib/simple-tour.js";
+import { SimpleTourFinder } from "@lrnwebcomponents/simple-popover/lib/SimpleTourFinder";
 import "@lrnwebcomponents/simple-tooltip/simple-tooltip.js";
 import { SimpleColors } from "@lrnwebcomponents/simple-colors/simple-colors.js";
 import { store } from '../lib/v1/AppHaxStore.js';
@@ -29,7 +31,7 @@ function soundToggle() {
   store.appEl.playSound('click');
 }
 
-export class AppHax extends SimpleColors {
+export class AppHax extends SimpleTourFinder(SimpleColors) {
   static get tag() {
     return 'app-hax';
   }
@@ -61,6 +63,31 @@ export class AppHax extends SimpleColors {
 
   constructor() {
     super();
+
+    SimpleTourManager.registerNewTour({
+      key: "hax",
+      name: "Let's learn HAX",
+      style: `
+      simple-popover-manager::part(simple-popover) {
+        max-width: 250px;
+      }
+      simple-popover-manager button {
+        font-size: 12px;
+        margin: 0px 2px;
+      }
+      simple-popover-manager p {
+        --hax-base-styles-p-font-size: 14px;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        line-height: 20px;
+      }
+      simple-popover-manager h3 {
+        --hax-base-styles-h3-font-size: 18px;
+        margin: 8px 2px;
+      }`,
+    });
+
     autorun(() => {
       this.siteReady = toJS(store.siteReady);
     });
@@ -266,6 +293,7 @@ export class AppHax extends SimpleColors {
         this.login();
       }
     })
+
   }
 
   static get properties() {
@@ -673,9 +701,13 @@ export class AppHax extends SimpleColors {
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
-      <app-hax-top-bar>
+      <app-hax-top-bar data-simple-tour-stop data-stop-title="Home Button">
+          <slot name="tour" data-stop-content>
+            This better show up.
+          </slot>
         <a href="home" tabindex="-1" slot="left">
-          <simple-icon-lite id="hlogo" src="${haxLogo}" tabindex="0" class="haxLogo" title="Home"></simple-icon-lite>     
+          <simple-icon-lite id="hlogo" src="${haxLogo}" tabindex="0" class="haxLogo" title="Home">
+        </simple-icon-lite>     
         </a>
         <simple-tooltip for="hlogo" position="bottom" slot="left">Home</simple-tooltip>
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
@@ -774,7 +806,9 @@ export class AppHax extends SimpleColors {
   
   // eslint-disable-next-line class-methods-use-this
   templateCreate() {
-    return html`<app-hax-steps @promise-progress-finished="${this.siteReadyToGo}"></app-hax-steps>`;
+    return html`
+      <app-hax-steps @promise-progress-finished="${this.siteReadyToGo}"></app-hax-steps>
+      `;
   }
 
   siteReadyToGo(e) {
