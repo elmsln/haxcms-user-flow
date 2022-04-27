@@ -30,6 +30,7 @@
     "@lrnwebcomponents/simple-colors": "^4.0.24",
     "@lrnwebcomponents/simple-modal": "^4.0.24",
     "@lrnwebcomponents/simple-icon": "^4.0.24",
+    "@lrnwebcomponents/simple-tooltip": "^4.0.24",
     "@lrnwebcomponents/hax-iconset": "^4.0.24",
     "@lrnwebcomponents/jwt-login": "^4.0.24",
     "@lrnwebcomponents/i18n-manager": "^4.0.24",

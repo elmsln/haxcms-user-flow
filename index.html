@@ -55,6 +55,14 @@
         background-size: auto, 20% auto, 20% auto;
         --app-hax-accent-color: black;
         --app-hax-background-color: white;
+        --simple-tooltip-background: #000000;
+        --simple-tooltip-opacity: 1;
+        --simple-tooltip-text-color: #ffffff;
+        --simple-tooltip-delay-in: 0;
+        --simple-tooltip-duration-in: 200ms;
+        --simple-tooltip-duration-out: 0;
+        --simple-tooltip-border-radius: 0;
+        --simple-tooltip-font-size: 14px;
       }
       body.app-hax-create {
         overflow: hidden;
@@ -64,6 +72,8 @@
         background-image: url('lib/assets/images/DMGridBox.svg');
         --app-hax-accent-color: white;
         --app-hax-background-color: black;
+        --simple-tooltip-background: #ffffff;
+        --simple-tooltip-text-color: #000000;
       }
       body.app-loaded:not(.bad-device) {
         background-image: url('lib/assets/images/LMGridBox.svg'), url('lib/assets/images/DesignLightModeLeft.svg'), url('lib/assets/images/DesignLightModeRight.svg');
@@ -158,11 +168,6 @@
   </head>
 
   <body>
-    <!-- <app-hax-site-bar accent-color="red">
-      <p slot="heading">ART 101</p>
-      <p slot="band">A really easy class</p>
-      <app-hax-site-details slot="band"></app-hax-site-details>
-    </app-hax-site-bar> -->
     
     <div id="loading">
       <div class="title">
@@ -175,7 +180,6 @@
     window.process = window.process || {
       env: {
         NODE_ENV: "development",
-        // comment this out if doing local development
         //VERCEL: true
       }
     };
@@ -208,9 +212,7 @@
     </script>
     <app-hax>
       <div slot="externalproviders">
-        <a href="https://login.microsoftonline.com/">
-          <button aria-label="Microsoft Login" style="background-color: darkblue;"><img src="https://sites.psu.edu/psucanvas/files/2016/12/newlogosm-1y04ysv.png" width="93" height="43" alt="Canvas" id="logo" data-height-percentage="100" data-actual-width="648" data-actual-height="300"></button>
-        </a>
+        Demo login: admin / admin
       </div>
     </app-hax>
     <script type="module" src="./src/app-hax.js"></script>
@@ -227,6 +229,10 @@
         "createSite": window.process.env.VERCEL ? 'api/createSite' : 'demo/createSite.json',
         "login": window.process.env.VERCEL ? 'api/login' : 'demo/login.json',
         "logout": window.process.env.VERCEL ? 'api/logout' : 'demo/logout.json',
+        "downloadSite": window.process.env.VERCEL ?  "api/downloadSite" : 'demo/downloadSite.json',
+        "archiveSite": window.process.env.VERCEL ?  "api/archiveSite" : 'demo/archiveSite.json',
+        "copySite": window.process.env.VERCEL ? "api/copySite" : 'demo/copySite.json',
+        "deleteSite": window.process.env.VERCEL ? "api/deleteSite" : 'demo/deleteSite.json',
         "refreshUrl": "/bto108/system/api/refreshAccessToken",
         "connectionSettings": "/bto108/system/api/connectionSettings",
         "redirectUrl": "/login.php",
@@ -271,7 +277,6 @@
         "saveNodePath": "/bto108/system/api/saveNode",
         "saveManifestPath": "/bto108/system/api/saveManifest",
         "saveOutlinePath": "/bto108/system/api/saveOutline",
-        "publishSitePath": "/bto108/system/api/publishSite",
         "syncSitePath": "/bto108/system/api/syncSite",
         "setConfigPath": "/bto108/system/api/setConfig",
         "getConfigPath": "/bto108/system/api/getConfig",
@@ -283,11 +288,7 @@
         "getUserDataPath": "/bto108/system/api/getUserData",
         "setUserPhotoPath": "/bto108/system/api/setUserPhoto",
         "deleteNodePath": "/bto108/system/api/deleteNode",
-        "gitImportSitePath": "/bto108/system/api/gitImportSite",
-        "downloadSitePath": "/bto108/system/api/downloadSite",
-        "archiveSitePath": "/bto108/system/api/archiveSite",
-        "cloneSitePath": "/bto108/system/api/cloneSite",
-        "deleteSitePath": "/bto108/system/api/deleteSite",
+
         "appStore": {
             "url": "/bto108/system/api/generateAppStore?app-store-token=fghjhgjjghjgg5555"
         },
@@ -316,16 +317,12 @@
       }
     </style>
     <div id="demobtns">
-      <button aria-label="Demo Login" id="loginbtn">Login</button>
       <button aria-label="Demo new user" id="nosites">Test new user</button>
       <button aria-label="Demo 404 page" id="test404">Test 404</button>
       <button aria-label="Demo reset settings" id="resetbtn">reset app</button>
     </div>
     <script>
       function dqs(sel) { return document.querySelector(sel)}
-      dqs("#loginbtn").addEventListener("click", () => {
-        dqs("app-hax").login();
-      });
       dqs("#nosites").addEventListener("click", () => {
         // reset to clear internal state
         dqs("app-hax").reset(false);

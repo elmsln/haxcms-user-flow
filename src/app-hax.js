@@ -1,6 +1,8 @@
-import { LitElement, css, html } from 'lit';
+import { css, html, unsafeCSS } from 'lit';
 import { toJS, autorun } from 'mobx';
 import { localStorageSet, localStorageGet } from '@lrnwebcomponents/utils/utils.js';
+import "@lrnwebcomponents/simple-tooltip/simple-tooltip.js";
+import { SimpleColors } from "@lrnwebcomponents/simple-colors/simple-colors.js";
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
 import "../lib/v1/AppHaxRouter.js";
@@ -9,6 +11,7 @@ import '../lib/v1/app-hax-top-bar.js';
 
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
+const logoutBtn = new URL('../lib/assets/images/Logout.svg', import.meta.url).href;
 // toggle store darkmode
 function darkToggle(e) {
   if (e.matches) {
@@ -20,7 +23,13 @@ function darkToggle(e) {
   }
 }
 
-export class AppHax extends LitElement {
+function soundToggle() {
+  store.soundStatus = !toJS(store.soundStatus);
+  localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
+  store.appEl.playSound('click');
+}
+
+export class AppHax extends SimpleColors {
   static get tag() {
     return 'app-hax';
   }
@@ -53,6 +62,9 @@ export class AppHax extends LitElement {
   constructor() {
     super();
     autorun(() => {
+      this.siteReady = toJS(store.siteReady);
+    });
+    autorun(() => {
       const badDevice = toJS(store.badDevice);
       if (badDevice === false) {
         import('@lrnwebcomponents/rpg-character/rpg-character.js');
@@ -76,54 +88,61 @@ export class AppHax extends LitElement {
         component: 'fake',
         step: 1,
         id: 'step-1',
-        label: 'Welcome',
-        statement: "Let's start a new journey!",
+        label: 'New Journey',
+        statement: "What sort of journey is it?",
       },
       {
         path: 'createSite-step-2',
         component: 'fake',
         step: 2,
         id: 'step-2',
-        label: 'Pick type',
-        statement: 'What type of journey is this?',
+        label: 'Structure',
+        statement: 'How is this organized?',
       },
       {
         path: 'createSite-step-3',
         component: 'fake',
         step: 3,
         id: 'step-3',
-        label: 'Theme Select',
-        statement: "What's it look like?",
+        label: 'Theme select',
+        statement: "What your journey feels like?",
       },
       {
         path: 'createSite-step-4',
         component: 'fake',
         step: 4,
         id: 'step-4',
-        label: 'Name',
-        statement: "Name this journey",
+        label: 'Journey Name',
+        statement: "What do you want to call your journey?",
       },
       {
         path: 'createSite-step-5',
         component: 'fake',
         step: 5,
         id: 'step-5',
-        label: 'Loading',
-        statement: "Get ready for your journey",
+        label: 'Building..',
+        statement: "Getting your journey ready to launch",
       },
       {
-        path: '/',
+        path: 'home',
         component: 'fake', 
         name: 'home', 
         label: 'Welcome back',
-        statement: "Let's explore HAX land",
+        statement: "Let's go on a HAX Journey",
       },
       {
-        path: '/search',
+        path: 'search',
         component: 'fake-search-e', 
         name: 'search', 
         label: 'Search',
         statement: "Discover active adventures",
+      },
+      {
+        path: '/',
+        component: 'fake', 
+        name: 'welcome', 
+        label: 'Welcome',
+        statement: "Let's build something awesome together!",
       },
       { 
         path: '/(.*)', 
@@ -146,8 +165,8 @@ export class AppHax extends LitElement {
     // @todo need this from app deploy itself
     autorun(() => {
       this.isNewUser = toJS(store.isNewUser);
-      if (this.isNewUser && this.appMode !== 'create') {
-        this.appMode = "create";
+      if (this.isNewUser && toJS(store.appMode) !== 'create') {
+        store.appMode = "create";
         setTimeout(() => {
           store.createSiteSteps = true;            
         }, 0);
@@ -155,6 +174,9 @@ export class AppHax extends LitElement {
     });
     autorun(() => {
       this.userName = toJS(store.user.name);
+    });
+    autorun(() => {
+      this.appMode = toJS(store.appMode);
     });
     autorun(() => {
       this.searchTerm = toJS(store.searchTerm);
@@ -172,27 +194,28 @@ export class AppHax extends LitElement {
         if (!location.route.step) {
           if (location.route.name === "404") {
             store.createSiteSteps = false;
-            this.appMode = "404"
+            store.appMode = "404"
             setTimeout(() => {
               store.toast('the page miss.. it burns!!!', 3000, {fire: true, walking: true});              
             }, 500);
           }
           else if (location.route.name === "home" || location.route.name === "search") {
-            this.appMode = "home"
+            store.appMode = "home";
+            store.createSiteSteps = false;
           }
           else {
-            console.warn(location.route);
+            //console.warn(location.route);
           }
         }
         else {
-          this.appMode = "create";
+          store.appMode = "create";
           setTimeout(() => {
             store.createSiteSteps = true;            
           }, 0);
         }
       }
     });
-    // AutoRun block to detect to detect if site.structure is null but step == 3, set step to 2.
+
     autorun(() => {
       if (store.routes.length > 0 && store.location === null) {
         store.location = toJS(store.routes[0]);
@@ -208,9 +231,11 @@ export class AppHax extends LitElement {
       if (toJS(store.darkMode)) {
         document.body.classList.add('dark-mode');
         store.toast("I'm ascared of the dark", 2000, { fire: true});
+        this.dark = true;
       } else {
         document.body.classList.remove('dark-mode');
         store.toast("Sunny day it is", 2000, { hat: 'random'});
+        this.dark = false;
       }
     });
     autorun(() => {
@@ -226,7 +251,6 @@ export class AppHax extends LitElement {
 
     autorun(() => {
       if(localStorageGet('jwt') !== "" && localStorageGet('jwt') !== "null" && localStorageGet('jwt') !== null){
-        console.log("You're Logged in already");
         store.jwt= localStorageGet('jwt');
       }
     })
@@ -246,6 +270,7 @@ export class AppHax extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       courses: { type: Array },
       source: { type: String },
       userName: { type: String },
@@ -257,6 +282,7 @@ export class AppHax extends LitElement {
       isNewUser: { type: Boolean },
       phrases: { type: Object },
       userMenuOpen: { type: Boolean },
+      siteReady: { type: Boolean },
     };
   }
 
@@ -299,15 +325,22 @@ export class AppHax extends LitElement {
       }
     }
     catch(e) {
-      console.warn(e);
+      //console.warn(e);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
-  logout(){
-    localStorage.removeItem('jwt');
+  async logout(){
+    const results = await AppHaxAPI.makeCall('logout');
+    // localStorage possible to be blocked by permission of system
+    try {
+      window.localStorage.removeItem('jwt');
+    }
+    catch(e) {
+      // do nothing, this is a framed in / secure context
+    }
     store.jwt = "";
-    window.location.reload();
+    this.reset();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -325,7 +358,7 @@ export class AppHax extends LitElement {
             cancelable: true,
             composed: true,
             detail: {
-              title: 'Character select',
+              title: 'User login',
               elements: { content: p },
               modal: true,
               styles: {
@@ -346,7 +379,7 @@ export class AppHax extends LitElement {
   }
 
   static get styles() {
-    return [
+    return [...super.styles,
       css`
         :host {
           display: block;
@@ -364,18 +397,33 @@ export class AppHax extends LitElement {
         .topbar-character {
           cursor: pointer;
           display: inline-block;
-          margin: -4px -8px 0 2px;
+          border: none;
+          border-radius: 0px;
+          background-color: transparent;
+        }
+        .topbar-character:hover,
+        .topbar-character:focus {
+          background-color: var(--simple-colors-default-theme-light-blue-4);
+          outline: var(--haxcms-color) solid 3px;
+          outline-offset: -3px;
+          height: 48px;
+        }
+        .topbar-character rpg-character {
+          margin: -4px -14px 0px -10px;
+          height: 52px;
+          width: 64px;      
+          display: inline-block;
         }
         .content {
           text-align: center;
-          margin-top: 32px;
+          margin-top: 24px;
         }
         .four04-character {
           margin-top: 16px;
         }
         .start-journey {
           display: flex;
-          padding-top: 60px;
+          padding-top: 40px;
           justify-content: center;
         }
         app-hax-site-button {
@@ -428,6 +476,8 @@ export class AppHax extends LitElement {
           --simple-icon-height: 40px;
           --simple-icon-width: 40px;
           margin: 4px;
+          color: var(--simple-colors-default-theme-grey-12);
+          cursor: pointer;
         }
         .soundToggle {
           margin-right: 16px;
@@ -446,7 +496,7 @@ export class AppHax extends LitElement {
           display: inline-flex;
         }
         main {
-          padding-top: 100px;
+          padding-top: 80px;
         }
         @media (max-width: 900px) {
           main {
@@ -489,7 +539,7 @@ export class AppHax extends LitElement {
           padding-right: 16px;
         }
         .user-menu.open > .logout {
-          background-image: url('../lib/assets/images/Logout.svg');
+          background-image: url('${unsafeCSS(logoutBtn)}');
           background-repeat: no-repeat;
           background-position: center;
           text-align: center;
@@ -505,9 +555,9 @@ export class AppHax extends LitElement {
           top: 120px;
           padding: 12px;
           font-size: 12px;
-          border: 4px solid black;
-          background-color: yellow;
-          color: black;
+          border: 4px solid var(--simple-colors-default-theme-grey-12);
+          background-color: var(--simple-colors-default-theme-yellow-5);
+          color: var(--simple-colors-default-theme-grey-12);
           width: 100px;
           word-wrap: break-word;
           text-align: center;
@@ -568,7 +618,7 @@ export class AppHax extends LitElement {
     }
     // update the store for step when it changes internal to our step flow
     changedProperties.forEach((oldValue, propName) => {
-      if (['routes', 'appMode'].includes(propName)) {
+      if (propName === 'routes') {
         store[propName] = this[propName];
       }
     });
@@ -610,12 +660,6 @@ export class AppHax extends LitElement {
       }
     });
   }
-
-  soundToggle() {
-    store.soundStatus = !toJS(store.soundStatus);
-    localStorageSet('app-hax-soundStatus', toJS(store.soundStatus));
-    store.appEl.playSound('click');
-  }
   
   toggleMenu() {
     this.userMenuOpen = !this.userMenuOpen;
@@ -628,61 +672,58 @@ export class AppHax extends LitElement {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  _haxLink(e){
-    e.preventDefault();
-    window.open('/', '_self', 'noopener noreferrer');
-  }
-
   render() {
     return html`<app-hax-router></app-hax-router>
     <header>
       <app-hax-top-bar>
-        <simple-icon-lite src="${haxLogo}" class="haxLogo" slot="left"  alt="" loading="lazy" decoding="async" @click="${this._haxLink}"></simple-icon-lite>     
+        <a href="home" tabindex="-1" slot="left">
+          <simple-icon-lite id="hlogo" src="${haxLogo}" tabindex="0" class="haxLogo" title="Home"></simple-icon-lite>     
+        </a>
+        <simple-tooltip for="hlogo" position="bottom" slot="left">Home</simple-tooltip>
         <app-hax-search-bar slot="center" ?disabled="${this.isNewUser}"></app-hax-search-bar>
         <wired-button
           elevation="1"
           slot="right"
           class="soundToggle"
-          @click="${this.soundToggle}"
+          id="soundtb"
+          @click="${soundToggle}"
         >
           <span class="wired-button-label">Toggle sound effects</span>
           <simple-icon-lite src="${this.soundIcon}" loading="lazy" decoding="async"></simple-icon-lite>
         </wired-button>
-        <app-hax-wired-toggle slot="right"></app-hax-wired-toggle>
-        <rpg-character
-          class="topbar-character"
-          seed="${this.userName}"
-          slot="right"
-          width="68"
-          height="68"
-          aria-label="System menu"
-          title="System menu"
-          tabindex="0"
-          hat="${this.userMenuOpen ? 'edit' : 'none'}"
-          @click="${this.toggleMenu}"
-        ></rpg-character>
+        <simple-tooltip for="soundtb" position="bottom" slot="right">Toggle sound</simple-tooltip>
+        <app-hax-wired-toggle id="wt" slot="right"></app-hax-wired-toggle>
+        <simple-tooltip for="wt" position="bottom" slot="right">Toggle dark mode</simple-tooltip>
+        <button class="topbar-character" @click="${this.toggleMenu}" slot="right" id="tbchar">
+          <rpg-character
+            seed="${this.userName}"
+            width="68"
+            height="68"
+            aria-label="System menu"
+            title="System menu"
+            hat="${this.userMenuOpen ? 'edit' : 'none'}"
+          ></rpg-character>
+        </button>
         ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button>
-            <simple-icon-lite icon="settings"></simple-icon-lite>Site settings</button>
-          <button><simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline</button>
-          <button>
-          <simple-icon-lite icon="add"></simple-icon-lite>New Journey</button>
           <button>
           <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
           <button @click=${this.logout} class="logout">log out</button>
         </div>
-` : ``}
+` : html`        <simple-tooltip for="tbchar" position="bottom" slot="right">System menu</simple-tooltip>
+`}
       </app-hax-top-bar>
-    </header>
+    </header>lbh
     <main @click="${this.closeMenu}">
       <div class="label">
         <app-hax-label>
-        ${this.activeItem ? html`
+        ${this.activeItem && !this.siteReady ? html`
         <h1>${this.activeItem.label}</h1>
           <div slot="subtitle">${this.activeItem.statement}</div>
         ` : ``}
-          
+        ${this.activeItem && this.siteReady ? html`
+        <h1>${toJS(store.site.name)}</h1>
+          <div slot="subtitle">Is all ready, are you ready to build?</div>
+        ` : ``}
           </app-hax-label>
       </div>
       <random-word
@@ -735,7 +776,13 @@ export class AppHax extends LitElement {
   
   // eslint-disable-next-line class-methods-use-this
   templateCreate() {
-    return html`<app-hax-steps></app-hax-steps>`;
+    return html`<app-hax-steps @promise-progress-finished="${this.siteReadyToGo}"></app-hax-steps>`;
+  }
+
+  siteReadyToGo(e) {
+    if (e.detail) {
+      store.siteReady = true;
+    }
   }
 
   template404() {
@@ -751,15 +798,24 @@ export class AppHax extends LitElement {
           fire
           walking
           width="200"
+          id="char404"
           height="200"
           seed="${this.userName}"
         ></rpg-character>
+        <simple-tooltip for="char404" position="left">This</simple-tooltip>
+        <simple-tooltip for="char404" position="right">fine</simple-tooltip>
+        <simple-tooltip for="char404" position="bottom">is</simple-tooltip>
     </div>`;
   }
-
-  startJourney() {
-    store.step = 1;
-    this.appMode = "create";
+  // ensure internal data is unset for store
+  startJourney(e) {
+    store.createSiteSteps = false;
+    store.siteReady = false;
+    store.site.structure = null;
+    store.site.type = null;
+    store.site.theme = null;            
+    store.site.name = null;
+    store.appMode = "create";
     store.appEl.playSound('click2');
   }
 }
