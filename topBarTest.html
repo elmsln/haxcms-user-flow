@@ -18,6 +18,8 @@
       body {
         margin: 0px;
         padding: 0px;
+        --app-hax-accent-color: black;
+        --app-hax-background-color: white;
       }
 
       ::part(.menuToggle) {
@@ -30,10 +32,6 @@
         right: 0;
         left: 0;
         position: fixed;
-      }
-
-      app-hax-user-menu-button {
-        padding: 0px;
       }
 
       app-hax-top-bar {
@@ -50,6 +48,38 @@
         display: inline-flex;
         vertical-align: top;
       }
+
+      .topbar-character {
+        cursor: pointer;
+        display: inline-block;
+        border: none;
+        border-radius: 0px;
+        background-color: transparent;
+      }
+      .topbar-character:hover,
+      .topbar-character:focus {
+        background-color: var(--simple-colors-default-theme-light-blue-4);
+        outline: var(--haxcms-color) solid 3px;
+        outline-offset: -3px;
+        height: 48px;
+      }
+      .topbar-character rpg-character {
+        margin: -4px -14px 0px -10px;
+        height: 52px;
+        width: 64px;
+        display: inline-block;
+      }
+
+      .logout::part(menu-button) {
+        background-image: url('../lib/assets/images/Logout.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        background-size: cover;
+        border-top: 0px;
+        border-bottom: 0px;
+        padding: 10px;
+      }
     </style>
     <script>
       // local development and mobx
@@ -64,54 +94,40 @@
 
   <body>
     <app-hax-top-bar>
-      <!-- <simple-icon-lite
-      src="../lib/assets/images/HAXLogo.svg"
-      class="haxLogo"
-      slot="left"
-      alt=""
-      loading="lazy"
-      decoding="async"
-    ></simple-icon-lite>
-    <wired-button
-      elevation="1"
-      slot="right"
-      class="soundToggle"
-    >
-      <simple-icon-lite
-        src='../lib/assets/images/FullVolume.svg'
-        loading="lazy"
-        decoding="async"
-      ></simple-icon-lite>
-    </wired-button> -->
-      <app-hax-user-menu slot="right" id="user-menu" isOpen="true">
-        <rpg-character
-          class="topbar-character"
-          seed="hi"
-          slot="menuButton"
-          width="60"
-          height="60"
-          ></rpg-character>
+      <div slot="left">test</div>
+      <div slot="center">test</div>
+
+      <button class="topbar-character" slot="right">
+        <rpg-character seed="one" width="68" height="68"></rpg-character>
+      </button>
+      <button class="topbar-character" slot="right">
+        <rpg-character seed="two" width="68" height="68"></rpg-character>
+      </button>
+
+      <app-hax-user-menu slot="right">
+        <button class="topbar-character" slot="menuButton">
+          <rpg-character seed="inside" width="68" height="68"></rpg-character>
+        </button>
 
         <app-hax-user-menu-button
           slot="pre-menu"
           icon="pregnant-woman"
           label="words"
         ></app-hax-user-menu-button>
-        <app-hax-user-menu-button slot="post-menu"></app-hax-user-menu-button>
-
-        <button slot="main-menu">
-          <simple-icon-lite icon="settings"></simple-icon-lite>Site settings
-        </button>
-        <button slot="main-menu">
-          <simple-icon-lite icon="hax:site-map"></simple-icon-lite>Site outline
-        </button>
-        <button slot="main-menu">
-          <simple-icon-lite icon="add"></simple-icon-lite>New Journey
-        </button>
-        <button slot="main-menu">
-          <simple-icon-lite icon="face"></simple-icon-lite>Account info
-        </button>
-        <button class="logout" part="logout" slot="main-menu">log out</button>
+        <app-hax-user-menu-button
+          slot="main-menu"
+          icon="face"
+          label="account info"
+        ></app-hax-user-menu-button>
+        <app-hax-user-menu-button
+          slot="main-menu"
+          icon="face"
+          label="account info"
+        ></app-hax-user-menu-button>
+        <app-hax-user-menu-button
+          slot="post-menu"
+          class="logout"
+        ></app-hax-user-menu-button>
       </app-hax-user-menu>
     </app-hax-top-bar>
     <br />

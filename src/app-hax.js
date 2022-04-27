@@ -10,6 +10,7 @@ import '../lib/v1/app-hax-label.js';
 import '../lib/v1/app-hax-top-bar.js';
 
 
+
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 const logoutBtn = new URL('../lib/assets/images/Logout.svg', import.meta.url).href;
 // toggle store darkmode
@@ -281,7 +282,7 @@ export class AppHax extends SimpleColors {
       appMode: { type: String }, // minor context of what we're doing in the app for rendering
       isNewUser: { type: Boolean },
       phrases: { type: Object },
-      userMenuOpen: { type: Boolean },
+      userMenuOpen: { type: Boolean }, // leave here to ensure hat change and sound effects happen
       siteReady: { type: Boolean },
     };
   }
@@ -503,48 +504,18 @@ export class AppHax extends SimpleColors {
             padding-top: 64px;
           }
         }
-        /* TODO: */
-        .user-menu {
-          display:none;
-        }
-        .user-menu.open {
-          display: block;
-          top: 48px;
-          right: 0px;
-          position: absolute;
-          border: 1px solid var(--app-hax-accent-color);
-          background-color: var(--app-hax-background-color);
-        }
-        .user-menu.open button {
-          display: block;
-          width: 100%;
-          margin: 0;
-          padding: 8px;
-          font-size: 16px;
-          text-align: left;
-          font-family: 'Press Start 2P', sans-serif;
-          color: var(--app-hax-accent-color);
-          background-color: var(--app-hax-background-color);
-        }
-        .user-menu.open button:hover,
-        .user-menu.open button:active,
-        .user-menu.open button:focus {
-          background-color: var(--app-hax-background-color-active);
-          color: var(--app-hax-background-color);
-        }
-        .user-menu button {
-          cursor: pointer;
-        }
-        .user-menu button simple-icon-lite {
-          padding-right: 16px;
-        }
-        .user-menu.open > .logout {
+
+        .logout::part(menu-button) {
           background-image: url('${unsafeCSS(logoutBtn)}');
           background-repeat: no-repeat;
           background-position: center;
           text-align: center;
+          background-size: cover;
+          border-top: 0px; 
+          border-bottom: 0px;
+          padding: 10px;
         }
-        /* TODO: */
+
         random-word:not(:defined) {
           display: none;
         }
@@ -635,6 +606,8 @@ export class AppHax extends SimpleColors {
     import('../lib/v1/app-hax-wired-toggle.js');
     import('../lib/v1/app-hax-search-bar.js');
     import('../lib/v1/app-hax-search-results.js');
+    import('../lib/v1/app-hax-user-menu.js');
+  import('../lib/v1/app-hax-user-menu-button.js');
     this.dispatchEvent(new CustomEvent('app-hax-loaded', {composed: true, bubbles: true, cancelable: false, detail: true}));
     store.appReady = true;
     autorun(() => {
@@ -669,6 +642,7 @@ export class AppHax extends SimpleColors {
   closeMenu() {
     if (this.userMenuOpen) {
       this.userMenuOpen = !this.userMenuOpen;
+      this.shadowRoot.querySelector("#user-menu").removeAttribute('isOpen');
     }
   }
 
@@ -694,23 +668,25 @@ export class AppHax extends SimpleColors {
         <simple-tooltip for="soundtb" position="bottom" slot="right">Toggle sound</simple-tooltip>
         <app-hax-wired-toggle id="wt" slot="right"></app-hax-wired-toggle>
         <simple-tooltip for="wt" position="bottom" slot="right">Toggle dark mode</simple-tooltip>
-        <button class="topbar-character" @click="${this.toggleMenu}" slot="right" id="tbchar">
-          <rpg-character
-            seed="${this.userName}"
-            width="68"
-            height="68"
-            aria-label="System menu"
-            title="System menu"
-            hat="${this.userMenuOpen ? 'edit' : 'none'}"
-          ></rpg-character>
-        </button>
-        ${this.userMenuOpen ? html`<div slot="right" class="user-menu ${this.userMenuOpen ? 'open' : ''}">
-          <button>
-          <simple-icon-lite icon="face"></simple-icon-lite>Account info</button>
-          <button @click=${this.logout} class="logout">log out</button>
-        </div>
-` : html`        <simple-tooltip for="tbchar" position="bottom" slot="right">System menu</simple-tooltip>
-`}
+        
+        <app-hax-user-menu slot="right" id="user-menu">
+          <button class="topbar-character" slot="menuButton" id="tbchar">
+            <rpg-character
+              seed="${this.userName}"
+              width="68"
+              height="68"
+              aria-label="System menu"
+              title="System menu"
+              hat="${this.userMenuOpen ? 'edit' : 'none'}"
+              @click="${this.toggleMenu}"
+            ></rpg-character>
+          </button>
+          <app-hax-user-menu-button slot="main-menu" icon="face" label="Account Info"></app-hax-user-menu-button>
+          <app-hax-user-menu-button slot="post-menu" class="logout" @click=${this.logout}></app-hax-user-menu-button>
+        </app-hax-user-menu>
+
+        ${this.userMenuOpen ? '' : html`<simple-tooltip for="tbchar" position="bottom" slot="right">System menu</simple-tooltip>`}
+
       </app-hax-top-bar>
     </header>lbh
     <main @click="${this.closeMenu}">
@@ -807,6 +783,7 @@ export class AppHax extends SimpleColors {
         <simple-tooltip for="char404" position="bottom">is</simple-tooltip>
     </div>`;
   }
+
   // ensure internal data is unset for store
   startJourney(e) {
     store.createSiteSteps = false;
