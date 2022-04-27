@@ -805,6 +805,7 @@ export class AppHax extends SimpleColors {
         <simple-tooltip for="char404" position="bottom">is</simple-tooltip>
     </div>`;
   }
+  
   // ensure internal data is unset for store
   startJourney(e) {
     store.createSiteSteps = false;
