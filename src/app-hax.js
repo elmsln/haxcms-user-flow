@@ -540,7 +540,7 @@ export class AppHax extends SimpleColors {
           visibility: visible;
           transition: all .3s ease-in-out;
         }
-        .helpbtn {
+        #helpbtn {
           --simple-icon-height: 50px;
           --simple-icon-width: 50px;
           right: 200px;
@@ -559,7 +559,7 @@ export class AppHax extends SimpleColors {
             max-width: 60vw;
             --app-hax-site-button-font-size: 16px;
           }
-          .helpbtn {
+          #helpbtn {
             --simple-icon-height: 40px;
             --simple-icon-width: 40px;
             right: 8px;
@@ -607,6 +607,7 @@ export class AppHax extends SimpleColors {
   }
   helpClick() {
     // start the tour
+    store.appEl.playSound('coin2');
     console.log('tour here');
   }
 
@@ -709,7 +710,7 @@ export class AppHax extends SimpleColors {
             ></rpg-character>
           </button>
           <app-hax-user-menu-button slot="main-menu" icon="face" label="Account Info"></app-hax-user-menu-button>
-          <app-hax-user-menu-button slot="post-menu" class="logout" @click=${this.logout}></app-hax-user-menu-button>
+          <app-hax-user-menu-button slot="post-menu" class="logout" label="Logout" @click=${this.logout}></app-hax-user-menu-button>
         </app-hax-user-menu>
 
         ${this.userMenuOpen ? '' : html`<simple-tooltip for="tbchar" position="bottom" slot="right">System menu</simple-tooltip>`}
@@ -735,10 +736,11 @@ export class AppHax extends SimpleColors {
         @click="${this.getNewWord}"
       ></random-word>
       <simple-icon-lite
-        class="helpbtn"
+        id="helpbtn"
         @click="${this.helpClick}"
         src="${helpBtn}">
       </simple-icon-lite>
+      <simple-tooltip for="helpbtn" position="bottom">Help</simple-tooltip>
       <section class="content">
         ${this.appBody(this.appMode)}
       </section>
