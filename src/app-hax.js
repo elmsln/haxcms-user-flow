@@ -5,11 +5,11 @@ import "@lrnwebcomponents/simple-tooltip/simple-tooltip.js";
 import { SimpleColors } from "@lrnwebcomponents/simple-colors/simple-colors.js";
 import { store } from '../lib/v1/AppHaxStore.js';
 import { AppHaxAPI } from '../lib/v1/AppHaxBackendAPI.js';
+import { SimpleTourManager } from "@lrnwebcomponents/simple-popover/lib/simple-tour.js";
+import '@lrnwebcomponents/simple-colors-shared-styles/simple-colors-shared-styles.js';
 import "../lib/v1/AppHaxRouter.js";
 import '../lib/v1/app-hax-label.js';
 import '../lib/v1/app-hax-top-bar.js';
-
-
 
 const haxLogo = new URL('../lib/assets/images/HAXLogo.svg', import.meta.url).href;
 const logoutBtn = new URL('../lib/assets/images/Logout.svg', import.meta.url).href;
@@ -63,6 +63,51 @@ export class AppHax extends SimpleColors {
 
   constructor() {
     super();
+    this.__tour = SimpleTourManager;
+    this.__tour.registerNewTour({
+      key: "hax",
+      name: "Let's learn HAX",
+      style: `
+      simple-popover-manager::part(simple-popover) {
+        max-width: 250px;
+      }
+      simple-popover-manager button {
+        font-family: 'Press Start 2P', sans-serif;
+        font-size: 12px;
+        margin: 0px 2px;
+        color: var(--simple-colors-default-theme-grey-12);
+      }
+      simple-popover-manager p {
+        font-family: 'Press Start 2P', sans-serif;
+        padding: 0;
+        margin: 0;
+        width: 250px;
+        font-size: 12px;
+        line-height: 20px;
+      }
+      simple-popover-manager h1 {
+        font-family: 'Press Start 2P', sans-serif;
+        margin: 0;
+        font-size: 12px;
+        width: 250px;
+        padding: 0;
+      }
+      simple-popover-manager::part(simple-popover-body),
+      simple-popover-manager::part(simple-popover-heading) {
+        color: black;
+        background-color: white;
+      }
+      body.dark-mode simple-popover-manager::part(simple-popover-body),
+      body.dark-mode simple-popover-manager::part(simple-popover-heading) {
+        color: white;
+        background-color: black;
+      }
+      body.dark-mode simple-popover-manager simple-icon-button-lite {
+        color: white;
+        background-color: black;
+      }
+      `,
+    });
     autorun(() => {
       this.siteReady = toJS(store.siteReady);
     });
@@ -128,28 +173,28 @@ export class AppHax extends SimpleColors {
       {
         path: 'home',
         component: 'fake', 
-        name: 'home', 
+        id: 'home',
         label: 'Welcome back',
         statement: "Let's go on a HAX Journey",
       },
       {
         path: 'search',
         component: 'fake-search-e', 
-        name: 'search', 
+        id: 'search', 
         label: 'Search',
         statement: "Discover active adventures",
       },
       {
         path: '/',
         component: 'fake', 
-        name: 'welcome', 
+        id: 'welcome', 
         label: 'Welcome',
         statement: "Let's build something awesome together!",
       },
       { 
         path: '/(.*)', 
         component: 'fake', 
-        name: '404', 
+        id: '404', 
         label: '404 :[',
         statement: "it's not you.. it's me",
       },
@@ -608,7 +653,7 @@ export class AppHax extends SimpleColors {
   helpClick() {
     // start the tour
     store.appEl.playSound('coin2');
-    console.log('tour here');
+    this.__tour.startTour("hax");
   }
 
   updated(changedProperties) {
@@ -618,7 +663,7 @@ export class AppHax extends SimpleColors {
     // update the store for step when it changes internal to our step flow
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'routes') {
-        store[propName] = this[propName];
+        store.routes = this.routes;
       }
     });
   }

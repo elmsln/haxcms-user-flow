@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@lit-labs/motion": "^1.0.2",
+    "@lrnwebcomponents/simple-popover": "^4.0.24",
     "@lrnwebcomponents/simple-datetime": "^4.0.24",
     "@lrnwebcomponents/future-terminal-text": "^4.0.24",
     "@lrnwebcomponents/promise-progress": "^4.0.24",
